@@ -1,0 +1,16 @@
+{
+  "stage": "harvest",
+  "timestamp": "20260513T084318Z",
+  "initial_total": 62646,
+  "final_total": 73703,
+  "newly_inserted": 11057,
+  "skipped_existing": 687,
+  "skipped_done": 68,
+  "by_venue_year": {
+    "NeurIPS/2023": 3541,
+    "NeurIPS/2024": 4495,
+    "NAACL/2024": 958,
+    "NAACL/2025": 1376,
+    "COLM/2024": 687
+  }
+}

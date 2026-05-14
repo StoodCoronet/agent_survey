@@ -1,0 +1,1352 @@
+{
+  "meta": {
+    "total_papers": 73703,
+    "papers_with_abstract": 0,
+    "abstract_coverage_pct": 0.0,
+    "generated_at": "20260513_194008"
+  },
+  "agent_core": [
+    {
+      "term": "GUI agent",
+      "hits": 10,
+      "coverage_pct": 0.014,
+      "with_abstract": 0,
+      "without_abstract": 10,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 10,
+      "top_venues": [
+        [
+          "ACL",
+          4
+        ],
+        [
+          "EMNLP",
+          4
+        ],
+        [
+          "ASE",
+          1
+        ],
+        [
+          "AAAI",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2025": 9,
+        "2026": 1
+      }
+    },
+    {
+      "term": "web agent",
+      "hits": 10,
+      "coverage_pct": 0.014,
+      "with_abstract": 0,
+      "without_abstract": 10,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 10,
+      "top_venues": [
+        [
+          "ACL",
+          3
+        ],
+        [
+          "EMNLP",
+          3
+        ],
+        [
+          "ICML",
+          1
+        ],
+        [
+          "AAAI",
+          1
+        ],
+        [
+          "CHI",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2024": 4,
+        "2026": 2,
+        "2025": 4
+      }
+    },
+    {
+      "term": "computer use",
+      "hits": 6,
+      "coverage_pct": 0.008,
+      "with_abstract": 0,
+      "without_abstract": 6,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 4,
+      "top_venues": [
+        [
+          "CHI",
+          3
+        ],
+        [
+          "CCS",
+          1
+        ],
+        [
+          "AAAI",
+          1
+        ],
+        [
+          "UIST",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2025": 2,
+        "2026": 4
+      }
+    },
+    {
+      "term": "autonomous agent",
+      "hits": 4,
+      "coverage_pct": 0.005,
+      "with_abstract": 0,
+      "without_abstract": 4,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 4,
+      "top_venues": [
+        [
+          "ACL",
+          3
+        ],
+        [
+          "AAAI",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2025": 2,
+        "2024": 2
+      }
+    },
+    {
+      "term": "mobile agent",
+      "hits": 3,
+      "coverage_pct": 0.004,
+      "with_abstract": 0,
+      "without_abstract": 3,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 3,
+      "top_venues": [
+        [
+          "AAAI",
+          1
+        ],
+        [
+          "NeurIPS",
+          1
+        ],
+        [
+          "NAACL",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2026": 1,
+        "2024": 1,
+        "2025": 1
+      }
+    },
+    {
+      "term": "computer-use",
+      "hits": 2,
+      "coverage_pct": 0.003,
+      "with_abstract": 0,
+      "without_abstract": 2,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 0,
+      "top_venues": [
+        [
+          "CCS",
+          1
+        ],
+        [
+          "AAAI",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2025": 1,
+        "2026": 1
+      }
+    },
+    {
+      "term": "multimodal agent",
+      "hits": 2,
+      "coverage_pct": 0.003,
+      "with_abstract": 0,
+      "without_abstract": 2,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 2,
+      "top_venues": [
+        [
+          "AAAI",
+          1
+        ],
+        [
+          "EMNLP",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2025": 2
+      }
+    }
+  ],
+  "agent_generic": [
+    {
+      "term": "agentic",
+      "hits": 121,
+      "coverage_pct": 0.164,
+      "with_abstract": 0,
+      "without_abstract": 121,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 121,
+      "top_venues": [
+        [
+          "AAAI",
+          28
+        ],
+        [
+          "EMNLP",
+          28
+        ],
+        [
+          "ACL",
+          18
+        ],
+        [
+          "CHI",
+          18
+        ],
+        [
+          "ICLR",
+          9
+        ]
+      ],
+      "year_dist": {
+        "2025": 69,
+        "2026": 47,
+        "2023": 2,
+        "2024": 3
+      }
+    },
+    {
+      "term": "LLM agent",
+      "hits": 41,
+      "coverage_pct": 0.056,
+      "with_abstract": 0,
+      "without_abstract": 41,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 41,
+      "top_venues": [
+        [
+          "EMNLP",
+          13
+        ],
+        [
+          "ACL",
+          8
+        ],
+        [
+          "AAAI",
+          4
+        ],
+        [
+          "ASE",
+          3
+        ],
+        [
+          "ICML",
+          3
+        ]
+      ],
+      "year_dist": {
+        "2025": 29,
+        "2024": 6,
+        "2026": 6
+      }
+    },
+    {
+      "term": "LLM-based agent",
+      "hits": 17,
+      "coverage_pct": 0.023,
+      "with_abstract": 0,
+      "without_abstract": 17,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 17,
+      "top_venues": [
+        [
+          "EMNLP",
+          7
+        ],
+        [
+          "ICSE",
+          3
+        ],
+        [
+          "ACL",
+          2
+        ],
+        [
+          "CHI",
+          2
+        ],
+        [
+          "ASE",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2025": 10,
+        "2026": 1,
+        "2024": 6
+      }
+    },
+    {
+      "term": "language agent",
+      "hits": 12,
+      "coverage_pct": 0.016,
+      "with_abstract": 0,
+      "without_abstract": 12,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 12,
+      "top_venues": [
+        [
+          "ACL",
+          5
+        ],
+        [
+          "ICML",
+          3
+        ],
+        [
+          "AAAI",
+          2
+        ],
+        [
+          "EMNLP",
+          2
+        ]
+      ],
+      "year_dist": {
+        "2024": 4,
+        "2025": 5,
+        "2026": 2,
+        "2023": 1
+      }
+    },
+    {
+      "term": "tool-use",
+      "hits": 10,
+      "coverage_pct": 0.014,
+      "with_abstract": 0,
+      "without_abstract": 10,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 10,
+      "top_venues": [
+        [
+          "EMNLP",
+          4
+        ],
+        [
+          "AAAI",
+          2
+        ],
+        [
+          "ACL",
+          2
+        ],
+        [
+          "ICLR",
+          1
+        ],
+        [
+          "NAACL",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2025": 6,
+        "2026": 2,
+        "2024": 2
+      }
+    },
+    {
+      "term": "language model agent",
+      "hits": 6,
+      "coverage_pct": 0.008,
+      "with_abstract": 0,
+      "without_abstract": 6,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": 6,
+      "top_venues": [
+        [
+          "EMNLP",
+          3
+        ],
+        [
+          "NeurIPS",
+          2
+        ],
+        [
+          "ACL",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2025": 3,
+        "2024": 2,
+        "2023": 1
+      }
+    }
+  ],
+  "se_context": [
+    {
+      "term": "benchmark",
+      "hits": 1204,
+      "coverage_pct": 1.634,
+      "with_abstract": 0,
+      "without_abstract": 1204,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "EMNLP",
+          275
+        ],
+        [
+          "ACL",
+          261
+        ],
+        [
+          "NeurIPS",
+          221
+        ],
+        [
+          "AAAI",
+          173
+        ],
+        [
+          "ICLR",
+          117
+        ]
+      ],
+      "year_dist": {
+        "2024": 359,
+        "2025": 535,
+        "2023": 200,
+        "2026": 110
+      }
+    },
+    {
+      "term": "fuzzing",
+      "hits": 321,
+      "coverage_pct": 0.436,
+      "with_abstract": 0,
+      "without_abstract": 321,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "USS",
+          52
+        ],
+        [
+          "ASE",
+          38
+        ],
+        [
+          "TOSEM",
+          38
+        ],
+        [
+          "ICSE",
+          36
+        ],
+        [
+          "CCS",
+          36
+        ]
+      ],
+      "year_dist": {
+        "2024": 101,
+        "2025": 105,
+        "2023": 92,
+        "2026": 23
+      }
+    },
+    {
+      "term": "code generation",
+      "hits": 253,
+      "coverage_pct": 0.343,
+      "with_abstract": 0,
+      "without_abstract": 253,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "ACL",
+          46
+        ],
+        [
+          "EMNLP",
+          37
+        ],
+        [
+          "ASE",
+          30
+        ],
+        [
+          "ICSE",
+          20
+        ],
+        [
+          "TOSEM",
+          18
+        ]
+      ],
+      "year_dist": {
+        "2024": 75,
+        "2025": 115,
+        "2023": 41,
+        "2026": 22
+      }
+    },
+    {
+      "term": "bug",
+      "hits": 106,
+      "coverage_pct": 0.144,
+      "with_abstract": 0,
+      "without_abstract": 106,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "ICSE",
+          31
+        ],
+        [
+          "TSE",
+          17
+        ],
+        [
+          "FSE",
+          12
+        ],
+        [
+          "ASE",
+          12
+        ],
+        [
+          "TOSEM",
+          9
+        ]
+      ],
+      "year_dist": {
+        "2024": 36,
+        "2025": 26,
+        "2023": 37,
+        "2026": 7
+      }
+    },
+    {
+      "term": "vulnerability detection",
+      "hits": 105,
+      "coverage_pct": 0.142,
+      "with_abstract": 0,
+      "without_abstract": 105,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "ICSE",
+          23
+        ],
+        [
+          "TSE",
+          19
+        ],
+        [
+          "TOSEM",
+          11
+        ],
+        [
+          "ASE",
+          9
+        ],
+        [
+          "USS",
+          9
+        ]
+      ],
+      "year_dist": {
+        "2024": 34,
+        "2025": 34,
+        "2023": 28,
+        "2026": 9
+      }
+    },
+    {
+      "term": "program repair",
+      "hits": 76,
+      "coverage_pct": 0.103,
+      "with_abstract": 0,
+      "without_abstract": 76,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "ICSE",
+          23
+        ],
+        [
+          "TOSEM",
+          14
+        ],
+        [
+          "ASE",
+          10
+        ],
+        [
+          "TSE",
+          8
+        ],
+        [
+          "FSE",
+          7
+        ]
+      ],
+      "year_dist": {
+        "2024": 27,
+        "2025": 20,
+        "2023": 26,
+        "2026": 3
+      }
+    },
+    {
+      "term": "debugging",
+      "hits": 73,
+      "coverage_pct": 0.099,
+      "with_abstract": 0,
+      "without_abstract": 73,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "ICSE",
+          16
+        ],
+        [
+          "ISSTA",
+          7
+        ],
+        [
+          "CHI",
+          7
+        ],
+        [
+          "TOSEM",
+          7
+        ],
+        [
+          "FSE",
+          6
+        ]
+      ],
+      "year_dist": {
+        "2024": 19,
+        "2025": 30,
+        "2023": 21,
+        "2026": 3
+      }
+    },
+    {
+      "term": "static analysis",
+      "hits": 65,
+      "coverage_pct": 0.088,
+      "with_abstract": 0,
+      "without_abstract": 65,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "ICSE",
+          17
+        ],
+        [
+          "ASE",
+          12
+        ],
+        [
+          "ISSTA",
+          10
+        ],
+        [
+          "TSE",
+          6
+        ],
+        [
+          "FSE",
+          4
+        ]
+      ],
+      "year_dist": {
+        "2024": 21,
+        "2025": 14,
+        "2023": 25,
+        "2026": 5
+      }
+    },
+    {
+      "term": "test generation",
+      "hits": 60,
+      "coverage_pct": 0.081,
+      "with_abstract": 0,
+      "without_abstract": 60,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "ICSE",
+          17
+        ],
+        [
+          "ASE",
+          11
+        ],
+        [
+          "FSE",
+          9
+        ],
+        [
+          "TOSEM",
+          9
+        ],
+        [
+          "TSE",
+          8
+        ]
+      ],
+      "year_dist": {
+        "2024": 20,
+        "2025": 25,
+        "2023": 12,
+        "2026": 3
+      }
+    },
+    {
+      "term": "software testing",
+      "hits": 29,
+      "coverage_pct": 0.039,
+      "with_abstract": 0,
+      "without_abstract": 29,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "ICSE",
+          7
+        ],
+        [
+          "FSE",
+          6
+        ],
+        [
+          "ISSTA",
+          5
+        ],
+        [
+          "TSE",
+          5
+        ],
+        [
+          "TOSEM",
+          4
+        ]
+      ],
+      "year_dist": {
+        "2024": 12,
+        "2025": 7,
+        "2023": 10
+      }
+    },
+    {
+      "term": "GUI testing",
+      "hits": 17,
+      "coverage_pct": 0.023,
+      "with_abstract": 0,
+      "without_abstract": 17,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "ASE",
+          7
+        ],
+        [
+          "ICSE",
+          4
+        ],
+        [
+          "TSE",
+          3
+        ],
+        [
+          "TOSEM",
+          2
+        ],
+        [
+          "FSE",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2024": 8,
+        "2023": 4,
+        "2025": 4,
+        "2026": 1
+      }
+    },
+    {
+      "term": "dynamic analysis",
+      "hits": 14,
+      "coverage_pct": 0.019,
+      "with_abstract": 0,
+      "without_abstract": 14,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "TOSEM",
+          3
+        ],
+        [
+          "FSE",
+          2
+        ],
+        [
+          "ASE",
+          2
+        ],
+        [
+          "USS",
+          2
+        ],
+        [
+          "TSE",
+          2
+        ]
+      ],
+      "year_dist": {
+        "2025": 5,
+        "2023": 5,
+        "2024": 3,
+        "2026": 1
+      }
+    },
+    {
+      "term": "regression test",
+      "hits": 7,
+      "coverage_pct": 0.009,
+      "with_abstract": 0,
+      "without_abstract": 7,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "FSE",
+          2
+        ],
+        [
+          "ASE",
+          2
+        ],
+        [
+          "ISSTA",
+          1
+        ],
+        [
+          "TOSEM",
+          1
+        ],
+        [
+          "TSE",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2024": 4,
+        "2025": 2,
+        "2023": 1
+      }
+    },
+    {
+      "term": "app testing",
+      "hits": 3,
+      "coverage_pct": 0.004,
+      "with_abstract": 0,
+      "without_abstract": 3,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "TSE",
+          2
+        ],
+        [
+          "ICSE",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2023": 2,
+        "2024": 1
+      }
+    }
+  ],
+  "sec_context": [
+    {
+      "term": "adversarial",
+      "hits": 1054,
+      "coverage_pct": 1.43,
+      "with_abstract": 0,
+      "without_abstract": 1054,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "AAAI",
+          263
+        ],
+        [
+          "NeurIPS",
+          155
+        ],
+        [
+          "ICML",
+          148
+        ],
+        [
+          "ICLR",
+          144
+        ],
+        [
+          "ACL",
+          72
+        ]
+      ],
+      "year_dist": {
+        "2025": 274,
+        "2023": 325,
+        "2024": 372,
+        "2026": 83
+      }
+    },
+    {
+      "term": "privacy",
+      "hits": 903,
+      "coverage_pct": 1.225,
+      "with_abstract": 0,
+      "without_abstract": 903,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "CHI",
+          166
+        ],
+        [
+          "CCS",
+          117
+        ],
+        [
+          "USS",
+          107
+        ],
+        [
+          "AAAI",
+          89
+        ],
+        [
+          "SP",
+          85
+        ]
+      ],
+      "year_dist": {
+        "2024": 288,
+        "2025": 280,
+        "2023": 218,
+        "2026": 117
+      }
+    },
+    {
+      "term": "attack",
+      "hits": 479,
+      "coverage_pct": 0.65,
+      "with_abstract": 0,
+      "without_abstract": 479,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "AAAI",
+          113
+        ],
+        [
+          "USS",
+          65
+        ],
+        [
+          "CCS",
+          41
+        ],
+        [
+          "SP",
+          37
+        ],
+        [
+          "EMNLP",
+          37
+        ]
+      ],
+      "year_dist": {
+        "2024": 160,
+        "2023": 108,
+        "2025": 165,
+        "2026": 46
+      }
+    },
+    {
+      "term": "vulnerability",
+      "hits": 287,
+      "coverage_pct": 0.389,
+      "with_abstract": 0,
+      "without_abstract": 287,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "ICSE",
+          47
+        ],
+        [
+          "TSE",
+          36
+        ],
+        [
+          "USS",
+          27
+        ],
+        [
+          "ASE",
+          24
+        ],
+        [
+          "TOSEM",
+          22
+        ]
+      ],
+      "year_dist": {
+        "2024": 83,
+        "2025": 107,
+        "2023": 70,
+        "2026": 27
+      }
+    },
+    {
+      "term": "defense",
+      "hits": 211,
+      "coverage_pct": 0.286,
+      "with_abstract": 0,
+      "without_abstract": 211,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "AAAI",
+          43
+        ],
+        [
+          "ICLR",
+          23
+        ],
+        [
+          "NeurIPS",
+          20
+        ],
+        [
+          "ACL",
+          19
+        ],
+        [
+          "ICML",
+          18
+        ]
+      ],
+      "year_dist": {
+        "2023": 43,
+        "2024": 58,
+        "2025": 76,
+        "2026": 34
+      }
+    },
+    {
+      "term": "jailbreak",
+      "hits": 117,
+      "coverage_pct": 0.159,
+      "with_abstract": 0,
+      "without_abstract": 117,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "EMNLP",
+          30
+        ],
+        [
+          "ACL",
+          28
+        ],
+        [
+          "AAAI",
+          18
+        ],
+        [
+          "ICLR",
+          16
+        ],
+        [
+          "NAACL",
+          7
+        ]
+      ],
+      "year_dist": {
+        "2025": 72,
+        "2024": 31,
+        "2026": 14
+      }
+    },
+    {
+      "term": "malware",
+      "hits": 82,
+      "coverage_pct": 0.111,
+      "with_abstract": 0,
+      "without_abstract": 82,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "CCS",
+          18
+        ],
+        [
+          "USS",
+          11
+        ],
+        [
+          "SP",
+          9
+        ],
+        [
+          "NDSS",
+          9
+        ],
+        [
+          "ASE",
+          6
+        ]
+      ],
+      "year_dist": {
+        "2024": 16,
+        "2023": 28,
+        "2025": 32,
+        "2026": 6
+      }
+    },
+    {
+      "term": "side channel",
+      "hits": 63,
+      "coverage_pct": 0.085,
+      "with_abstract": 0,
+      "without_abstract": 63,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "USS",
+          19
+        ],
+        [
+          "NDSS",
+          15
+        ],
+        [
+          "CCS",
+          12
+        ],
+        [
+          "SP",
+          11
+        ],
+        [
+          "TOSEM",
+          3
+        ]
+      ],
+      "year_dist": {
+        "2025": 21,
+        "2024": 16,
+        "2023": 19,
+        "2026": 7
+      }
+    },
+    {
+      "term": "exploit",
+      "hits": 39,
+      "coverage_pct": 0.053,
+      "with_abstract": 0,
+      "without_abstract": 39,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "USS",
+          7
+        ],
+        [
+          "SP",
+          6
+        ],
+        [
+          "AAAI",
+          5
+        ],
+        [
+          "ASE",
+          4
+        ],
+        [
+          "ICLR",
+          4
+        ]
+      ],
+      "year_dist": {
+        "2025": 20,
+        "2023": 11,
+        "2024": 8
+      }
+    },
+    {
+      "term": "prompt injection",
+      "hits": 30,
+      "coverage_pct": 0.041,
+      "with_abstract": 0,
+      "without_abstract": 30,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "EMNLP",
+          9
+        ],
+        [
+          "ACL",
+          4
+        ],
+        [
+          "NAACL",
+          4
+        ],
+        [
+          "CCS",
+          3
+        ],
+        [
+          "NDSS",
+          3
+        ]
+      ],
+      "year_dist": {
+        "2025": 20,
+        "2023": 1,
+        "2024": 6,
+        "2026": 3
+      }
+    },
+    {
+      "term": "red team",
+      "hits": 2,
+      "coverage_pct": 0.003,
+      "with_abstract": 0,
+      "without_abstract": 2,
+      "abstract_dependency_pct": 0.0,
+      "unique_only": null,
+      "top_venues": [
+        [
+          "SP",
+          1
+        ],
+        [
+          "ACL",
+          1
+        ]
+      ],
+      "year_dist": {
+        "2023": 1,
+        "2025": 1
+      }
+    }
+  ],
+  "combinations": {
+    "counts": {
+      "agent_core_only": 35,
+      "generic+se": 6,
+      "generic+sec": 3
+    },
+    "by_venue": {
+      "generic+se": {
+        "ACL": 2,
+        "ICSE": 1,
+        "ICLR": 1,
+        "AAAI": 1,
+        "EMNLP": 1
+      },
+      "agent_core_only": {
+        "ACL": 10,
+        "EMNLP": 8,
+        "AAAI": 6,
+        "CHI": 4,
+        "NAACL": 2
+      },
+      "generic+sec": {
+        "AAAI": 1,
+        "ACL": 1,
+        "EMNLP": 1
+      }
+    },
+    "by_year": {
+      "generic+se": {
+        "2025": 5,
+        "2026": 1
+      },
+      "agent_core_only": {
+        "2025": 20,
+        "2024": 7,
+        "2026": 8
+      },
+      "generic+sec": {
+        "2026": 1,
+        "2025": 2
+      }
+    }
+  }
+}

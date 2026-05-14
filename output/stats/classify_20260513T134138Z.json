@@ -1,0 +1,210 @@
+{
+  "stage": "classify",
+  "timestamp": "20260513T134138Z",
+  "processed": 62939,
+  "failed": 0,
+  "by_relevance": {
+    "irrelevant": 53178,
+    "adjacent": 7120,
+    "related": 2070,
+    "core": 571
+  },
+  "by_domain_primary": {
+    "General LLM Agent": 59469,
+    "Security Agent": 762,
+    "SE Agent": 1300,
+    "Agent Safety & Privacy": 874,
+    "Computer-Use Agent": 118,
+    "GUI Agent": 237,
+    "Web Agent": 163,
+    "Virtual Agent": 1,
+    "Mobile Agent": 15
+  },
+  "by_method_tag": {
+    "Framework/System": 34604,
+    "Benchmark/Dataset": 4427,
+    "Empirical Study": 12974,
+    "Attack": 1551,
+    "Evaluation Method": 1273,
+    "Application": 6896,
+    "Defense/Mitigation": 958,
+    "Position Paper": 78,
+    "Survey": 106,
+    "Case Study": 1,
+    "Theory": 1,
+    "Dataset": 5,
+    "Taxonomy": 1,
+    "Other": 8,
+    "Editorial": 3
+  },
+  "tokens": {
+    "prompt": 3251048,
+    "completion": 4078017,
+    "total": 7329065
+  },
+  "api_calls": 984,
+  "cached_hits": 0,
+  "estimated_cost_usd": 1.6,
+  "worker_stats": {
+    "ThreadPoolExecutor-0_18": {
+      "batches": 50,
+      "papers": 3200,
+      "prompt_tokens": 164132,
+      "completion_tokens": 205899,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_3": {
+      "batches": 49,
+      "papers": 3136,
+      "prompt_tokens": 162265,
+      "completion_tokens": 204144,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_7": {
+      "batches": 49,
+      "papers": 3136,
+      "prompt_tokens": 162039,
+      "completion_tokens": 203469,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_0": {
+      "batches": 48,
+      "papers": 3072,
+      "prompt_tokens": 159358,
+      "completion_tokens": 202270,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_8": {
+      "batches": 50,
+      "papers": 3200,
+      "prompt_tokens": 164715,
+      "completion_tokens": 203806,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_9": {
+      "batches": 48,
+      "papers": 3072,
+      "prompt_tokens": 159495,
+      "completion_tokens": 200152,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_5": {
+      "batches": 50,
+      "papers": 3200,
+      "prompt_tokens": 165059,
+      "completion_tokens": 206474,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_12": {
+      "batches": 49,
+      "papers": 3136,
+      "prompt_tokens": 162477,
+      "completion_tokens": 203028,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_4": {
+      "batches": 48,
+      "papers": 3072,
+      "prompt_tokens": 160388,
+      "completion_tokens": 198697,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_6": {
+      "batches": 50,
+      "papers": 3200,
+      "prompt_tokens": 165179,
+      "completion_tokens": 208233,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_19": {
+      "batches": 50,
+      "papers": 3200,
+      "prompt_tokens": 164573,
+      "completion_tokens": 205497,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_2": {
+      "batches": 50,
+      "papers": 3200,
+      "prompt_tokens": 165194,
+      "completion_tokens": 206803,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_1": {
+      "batches": 50,
+      "papers": 3163,
+      "prompt_tokens": 163961,
+      "completion_tokens": 203856,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_16": {
+      "batches": 49,
+      "papers": 3136,
+      "prompt_tokens": 161367,
+      "completion_tokens": 202852,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_10": {
+      "batches": 49,
+      "papers": 3136,
+      "prompt_tokens": 161892,
+      "completion_tokens": 203397,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_17": {
+      "batches": 49,
+      "papers": 3136,
+      "prompt_tokens": 161499,
+      "completion_tokens": 203135,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_15": {
+      "batches": 49,
+      "papers": 3136,
+      "prompt_tokens": 161453,
+      "completion_tokens": 205480,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_14": {
+      "batches": 49,
+      "papers": 3136,
+      "prompt_tokens": 162153,
+      "completion_tokens": 203961,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_11": {
+      "batches": 49,
+      "papers": 3136,
+      "prompt_tokens": 161748,
+      "completion_tokens": 203498,
+      "errors": 0,
+      "cached_hits": 0
+    },
+    "ThreadPoolExecutor-0_13": {
+      "batches": 49,
+      "papers": 3136,
+      "prompt_tokens": 162101,
+      "completion_tokens": 203366,
+      "errors": 0,
+      "cached_hits": 0
+    }
+  }
+}

@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.env
+.DS_Store
+*.egg-info/
+dist/
+build/
+
+output/pdfs/
+output/db/*.sqlite
+output/db/*.sqlite-*
+cache/
+.pytest_cache/

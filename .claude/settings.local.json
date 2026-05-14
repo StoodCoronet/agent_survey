@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(conda --version)",
+      "Bash(uv --version)",
+      "Bash(conda env:*)",
+      "Bash(conda create:*)",
+      "Bash(curl -s 'https://dblp.org/search/publ/api?q=venue%3AICSE+year%3A2024&format=json&h=3&f=0')",
+      "Bash(python -c \"import json,sys;d=json.load\\(sys.stdin\\);print\\(json.dumps\\(d.get\\(''''result'''',{}\\).get\\(''''hits'''',{}\\).get\\(''''@total'''',0\\)\\)\\);hits=d.get\\(''''result'''',{}\\).get\\(''''hits'''',{}\\).get\\(''''hit'''',[]\\);print\\(json.dumps\\(hits[0] if hits else {}, indent=2\\)[:2000]\\)\")",
+      "Bash(curl -s -H \"Accept: application/json\" 'https://dblp.org/search/publ/api?q=venue%3AICSE+year%3A2024&format=json&h=3')",
+      "Bash(chmod:*)",
+      "Bash(source /Users/robye/anaconda3/etc/profile.d/conda.sh)",
+      "Bash(conda activate:*)",
+      "Bash(agent-survey --help)",
+      "Bash(uv pip:*)",
+      "Bash(agent-survey stats:*)",
+      "Bash(python -c \":*)",
+      "Bash(agent-survey harvest:*)",
+      "Bash(tee output/harvest.log)",
+      "Bash(curl -sI 'https://dblp.org/search/publ/api?q=venue%3AISSTA+year%3A2023&format=json&h=1000&f=0')",
+      "Bash(curl -sI 'https://dblp.org/search/publ/api?q=venue%3AISSTA+year%3A2024&format=json&h=1000')",
+      "Bash(curl -sI 'https://dblp.org/search/publ/api?q=venue%3AISSTA+year%3A2023&format=json&h=100')",
+      "Bash(curl -s 'https://dblp.org/search/publ/api?q=venue%3AISSTA+year%3A2023&format=json&h=100')",
+      "Bash(tee /Users/robye/workspace/agent_survey/output/harvest.log)",
+      "Bash(python -c \"from agent_survey.pipeline import harvest; print\\(''import ok''\\)\")",
+      "Bash(python -m py_compile src/agent_survey/pipeline/harvest.py)",
+      "Bash(python:*)",
+      "Bash(sqlite3:*)",
+      "Bash(pip show:*)",
+      "Bash(conda run:*)"
+    ]
+  }
+}

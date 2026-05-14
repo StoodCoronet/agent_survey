@@ -1,0 +1,12 @@
+{
+  "stage": "harvest",
+  "timestamp": "20260513T082936Z",
+  "initial_total": 73016,
+  "final_total": 73703,
+  "newly_inserted": 687,
+  "skipped_existing": 1645,
+  "skipped_done": 75,
+  "by_venue_year": {
+    "COLM/2024": 687
+  }
+}

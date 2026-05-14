@@ -1,0 +1,28 @@
+[project]
+name = "agent-survey"
+version = "0.1.0"
+description = "Crawler and analyzer for AI agent papers from SE / Security / AI venues"
+requires-python = ">=3.10"
+dependencies = [
+    "httpx>=0.27",
+    "tenacity>=9.0",
+    "pydantic>=2.6",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "rich>=13.7",
+    "typer>=0.12",
+    "openai>=1.40",
+    "pdfplumber>=0.11",
+    "rapidfuzz>=3.9",
+    "tqdm>=4.66",
+]
+
+[project.scripts]
+agent-survey = "agent_survey.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agent_survey"]

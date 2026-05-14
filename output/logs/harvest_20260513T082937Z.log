@@ -1,0 +1,145 @@
+using cache: 75/80 (venue, year) combos already harvested; 5 to crawl (use 
+--force to re-crawl all)
+error COLM 2023: HTTPStatusError → HTTPStatusError: Client error '404 Not Found'
+for url 'https://colmweb.org/2023/serve_papers.json'
+For more information check: 
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+outer: HTTPStatusError: HTTPStatusError("Client error '404 Not Found' for url 
+'https://colmweb.org/2023/serve_papers.json'\nFor more information check: 
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404")
+url   : GET https://colmweb.org/2023/serve_papers.json
+status: 404
+body  : <!DOCTYPE html> <html>   <head>     <meta http-equiv="Content-type" 
+content="text/html; charset=utf-8">     <meta 
+http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 
+'unsafe-inline'; img-src data:; connect-src 'self'">     <title>Page not found 
+&middot; GitHub Pages</title>  
+traceback:
+Traceback (most recent call last):
+  File 
+"/Users/robye/workspace/agent_survey/src/agent_survey/pipeline/harvest.py", line
+195, in _worker
+    papers = list(
+             ^^^^^
+  File 
+"/Users/robye/workspace/agent_survey/src/agent_survey/sources/external.py", line
+46, in fetch_json_papers
+    r.raise_for_status()
+  File 
+"/Users/robye/anaconda3/envs/agent_survey/lib/python3.12/site-packages/httpx/_mo
+dels.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 
+'https://colmweb.org/2023/serve_papers.json'
+For more information check: 
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+error COLM 2026: HTTPStatusError → HTTPStatusError: Client error '404 Not Found'
+for url 'https://colmweb.org/2026/serve_papers.json'
+For more information check: 
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+outer: HTTPStatusError: HTTPStatusError("Client error '404 Not Found' for url 
+'https://colmweb.org/2026/serve_papers.json'\nFor more information check: 
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404")
+url   : GET https://colmweb.org/2026/serve_papers.json
+status: 404
+body  : <!DOCTYPE html> <html>   <head>     <meta http-equiv="Content-type" 
+content="text/html; charset=utf-8">     <meta 
+http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 
+'unsafe-inline'; img-src data:; connect-src 'self'">     <title>Page not found 
+&middot; GitHub Pages</title>  
+traceback:
+Traceback (most recent call last):
+  File 
+"/Users/robye/workspace/agent_survey/src/agent_survey/pipeline/harvest.py", line
+195, in _worker
+    papers = list(
+             ^^^^^
+  File 
+"/Users/robye/workspace/agent_survey/src/agent_survey/sources/external.py", line
+46, in fetch_json_papers
+    r.raise_for_status()
+  File 
+"/Users/robye/anaconda3/envs/agent_survey/lib/python3.12/site-packages/httpx/_mo
+dels.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 
+'https://colmweb.org/2026/serve_papers.json'
+For more information check: 
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+⠋ idle
+harvest (cache:75) ━━━━━━━━━━━━━━━━━━ 80/80 • papers:73703 • 0:00:25 ETA 0:00:00─────────────────────────────── harvest overview ───────────────────────────────
+┏━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ metric        ┃ value ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ total         │ 73703 │
+│ with_abstract │     0 │
+│ prefilter_hit │     0 │
+│ classified    │     0 │
+└───────────────┴───────┘
+┏━━━━━━━━━┳━━━━━━┳━━━━━━━┓
+┃ venue   ┃ year ┃ count ┃
+┡━━━━━━━━━╇━━━━━━╇━━━━━━━┩
+│ AAAI    │ 2023 │  2080 │
+│ AAAI    │ 2024 │  2887 │
+│ AAAI    │ 2025 │  3511 │
+│ AAAI    │ 2026 │  4921 │
+│ ACL     │ 2023 │  2152 │
+│ ACL     │ 2024 │  2010 │
+│ ACL     │ 2025 │  3367 │
+│ ASE     │ 2023 │   239 │
+│ ASE     │ 2024 │   300 │
+│ ASE     │ 2025 │   451 │
+│ CCS     │ 2023 │   322 │
+│ CCS     │ 2024 │   419 │
+│ CCS     │ 2025 │   396 │
+│ CHI     │ 2023 │  1501 │
+│ CHI     │ 2024 │  1707 │
+│ CHI     │ 2025 │  2171 │
+│ CHI     │ 2026 │  2709 │
+│ COLM    │ 2024 │   687 │
+│ EMNLP   │ 2023 │  2252 │
+│ EMNLP   │ 2024 │  2459 │
+│ EMNLP   │ 2025 │  3499 │
+│ FSE     │ 2023 │   206 │
+│ FSE     │ 2024 │   109 │
+│ FSE     │ 2025 │   260 │
+│ ICLR    │ 2023 │  1794 │
+│ ICLR    │ 2024 │  2456 │
+│ ICLR    │ 2025 │  3705 │
+│ ICML    │ 2023 │  1829 │
+│ ICML    │ 2024 │  2611 │
+│ ICML    │ 2025 │  3332 │
+│ ICSE    │ 2023 │   449 │
+│ ICSE    │ 2024 │   538 │
+│ ICSE    │ 2025 │   411 │
+│ ISSTA   │ 2023 │   139 │
+│ ISSTA   │ 2024 │   171 │
+│ ISSTA   │ 2025 │    36 │
+│ NAACL   │ 2024 │   958 │
+│ NAACL   │ 2025 │  1376 │
+│ NDSS    │ 2023 │    95 │
+│ NDSS    │ 2024 │   141 │
+│ NDSS    │ 2025 │   212 │
+│ NDSS    │ 2026 │   266 │
+│ NeurIPS │ 2023 │  3541 │
+│ NeurIPS │ 2024 │  4495 │
+│ SP      │ 2023 │   238 │
+│ SP      │ 2024 │   299 │
+│ SP      │ 2025 │   308 │
+│ TOSEM   │ 2023 │   159 │
+│ TOSEM   │ 2024 │   219 │
+│ TOSEM   │ 2025 │   239 │
+│ TOSEM   │ 2026 │   115 │
+│ TSE     │ 2023 │   278 │
+│ TSE     │ 2024 │   182 │
+│ TSE     │ 2025 │   228 │
+│ TSE     │ 2026 │    89 │
+│ UIST    │ 2023 │   245 │
+│ UIST    │ 2024 │   263 │
+│ UIST    │ 2025 │   392 │
+│ USS     │ 2023 │   422 │
+│ USS     │ 2024 │   418 │
+│ USS     │ 2025 │   439 │
+└─────────┴──────┴───────┘
+wrote stats to 
+/Users/robye/workspace/agent_survey/output/stats/harvest_20260513T082936Z.json
