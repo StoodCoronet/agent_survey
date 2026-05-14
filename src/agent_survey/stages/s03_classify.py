@@ -32,11 +32,11 @@ from rich.progress import (
 )
 from rich.table import Table
 
-from ..config import Config
-from ..console import console
-from ..db import DB
-from ..llm.client import DeepSeekClient, cached_chat_json
-from ..llm.prompts import (
+from ..core.config import Config
+from ..core.console import console
+from ..core.db import DB
+from ..services.llm import DeepSeekClient, cached_chat_json
+from ..services.llm import (
     DOMAIN_LABELS,
     METHOD_LABELS,
     RELEVANCE_LEVELS,
@@ -44,7 +44,7 @@ from ..llm.prompts import (
     STAGE3_USER_TITLE_ONLY,
     build_classify_messages,
 )
-from .stats import print_overview, write_stage_stats
+from ..analysis.stats import print_overview, write_stage_stats
 
 CORE_VENUES = {"ICSE", "FSE", "ASE", "ISSTA", "SP", "CCS", "USS", "NDSS"}
 

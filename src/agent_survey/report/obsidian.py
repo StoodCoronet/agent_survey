@@ -7,9 +7,9 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
 
-from ..config import Config
-from ..console import console
-from ..db import DB
+from ..core.config import Config
+from ..core.console import console
+from ..core.db import DB
 
 
 def slugify(s: str) -> str:

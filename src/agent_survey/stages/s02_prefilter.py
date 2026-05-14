@@ -10,10 +10,10 @@ from collections import Counter
 
 from rich.progress import Progress
 
-from ..config import Config
-from ..console import console
-from ..db import DB
-from .stats import print_overview, write_stage_stats
+from ..core.config import Config
+from ..core.console import console
+from ..core.db import DB
+from ..analysis.stats import print_overview, write_stage_stats
 
 
 def _compile(terms: list[str]) -> list[re.Pattern]:

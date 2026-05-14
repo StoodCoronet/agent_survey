@@ -6,13 +6,13 @@ from pathlib import Path
 
 from rich.progress import Progress
 
-from ..config import Config
-from ..console import console
-from ..db import DB
-from ..llm.client import DeepSeekClient, cached_chat_json
-from ..llm.prompts import build_deepdive_messages
-from ..pdf.extract import build_prompt_body, extract_text
-from .stats import print_overview, write_stage_stats
+from ..core.config import Config
+from ..core.console import console
+from ..core.db import DB
+from ..services.llm import DeepSeekClient, cached_chat_json
+from ..services.llm import build_deepdive_messages
+from ..services.pdf_extract import build_prompt_body, extract_text
+from ..analysis.stats import print_overview, write_stage_stats
 
 
 def run(

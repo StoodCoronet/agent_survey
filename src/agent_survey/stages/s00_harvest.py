@@ -22,11 +22,11 @@ from rich.progress import (
     TimeRemainingColumn,
 )
 
-from ..config import Config
-from ..console import console
-from ..db import DB
-from ..sources import dblp
-from .stats import print_overview, write_stage_stats
+from ..core.config import Config
+from ..core.console import console
+from ..core.db import DB
+from ..services import dblp as dblp
+from ..analysis.stats import print_overview, write_stage_stats
 
 
 def _unwrap(exc: BaseException) -> BaseException:

@@ -6,11 +6,11 @@ from pathlib import Path
 import httpx
 from rich.progress import Progress
 
-from ..config import Config
-from ..console import console
-from ..db import DB
-from ..sources import arxiv as arxiv_src
-from .stats import print_overview, write_stage_stats
+from ..core.config import Config
+from ..core.console import console
+from ..core.db import DB
+from ..services import arxiv as arxiv_src
+from ..analysis.stats import print_overview, write_stage_stats
 
 
 def run(

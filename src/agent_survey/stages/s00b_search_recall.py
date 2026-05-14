@@ -17,12 +17,12 @@ from typing import Iterable
 import httpx
 from rich.progress import Progress
 
-from ..config import Config
-from ..console import console
-from ..db import DB
-from ..sources import arxiv as arxiv_src
-from ..sources.semantic_scholar import S2Client
-from .stats import print_overview, write_stage_stats
+from ..core.config import Config
+from ..core.console import console
+from ..core.db import DB
+from ..services import arxiv as arxiv_src
+from ..services.s2 import S2Client
+from ..analysis.stats import print_overview, write_stage_stats
 
 # queries tuned to widen recall for our themes
 DEFAULT_QUERIES = [

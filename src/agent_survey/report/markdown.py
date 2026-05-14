@@ -5,9 +5,9 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from ..config import Config
-from ..console import console
-from ..db import DB
+from ..core.config import Config
+from ..core.console import console
+from ..core.db import DB
 
 
 def _load(raw):

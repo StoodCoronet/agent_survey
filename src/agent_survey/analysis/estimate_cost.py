@@ -8,9 +8,9 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
-from ..config import Config
-from ..console import console
-from ..llm.prompts import (
+from ..core.config import Config
+from ..core.console import console
+from ..services.llm import (
     STAGE3_SYSTEM,
     STAGE3_USER_TEMPLATE,
     STAGE3_USER_TITLE_ONLY,

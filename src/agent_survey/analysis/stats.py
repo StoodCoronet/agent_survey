@@ -8,9 +8,9 @@ from pathlib import Path
 
 from rich.table import Table
 
-from ..config import Config
-from ..console import console
-from ..db import DB
+from ..core.config import Config
+from ..core.console import console
+from ..core.db import DB
 
 
 def write_stage_stats(cfg: Config, stage: str, payload: dict) -> Path:

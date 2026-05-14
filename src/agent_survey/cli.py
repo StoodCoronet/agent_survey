@@ -7,22 +7,22 @@ from pathlib import Path
 
 import typer
 
-from .config import load_config
-from .console import console, save_log
-from .db import DB
-from .pipeline import classify as s_classify
-from .pipeline import deepdive as s_deepdive
-from .pipeline import enrich as s_enrich
-from .pipeline import enrich_arxiv as s_enrich_arxiv
-from .pipeline import estimate_cost as s_estimate_cost
-from .pipeline import fulltext as s_fulltext
-from .pipeline import harvest as s_harvest
-from .pipeline import keyword_stats as s_keyword_stats
-from .pipeline import prefilter as s_prefilter
-from .pipeline import search_recall as s_recall
-from .pipeline.stats import print_overview
+from .analysis import estimate_cost as s_estimate_cost
+from .analysis import keyword_stats as s_keyword_stats
+from .analysis.stats import print_overview
+from .core.config import load_config
+from .core.console import console, save_log
+from .core.db import DB
 from .report import markdown as r_md
 from .report import obsidian as r_obs
+from .stages import s00_harvest as s_harvest
+from .stages import s00b_search_recall as s_recall
+from .stages import s01_enrich as s_enrich
+from .stages import s02_prefilter as s_prefilter
+from .stages import s03_classify as s_classify
+from .stages import s04_fulltext as s_fulltext
+from .stages import s05_deepdive as s_deepdive
+from .tui import run as run_tui
 
 app = typer.Typer(help="Agent Survey — crawl + classify AI agent papers from SE/Security/AI venues")
 
@@ -137,7 +137,7 @@ def enrich_arxiv(
 ):
     """Backfill arXiv abstracts for SE/Security core venues."""
     cfg = load_config()
-    s_enrich_arxiv.run(cfg, workers=workers)
+    s_enrich.run_arxiv(cfg, workers=workers)
 
 
 @app.command("estimate-cost")
@@ -178,6 +178,13 @@ def report():
     r_md.export_json(cfg)
     r_md.render_survey_markdown(cfg)
     r_obs.write_vault(cfg)
+
+
+@app.command()
+@_with_logfile("tui")
+def tui():
+    """Launch interactive TUI menu."""
+    run_tui()
 
 
 @app.command()

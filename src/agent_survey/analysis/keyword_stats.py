@@ -15,9 +15,9 @@ from pathlib import Path
 import yaml
 from rich.progress import Progress
 
-from ..config import Config
-from ..console import console
-from ..db import DB
+from ..core.config import Config
+from ..core.console import console
+from ..core.db import DB
 
 
 def _compile(terms: list[str]) -> list[tuple[re.Pattern, str]]:
