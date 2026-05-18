@@ -7,6 +7,8 @@ from typing import Iterator
 import httpx
 from tenacity import retry, stop_after_attempt, wait_exponential
 
+from ._curl_fallback import curl_get_json
+
 S2_API = "https://api.semanticscholar.org/graph/v1"
 
 # polite rate — unauthenticated API is ~1 req/sec
@@ -24,7 +26,6 @@ class S2Client:
     def close(self) -> None:
         self.client.close()
 
-    @retry(stop=stop_after_attempt(4), wait=wait_exponential(min=2, max=60))
     def _get(self, path: str, params: dict | None = None) -> dict:
         r = self.client.get(f"{S2_API}{path}", params=params)
         if r.status_code == 429:
@@ -33,7 +34,6 @@ class S2Client:
         r.raise_for_status()
         return r.json()
 
-    @retry(stop=stop_after_attempt(4), wait=wait_exponential(min=2, max=60))
     def _post(self, path: str, json: dict, params: dict | None = None) -> dict | list:
         r = self.client.post(f"{S2_API}{path}", params=params, json=json)
         if r.status_code == 429:
@@ -70,13 +70,13 @@ class S2Client:
         self, title: str, fields: str = "title,abstract,externalIds,openAccessPdf,year,venue"
     ) -> dict | None:
         """Fuzzy title search -> best match."""
+        params = {"query": title[:300], "fields": fields}
+        data: dict | None = None
         try:
-            data = self._get(
-                "/paper/search/match",
-                params={"query": title[:300], "fields": fields},
-            )
-        except httpx.HTTPStatusError:
-            return None
+            data = self._get("/paper/search/match", params=params)
+        except Exception:
+            # macOS Anaconda OpenSSL 3.0 TLS handshake failure — fallback to curl
+            data = curl_get_json(f"{S2_API}/paper/search/match", params=params)
         time.sleep(self.delay)
         if isinstance(data, dict):
             items = data.get("data") or []

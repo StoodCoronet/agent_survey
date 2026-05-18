@@ -77,6 +77,17 @@ class DB:
         self._conn.row_factory = sqlite3.Row
         self._conn.executescript(SCHEMA)
         self._conn.commit()
+        # lightweight migrations
+        try:
+            self._conn.execute("ALTER TABLE papers ADD COLUMN enrich_source TEXT")
+            self._conn.commit()
+        except sqlite3.OperationalError:
+            pass
+        try:
+            self._conn.execute("ALTER TABLE papers ADD COLUMN enrich_at TEXT")
+            self._conn.commit()
+        except sqlite3.OperationalError:
+            pass
 
     def close(self) -> None:
         self._conn.close()

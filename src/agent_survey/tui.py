@@ -2,18 +2,88 @@
 
 Usage:
     agent-survey tui
+
+Controls:
+    ↑ / ↓     选择步骤
+    Enter     执行选中步骤（支持 workers 的步骤会询问并发数）
+    q         退出
 """
 from __future__ import annotations
 
 import sqlite3
+import sys
 
-from rich.align import Align
+from rich.console import Group
 from rich.panel import Panel
-from rich.table import Table
+from rich.text import Text
 
 from .core.config import load_config
 from .core.console import console
-from .core.db import DB
+
+# Steps that accept --workers
+_WORKER_STEPS = {"enrich", "enrich-web", "classify", "deepdive", "fulltext", "harvest"}
+
+
+def _getch() -> str:
+    """Cross-platform single-character read (including arrow keys)."""
+    try:
+        import termios
+        import tty
+
+        fd = sys.stdin.fileno()
+        old = termios.tcgetattr(fd)
+        try:
+            tty.setraw(fd)
+            ch = sys.stdin.read(1)
+            if ch == "\x1b":
+                ch += sys.stdin.read(2)
+            return ch
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old)
+    except Exception:
+        try:
+            import msvcrt
+            ch = msvcrt.getch().decode("utf-8", errors="ignore")
+            return ch
+        except Exception:
+            return input().strip().lower()
+
+
+def _read_line(prompt: str = "") -> str:
+    """Read a line in cooked mode (safe for raw-terminal sessions)."""
+    sys.stdout.write(prompt)
+    sys.stdout.flush()
+    try:
+        import termios
+
+        fd = sys.stdin.fileno()
+        old = termios.tcgetattr(fd)
+        try:
+            # Force canonical + echo mode so input() shows typed characters
+            new = termios.tcgetattr(fd)
+            new[3] = new[3] | termios.ICANON | termios.ECHO
+            termios.tcsetattr(fd, termios.TCSADRAIN, new)
+            return input().strip()
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old)
+    except Exception:
+        return input().strip()
+
+
+def _is_up(ch: str) -> bool:
+    return ch in ("\x1b[A", "k")
+
+
+def _is_down(ch: str) -> bool:
+    return ch in ("\x1b[B", "j")
+
+
+def _is_enter(ch: str) -> bool:
+    return ch in ("\r", "\n")
+
+
+def _is_quit(ch: str) -> bool:
+    return ch.lower() == "q"
 
 
 def _get_status() -> dict:
@@ -41,6 +111,27 @@ def _get_status() -> dict:
     adjacent = conn.execute(
         "SELECT COUNT(*) FROM papers WHERE relevance = 'adjacent'"
     ).fetchone()[0]
+
+    # Enrich target: if classified, only core/related/adjacent need abstracts
+    if classified > 0:
+        need_enrich = conn.execute(
+            "SELECT COUNT(*) FROM papers WHERE relevance IN ('core','related','adjacent')"
+        ).fetchone()[0]
+        enriched = conn.execute(
+            "SELECT COUNT(*) FROM papers WHERE relevance IN ('core','related','adjacent') AND abstract IS NOT NULL AND abstract != ''"
+        ).fetchone()[0]
+    else:
+        need_enrich = total
+        enriched = with_abstract
+
+    # Web enrich stats
+    web_enriched = conn.execute(
+        "SELECT COUNT(*) FROM papers WHERE relevance IN ('core','related','adjacent') AND enrich_source = 'web'"
+    ).fetchone()[0]
+    need_web = conn.execute(
+        "SELECT COUNT(*) FROM papers WHERE relevance IN ('core','related','adjacent') AND (abstract IS NULL OR abstract = '' OR LENGTH(abstract) < 30)"
+    ).fetchone()[0]
+
     conn.close()
 
     return {
@@ -51,146 +142,221 @@ def _get_status() -> dict:
         "core": core,
         "related": related,
         "adjacent": adjacent,
+        "need_enrich": need_enrich,
+        "enriched": enriched,
+        "web_enriched": web_enriched,
+        "need_web": need_web,
     }
 
 
 def _step_status(st: dict) -> list[dict]:
     total = st["total"]
+
+    # enrich state: done / partial / pending
+    enriched = st["enriched"]
+    need = st["need_enrich"]
+    if enriched == 0:
+        enrich_state = "pending"
+        enrich_note = "未开始"
+    elif enriched >= need:
+        enrich_state = "done"
+        enrich_note = "已完成"
+    else:
+        enrich_state = "partial"
+        enrich_note = f"进行中 {enriched}/{need}"
+
+    # enrich-web state
+    web_enriched = st.get("web_enriched", 0)
+    need_web = st.get("need_web", 0)
+    if web_enriched == 0:
+        web_state = "pending"
+        web_note = "未开始"
+    elif need_web == 0:
+        web_state = "done"
+        web_note = "已完成"
+    else:
+        web_state = "partial"
+        web_note = f"进行中 {web_enriched}/{need_web}"
+
     return [
         {
             "idx": 1,
             "name": "harvest",
-            "done": total > 0,
+            "state": "done" if total > 0 else "pending",
             "data": f"{total:,}" if total > 0 else "--",
-            "note": "数据已爬" if total > 0 else "未开始",
+            "note": "已爬" if total > 0 else "未开始",
         },
         {
             "idx": 2,
             "name": "enrich",
-            "done": st["with_abstract"] > 0,
-            "data": f"{st['with_abstract']:,} abs" if st["with_abstract"] > 0 else "--",
-            "note": "有摘要" if st["with_abstract"] > 0 else "未开始",
+            "state": enrich_state,
+            "data": f"{enriched:,}" if enriched > 0 else "--",
+            "note": enrich_note,
         },
         {
             "idx": 3,
-            "name": "prefilter",
-            "done": st["prefilter_hit"] > 0,
-            "data": f"{st['prefilter_hit']:,} hits" if st["prefilter_hit"] > 0 else "--",
-            "note": "关键词命中" if st["prefilter_hit"] > 0 else "未开始",
+            "name": "enrich-web",
+            "state": web_state,
+            "data": f"{web_enriched:,}" if web_enriched > 0 else "--",
+            "note": web_note,
         },
         {
             "idx": 4,
-            "name": "classify",
-            "done": st["classified"] > 0,
-            "data": f"core:{st['core']:,} rel:{st['related']:,}" if st["classified"] > 0 else "--",
-            "note": "LLM分类完成" if st["classified"] > 0 else "未开始",
+            "name": "prefilter",
+            "state": "done" if st["prefilter_hit"] > 0 else "pending",
+            "data": f"{st['prefilter_hit']:,}" if st["prefilter_hit"] > 0 else "--",
+            "note": "已命中" if st["prefilter_hit"] > 0 else "未开始",
         },
         {
             "idx": 5,
-            "name": "fulltext",
-            "done": False,
-            "data": "--",
-            "note": "未开始",
+            "name": "classify",
+            "state": "done" if st["classified"] > 0 else "pending",
+            "data": f"{st['core']:,}/{st['related']:,}" if st["classified"] > 0 else "--",
+            "note": "已分类" if st["classified"] > 0 else "未开始",
         },
         {
             "idx": 6,
-            "name": "deepdive",
-            "done": False,
+            "name": "fulltext",
+            "state": "pending",
             "data": "--",
             "note": "未开始",
         },
         {
             "idx": 7,
+            "name": "deepdive",
+            "state": "pending",
+            "data": "--",
+            "note": "未开始",
+        },
+        {
+            "idx": 8,
             "name": "report",
-            "done": False,
+            "state": "pending",
             "data": "--",
             "note": "未开始",
         },
     ]
 
 
-def _recommend(steps: list[dict], st: dict) -> str | None:
+def _build_pipeline_text(steps: list[dict], selected: int) -> Text:
+    """Build compact pipeline lines using plain Text (no Table)."""
+    out = Text()
+    for i, s in enumerate(steps):
+        is_sel = i == selected
+        state = s.get("state", "pending")
+        if state == "done":
+            icon = "✅"
+            base_style = "green"
+        elif state == "partial":
+            icon = "⏳"
+            base_style = "yellow"
+        elif s["idx"] <= 4:
+            icon = "❌"
+            base_style = "red"
+        else:
+            icon = "○"
+            base_style = "dim"
+        style = "bold reverse" if is_sel else base_style
+        prefix = ">" if is_sel else " "
+        line = f"{prefix}{icon} {s['name']:<9} {s['data']:<10} {s['note']}"
+        out.append(line + "\n", style=style)
+    return out
+
+
+def _build_stats_text(st: dict) -> Text:
+    coverage = round(st["with_abstract"] / st["total"] * 100, 1) if st["total"] else 0
+    lines = (
+        f"总:{st['total']:,} 摘:{st['with_abstract']:,}({coverage}%)\n"
+        f"C:{st['core']:,} R:{st['related']:,} A:{st['adjacent']:,}"
+    )
+    return Text(lines)
+
+
+def _recommend(steps: list[dict]) -> str | None:
     for s in steps:
-        if not s["done"]:
+        if s.get("state", "pending") != "done":
             return s["name"]
     return None
+
+
+def _clear_screen() -> None:
+    sys.stdout.write("\033[2J\033[H")
+    sys.stdout.flush()
 
 
 def run():
     st = _get_status()
     steps = _step_status(st)
-    rec = _recommend(steps, st)
+    rec = _recommend(steps)
 
-    # ---- Pipeline table ----
-    t = Table(show_header=False, box=None, padding=(0, 2))
-    t.add_column(style="cyan", width=4)
-    t.add_column(style="bold", width=12)
-    t.add_column(width=18)
-    t.add_column(style="dim")
+    selected = next(
+        (i for i, s in enumerate(steps) if s.get("state", "pending") != "done"), 0
+    )
+    if selected >= len(steps):
+        selected = 0
 
-    for s in steps:
-        icon = "✅" if s["done"] else "❌" if s["idx"] <= 4 and not s["done"] else "○"
-        style = "green" if s["done"] else "red" if icon == "❌" else "dim"
-        t.add_row(
-            f"[{style}]{icon}[/{style}]",
-            f"[{style}]{s['name']}[/{style}]",
-            s["data"],
-            s["note"],
+    running = True
+    action: str | None = None
+    action_args: list[str] = []
+
+    def _draw():
+        _clear_screen()
+        pipeline = Panel(
+            _build_pipeline_text(steps, selected),
+            title="🤖 Pipeline",
+            border_style="blue",
+            padding=(0, 1),
+        )
+        stats = Panel(
+            _build_stats_text(st),
+            title="📊 概况",
+            border_style="green",
+            padding=(0, 1),
         )
 
-    pipeline_panel = Panel(t, title="🤖 Agent Survey Pipeline", border_style="blue")
+        controls = Text()
+        controls.append("↑↓选择 Enter执行 q退出", style="dim")
+        if rec:
+            controls.append(f" | 推荐:{rec}", style="bold yellow")
 
-    # ---- Stats panel ----
-    coverage = round(st["with_abstract"] / st["total"] * 100, 1) if st["total"] else 0
-    stats_text = (
-        f"总论文: {st['total']:,}  |  有摘要: {st['with_abstract']:,} ({coverage}%)\n"
-        f"core: {st['core']:,}  |  related: {st['related']:,}  |  adjacent: {st['adjacent']:,}"
-    )
-    stats_panel = Panel(stats_text, title="📊 当前数据库概况", border_style="green")
+        console.print(Group(pipeline, stats, controls))
 
-    # ---- Render ----
-    console.print(pipeline_panel)
-    console.print(stats_panel)
+    _draw()
 
-    if rec:
-        console.print(f"\n[bold yellow]💡 推荐下一步: {rec}[/bold yellow]")
-    else:
-        console.print("\n[bold green]✨ 所有步骤已完成！[/bold green]")
-
-    console.print("\n[dim]输入步骤号 (1-7) 执行，r 执行推荐，q 退出[/dim]")
-
-    # ---- Input loop ----
-    mapping = {
-        "1": "harvest",
-        "2": "enrich",
-        "3": "prefilter",
-        "4": "classify",
-        "5": "fulltext",
-        "6": "deepdive",
-        "7": "report",
-    }
-
-    while True:
-        try:
-            choice = console.input("[bold cyan]> [/bold cyan]").strip().lower()
-        except (EOFError, KeyboardInterrupt):
-            break
-
-        if choice == "q" or choice == "":
-            break
-
-        if choice == "r" and rec:
-            choice = str(next(s["idx"] for s in steps if s["name"] == rec))
-
-        if choice in mapping:
-            cmd = mapping[choice]
-            console.print(f"[green]执行: agent-survey {cmd}[/green]\n")
-            # Import and run dynamically to avoid circular imports
-            import subprocess
-            import sys
-            subprocess.run([sys.executable, "-m", "agent_survey.cli", cmd])
+    while running:
+        ch = _getch()
+        if _is_up(ch):
+            selected = (selected - 1) % len(steps)
+        elif _is_down(ch):
+            selected = (selected + 1) % len(steps)
+        elif _is_enter(ch):
+            action = steps[selected]["name"]
+            if action in _WORKER_STEPS:
+                _clear_screen()
+                console.print(f"[bold cyan]执行步骤: {action}[/bold cyan]\n")
+                val = _read_line("workers 并发数 (默认 5): ")
+                workers = int(val) if val.isdigit() else 5
+                action_args = ["--workers", str(workers)]
+                if action == "enrich":
+                    patch = _read_line("patch 模式 (修复异常 abstract, y/N): ").strip().lower()
+                    if patch in ("y", "yes"):
+                        action_args.append("--patch")
+            running = False
+        elif _is_quit(ch) or ch == "\x03":
+            running = False
         else:
-            console.print("[red]无效输入，请输入 1-7, r 或 q[/red]")
+            continue
+        if running:
+            _draw()
+
+    if action:
+        cmd = [sys.executable, "-m", "agent_survey.cli", action, *action_args]
+        console.print(f"[green]执行: {' '.join(cmd)}[/green]\n")
+        import subprocess
+
+        subprocess.run(cmd)
+    else:
+        console.print("[dim]已退出[/dim]")
 
 
 if __name__ == "__main__":

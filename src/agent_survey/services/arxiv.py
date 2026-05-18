@@ -9,12 +9,14 @@ from typing import Iterator
 import httpx
 from tenacity import retry, stop_after_attempt, wait_exponential
 
+from ._curl_fallback import curl_get_xml_text
+
 ARXIV_API = "http://export.arxiv.org/api/query"
 NS = {"a": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
-REQ_DELAY = 3.0  # arxiv asks 3s between requests
+REQ_DELAY = 3.0  # arXiv official rate limit
 
 
-@retry(stop=stop_after_attempt(4), wait=wait_exponential(min=3, max=30))
+@retry(stop=stop_after_attempt(2), wait=wait_exponential(min=1, max=10))
 def _query(client: httpx.Client, params: dict) -> str:
     r = client.get(ARXIV_API, params=params)
     r.raise_for_status()
@@ -67,9 +69,14 @@ def search_title(client: httpx.Client, title: str) -> dict | None:
         "max_results": 1,
         "sortBy": "relevance",
     }
+    xml_text: str | None = None
     try:
         xml_text = _query(client, params)
     except Exception:
+        # macOS Anaconda OpenSSL 3.0 TLS handshake failure — fallback to curl
+        # arXiv API is heavily rate-limited from some IPs; use short timeout
+        xml_text = curl_get_xml_text(ARXIV_API, params=params, timeout=3)
+    if xml_text is None:
         return None
     entries = _parse_entries(xml_text)
     time.sleep(REQ_DELAY)

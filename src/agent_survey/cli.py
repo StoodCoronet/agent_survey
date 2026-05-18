@@ -7,6 +7,7 @@ from pathlib import Path
 
 import typer
 
+from .analysis import abstract_coverage as s_abstract_coverage
 from .analysis import estimate_cost as s_estimate_cost
 from .analysis import keyword_stats as s_keyword_stats
 from .analysis.stats import print_overview
@@ -18,6 +19,7 @@ from .report import obsidian as r_obs
 from .stages import s00_harvest as s_harvest
 from .stages import s00b_search_recall as s_recall
 from .stages import s01_enrich as s_enrich
+from .stages import s01_enrich_web as s_enrich_web
 from .stages import s02_prefilter as s_prefilter
 from .stages import s03_classify as s_classify
 from .stages import s04_fulltext as s_fulltext
@@ -82,10 +84,27 @@ def search_recall(
 
 @app.command()
 @_with_logfile("enrich")
-def enrich(force: bool = False, limit: int = typer.Option(0, help="0 = no limit")):
-    """Stage 1: fetch abstracts + arxiv_id via S2/arXiv."""
+def enrich(
+    force: bool = False,
+    patch: bool = typer.Option(False, "--patch", help="re-enrich papers with suspiciously short abstracts"),
+    limit: int = typer.Option(0, help="0 = no limit"),
+    all_papers: bool = typer.Option(False, "--all", help="also enrich irrelevant papers"),
+    workers: int = typer.Option(5, "--workers", "-w", help="concurrent enrichment workers"),
+):
+    """Stage 1: fetch abstracts via arXiv → S2 → OpenReview fallback."""
     cfg = load_config()
-    s_enrich.run(cfg, force=force, limit=limit or None)
+    s_enrich.run(cfg, force=force, patch=patch, limit=limit or None, all_papers=all_papers, workers=workers)
+
+
+@app.command("enrich-web")
+@_with_logfile("enrich_web")
+def enrich_web(
+    limit: int = typer.Option(0, help="0 = no limit"),
+    workers: int = typer.Option(2, "--workers", "-w", help="concurrent Playwright workers"),
+):
+    """Stage 1b: fetch abstracts for failed papers via Playwright + Google Scholar."""
+    cfg = load_config()
+    s_enrich_web.run(cfg, limit=limit or None, workers=workers)
 
 
 @app.command()
@@ -122,6 +141,14 @@ def classify(
     )
 
 
+@app.command("abstract-coverage")
+@_with_logfile("abstract_coverage")
+def abstract_coverage():
+    """Show abstract coverage (good / bad / missing) by venue."""
+    cfg = load_config()
+    s_abstract_coverage.run(cfg)
+
+
 @app.command("keyword-stats")
 @_with_logfile("keyword_stats")
 def keyword_stats():
@@ -133,9 +160,9 @@ def keyword_stats():
 @app.command("enrich-arxiv")
 @_with_logfile("enrich_arxiv")
 def enrich_arxiv(
-    workers: int = typer.Option(2, "--workers", "-w", help="concurrent arXiv requests"),
+    workers: int = typer.Option(5, "--workers", "-w", help="concurrent enrichment workers"),
 ):
-    """Backfill arXiv abstracts for SE/Security core venues."""
+    """Backfill abstracts for SE/Security core venues (deprecated, use `enrich`)."""
     cfg = load_config()
     s_enrich.run_arxiv(cfg, workers=workers)
 
