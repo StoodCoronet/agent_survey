@@ -1,4 +1,8 @@
-"""Stage 1b: fill abstracts for failed papers using Playwright + arXiv / OpenReview."""
+"""Stage 1b: fill abstracts for failed papers using Playwright + arXiv only.
+
+OpenReview was dropped because its rate-limit (5 req) is too strict
+and papers not on arXiv are considered low-priority for this survey.
+"""
 from __future__ import annotations
 
 import concurrent.futures
@@ -8,7 +12,7 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import Browser, sync_playwright
 from rich.progress import BarColumn, Progress, TextColumn, TimeElapsedColumn, TimeRemainingColumn
 
 from ..analysis.stats import write_stage_stats
@@ -17,61 +21,60 @@ from ..core.console import console
 from ..core.db import DB
 
 
-def _search_arxiv(title: str) -> str | None:
-    """Search arxiv.org by title and return abstract text."""
-    q = title.replace('"', "").strip()
+def _title_overlap(a: str, b: str) -> float:
+    """Return word-overlap ratio between two titles."""
+    aw = set(a.lower().split())
+    bw = set(b.lower().split())
+    if not aw:
+        return 0.0
+    return len(aw & bw) / len(aw)
+
+
+def _search_arxiv(browser: Browser, expected_title: str) -> str | None:
+    """Search arxiv.org by title and return abstract text.
+
+    Validates that the first search-result title overlaps the
+    expected title (>= 60 %) before trusting the abstract.
+    """
+    q = expected_title.replace('"', "").strip()
     url = f"https://arxiv.org/search/?query={q.replace(' ', '+')}&searchtype=all"
+    page = None
     try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            page = browser.new_page()
-            page.goto(url, wait_until="domcontentloaded", timeout=20000)
-            page.wait_for_timeout(2000)
+        page = browser.new_page()
+        page.goto(url, wait_until="domcontentloaded", timeout=20000)
+        page.wait_for_timeout(2000)
 
-            result = page.query_selector(".arxiv-result")
-            if result:
-                abs_el = result.query_selector("p.abstract")
-                if abs_el:
-                    text = abs_el.inner_text().strip()
-                    if text.startswith("Abstract:"):
-                        text = text[len("Abstract:"):].strip()
-                    if len(text) >= 30:
-                        browser.close()
-                        return text
-            browser.close()
+        body = page.inner_text("body")
+        if "Rate exceeded" in body:
+            return None
+
+        result = page.query_selector(".arxiv-result")
+        if result:
+            title_el = result.query_selector("p.title")
+            if title_el:
+                found_title = title_el.inner_text().strip()
+                if _title_overlap(expected_title, found_title) < 0.6:
+                    return None
+
+            abs_el = result.query_selector("p.abstract")
+            if abs_el:
+                full_el = abs_el.query_selector(".abstract-full")
+                text = (
+                    full_el.inner_text().strip()
+                    if full_el
+                    else abs_el.inner_text().strip()
+                )
+                if text.startswith("Abstract:"):
+                    text = text[len("Abstract:"):].strip()
+                if "\u25b3" in text:
+                    text = text.split("\u25b3")[0].strip()
+                if len(text) >= 30:
+                    return text
     except Exception:
         pass
-    return None
-
-
-def _search_openreview(title: str) -> str | None:
-    """Search openreview.net by title and return abstract text."""
-    q = title.replace('"', "").strip()
-    url = f"https://openreview.net/search?term={q.replace(' ', '+')}&group=all&content=all&source=all"
-    try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            page = browser.new_page()
-            page.goto(url, wait_until="domcontentloaded", timeout=20000)
-            page.wait_for_timeout(3000)
-
-            link = page.query_selector(".forum-title a")
-            if link:
-                href = link.get_attribute("href")
-                if href:
-                    page.goto(f"https://openreview.net{href}", wait_until="domcontentloaded", timeout=20000)
-                    page.wait_for_timeout(2000)
-
-                    for selector in [".note_content_value", "#note_content", "[class*='abstract']"]:
-                        el = page.query_selector(selector)
-                        if el:
-                            text = el.inner_text().strip()
-                            if len(text) >= 30:
-                                browser.close()
-                                return text
-            browser.close()
-    except Exception:
-        pass
+    finally:
+        if page:
+            page.close()
     return None
 
 
@@ -97,6 +100,7 @@ def _clear_worker_job() -> None:
 
 def _build_worker_table():
     from rich.table import Table
+
     with _worker_lock:
         items = list(_worker_jobs.items())
     table = Table(show_header=True, box=None, padding=(0, 1))
@@ -118,6 +122,7 @@ def _build_worker_table():
 
 def _clear_screen() -> None:
     import sys
+
     sys.stdout.write("\033[2J\033[H")
     sys.stdout.flush()
 
@@ -126,7 +131,7 @@ def run(
     cfg: Config,
     *,
     limit: int | None = None,
-    workers: int = 2,
+    workers: int = 1,
 ) -> dict:
     db = DB(cfg.abs_path("db"))
     try:
@@ -150,6 +155,13 @@ def run(
             console.print("[yellow]nothing to enrich via web[/yellow]")
             return {"processed": 0, "filled": 0}
 
+        # Launch shared browser once
+        playwright = sync_playwright().start()
+        browser = playwright.chromium.launch(
+            headless=False,
+            args=["--no-startup-window", "--window-position=2000,0"],
+        )
+
         filled = 0
         failed = 0
         processed = 0
@@ -171,8 +183,8 @@ def run(
                 if fail_rate >= _VENUE_SKIP_THRESHOLD:
                     skipped_venues.add(venue)
                     console.print(
-                        f"[bold yellow]⏹ 跳过 venue '{venue}' "
-                        f"(失败率 {venue_fails[venue]}/{attempts} = {fail_rate:.0%})[/bold yellow]"
+                        f"[bold yellow]\u23f9 \u8df3\u8fc7 venue '{venue}' "
+                        f"(\u5931\u8d25\u7387 {venue_fails[venue]}/{attempts} = {fail_rate:.0%})[/bold yellow]"
                     )
                     return True
             return False
@@ -195,13 +207,9 @@ def run(
 
         def _try_web_enrich(row: dict) -> str | None:
             _set_worker_job(row, "arxiv")
-            abstract = _search_arxiv(row.get("title", ""))
-            if abstract:
-                _clear_worker_job()
-                return abstract
-            _set_worker_job(row, "openreview")
-            abstract = _search_openreview(row.get("title", ""))
+            abstract = _search_arxiv(browser, row.get("title", ""))
             _clear_worker_job()
+            time.sleep(3.0)  # respect arXiv crawl-delay
             return abstract
 
         it = iter(rows)
@@ -304,6 +312,8 @@ def run(
                 _refresh()
 
         db._conn.commit()
+        browser.close()
+        playwright.stop()
 
         stats = {
             "processed": processed,
