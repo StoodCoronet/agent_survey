@@ -7,7 +7,7 @@ See [PLAN.md](./PLAN.md) for the full design.
 ## Setup
 
 ```bash
-conda activate agent_survey         # python 3.12 env
+conda activate survey_agent         # python 3.12 env
 uv pip install -e .
 
 cp .env.example .env                 # then fill DEEPSEEK_API_KEY
