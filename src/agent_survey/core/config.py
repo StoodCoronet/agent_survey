@@ -64,6 +64,8 @@ class LLMStageCfg(BaseModel):
 class LLMCfg(BaseModel):
     stage3_classify: LLMStageCfg
     stage5_deepdive: LLMStageCfg
+    stage10_category_desc: LLMStageCfg | None = None
+    stage11_summary: LLMStageCfg | None = None
 
 
 class PathsCfg(BaseModel):

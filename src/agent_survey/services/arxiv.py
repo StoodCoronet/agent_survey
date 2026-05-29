@@ -134,7 +134,7 @@ def search_query(
 def download_pdf(client: httpx.Client, arxiv_id: str, dest_path) -> bool:
     url = f"https://arxiv.org/pdf/{arxiv_id}.pdf"
     try:
-        with client.stream("GET", url, timeout=60) as r:
+        with client.stream("GET", url, timeout=60, follow_redirects=True) as r:
             r.raise_for_status()
             with open(dest_path, "wb") as f:
                 for chunk in r.iter_bytes(chunk_size=65536):

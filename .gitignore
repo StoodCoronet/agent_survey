@@ -8,8 +8,16 @@ __pycache__/
 dist/
 build/
 
-output/pdfs/
-output/db/*.sqlite
-output/db/*.sqlite-*
+# Output & cache (all generated data)
+output/
 cache/
 .pytest_cache/
+docs/pdfs/
+
+# Debug & temp scripts
+_tmp_*.py
+debug_*.py
+TODO_*.md
+
+# Claude settings
+.claude/

@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS papers (
   domain_secondary_json TEXT,
   method_tags_json TEXT,
   deepdive_json TEXT,
+  topics_json TEXT,
   stage_status_json TEXT,
   created_at TEXT,
   updated_at TEXT
@@ -75,6 +76,8 @@ class DB:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._conn = sqlite3.connect(str(path))
         self._conn.row_factory = sqlite3.Row
+        self._conn.execute("PRAGMA journal_mode=WAL")
+        self._conn.execute("PRAGMA busy_timeout=10000")
         self._conn.executescript(SCHEMA)
         self._conn.commit()
         # lightweight migrations
@@ -88,6 +91,69 @@ class DB:
             self._conn.commit()
         except sqlite3.OperationalError:
             pass
+        try:
+            self._conn.execute("ALTER TABLE papers ADD COLUMN topics_json TEXT")
+            self._conn.commit()
+        except sqlite3.OperationalError:
+            pass
+        try:
+            self._conn.execute("ALTER TABLE papers ADD COLUMN sub_topics_json TEXT")
+            self._conn.commit()
+        except sqlite3.OperationalError:
+            pass
+        try:
+            self._conn.execute("ALTER TABLE papers ADD COLUMN dedup_keep_json TEXT")
+            self._conn.commit()
+        except sqlite3.OperationalError:
+            pass
+        try:
+            self._conn.execute("ALTER TABLE papers ADD COLUMN taxonomy_json TEXT")
+            self._conn.commit()
+        except sqlite3.OperationalError:
+            pass
+        try:
+            self._conn.execute("ALTER TABLE papers ADD COLUMN citation_json TEXT")
+            self._conn.commit()
+        except sqlite3.OperationalError:
+            pass
+        try:
+            self._conn.execute("ALTER TABLE papers ADD COLUMN short_title TEXT")
+            self._conn.commit()
+        except sqlite3.OperationalError:
+            pass
+        try:
+            self._conn.execute("ALTER TABLE papers ADD COLUMN summary_en TEXT")
+            self._conn.commit()
+        except sqlite3.OperationalError:
+            pass
+        try:
+            self._conn.execute("ALTER TABLE papers ADD COLUMN summary_zh TEXT")
+            self._conn.commit()
+        except sqlite3.OperationalError:
+            pass
+        self._conn.executescript("""
+CREATE TABLE IF NOT EXISTS taxonomy_descriptions (
+  tree_name TEXT NOT NULL,
+  path TEXT NOT NULL,
+  desc_en TEXT,
+  desc_zh TEXT,
+  paper_count INTEGER DEFAULT 0,
+  metadata_json TEXT,
+  status TEXT,
+  last_error TEXT,
+  created_at TEXT,
+  updated_at TEXT,
+  PRIMARY KEY (tree_name, path)
+);
+""")
+        self._conn.commit()
+        # migrations
+        for col in ("metadata_json", "status", "last_error"):
+            try:
+                self._conn.execute(f"ALTER TABLE taxonomy_descriptions ADD COLUMN {col} TEXT")
+                self._conn.commit()
+            except sqlite3.OperationalError:
+                pass
 
     def close(self) -> None:
         self._conn.close()
@@ -103,6 +169,11 @@ class DB:
             "domain_secondary_json",
             "method_tags_json",
             "deepdive_json",
+            "topics_json",
+            "sub_topics_json",
+            "dedup_keep_json",
+            "taxonomy_json",
+            "citation_json",
             "stage_status_json",
         ):
             v = paper.get(k)
@@ -128,6 +199,11 @@ class DB:
             "domain_secondary_json",
             "method_tags_json",
             "deepdive_json",
+            "topics_json",
+            "sub_topics_json",
+            "dedup_keep_json",
+            "taxonomy_json",
+            "citation_json",
             "stage_status_json",
         ):
             v = fields.get(k)
@@ -238,6 +314,68 @@ class DB:
             (paper_id, stage, model, prompt_version, input_hash, resp_json, now_iso()),
         )
         self._conn.commit()
+
+    # ----- taxonomy descriptions -----
+    def upsert_taxonomy_desc(
+        self,
+        tree_name: str,
+        path: str,
+        desc_en: str | None = None,
+        desc_zh: str | None = None,
+        paper_count: int | None = None,
+        metadata: dict[str, Any] | None = None,
+        status: str | None = None,
+        last_error: str | None = None,
+    ) -> None:
+        ts = now_iso()
+        metadata_json = json.dumps(metadata, ensure_ascii=False) if metadata is not None else None
+        self._conn.execute(
+            """
+            INSERT INTO taxonomy_descriptions (tree_name, path, desc_en, desc_zh, paper_count, metadata_json, status, last_error, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(tree_name, path) DO UPDATE SET
+                desc_en=COALESCE(excluded.desc_en, desc_en),
+                desc_zh=COALESCE(excluded.desc_zh, desc_zh),
+                paper_count=COALESCE(excluded.paper_count, paper_count),
+                metadata_json=COALESCE(excluded.metadata_json, metadata_json),
+                status=COALESCE(excluded.status, status),
+                last_error=COALESCE(excluded.last_error, last_error),
+                updated_at=excluded.updated_at
+            """,
+            (tree_name, path, desc_en, desc_zh, paper_count, metadata_json, status, last_error, ts, ts),
+        )
+        self._conn.commit()
+
+    def set_taxonomy_status(
+        self,
+        tree_name: str,
+        path: str,
+        status: str,
+        last_error: str | None = None,
+    ) -> None:
+        self._conn.execute(
+            """
+            INSERT INTO taxonomy_descriptions (tree_name, path, status, last_error, updated_at)
+            VALUES (?, ?, ?, ?, ?)
+            ON CONFLICT(tree_name, path) DO UPDATE SET
+                status=excluded.status,
+                last_error=excluded.last_error,
+                updated_at=excluded.updated_at
+            """,
+            (tree_name, path, status, last_error, now_iso()),
+        )
+        self._conn.commit()
+
+    def get_taxonomy_desc(self, tree_name: str, path: str) -> dict[str, Any] | None:
+        row = self._conn.execute(
+            "SELECT * FROM taxonomy_descriptions WHERE tree_name=? AND path=?",
+            (tree_name, path),
+        ).fetchone()
+        return dict(row) if row else None
+
+    def iter_taxonomy_descs(self) -> Iterator[dict[str, Any]]:
+        for row in self._conn.execute("SELECT * FROM taxonomy_descriptions"):
+            yield dict(row)
 
 
 @contextmanager
