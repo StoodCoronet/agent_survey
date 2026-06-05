@@ -517,20 +517,26 @@ def run(
                                 "sources": sorted(term_sources[term]),
                             })
 
-                    out_keywords = cfg.abs_topic_dir(topic_name, "json") / "survey_keywords.json"
-                    out_keywords.write_text(_json.dumps({
-                        "total_surveys_processed": len(surveys_to_process),
-                        "total_keywords_extracted": len(all_keywords),
-                        "unique_keywords": len(term_counts),
-                        "min_frequency": min_freq,
-                        "keywords": aggregated,
-                    }, indent=2, ensure_ascii=False))
-                    console.print(f"\n[green]Saved {len(aggregated)} keywords (freq≥{min_freq}) to {out_keywords}[/green]")
+                    # Write back directly to topic yaml (no intermediate files)
+                    mined_terms = [k["term"] for k in aggregated]
+                    if mined_terms and topic_cfg.config_path:
+                        import yaml as _yaml
 
-                    # Also save flat list for easy copy-paste
-                    flat_path = cfg.abs_topic_dir(topic_name, "json") / "survey_keywords_flat.txt"
-                    flat_path.write_text("\n".join(k["term"] for k in aggregated), encoding="utf-8")
-                    console.print(f"[dim]Flat list saved to {flat_path}[/dim]")
+                        topic_path = topic_cfg.config_path
+                        data = _yaml.safe_load(topic_path.read_text())
+                        if "keywords" not in data:
+                            data["keywords"] = {}
+                        data["keywords"]["survey_mined"] = mined_terms
+                        topic_path.write_text(
+                            _yaml.safe_dump(data, sort_keys=False, allow_unicode=True, indent=2),
+                            encoding="utf-8",
+                        )
+                        console.print(
+                            f"\n[green]Merged {len(mined_terms)} keywords into {topic_path.name} "
+                            f"(keywords.survey_mined)[/green]"
+                        )
+                    elif not mined_terms:
+                        console.print("\n[yellow]No keywords met frequency threshold.[/yellow]")
 
                     stats["keywords_extracted"] = len(all_keywords)
                     stats["keywords_unique"] = len(term_counts)
