@@ -165,7 +165,7 @@ def run_stage_a(
             all_batches.append((tid, papers[i : i + batch_size]))
 
     with Live(prog, console=console, refresh_per_second=4):
-        task = prog.add_task("Stage A: discover sub-topics", total=len(all_batches))
+        task = prog.add_task("Stage A: discover sub-topics (batches)", total=len(all_batches))
 
         with ThreadPoolExecutor(max_workers=workers) as executor:
             futures = {
@@ -282,7 +282,7 @@ def run_stage_b(
             all_batches.append(papers[i : i + batch_size])
 
     with Live(prog, console=console, refresh_per_second=4):
-        task = prog.add_task("Stage B: dedup within sub-topics", total=len(all_batches))
+        task = prog.add_task("Stage B: dedup within sub-topics (batches)", total=len(all_batches))
 
         with ThreadPoolExecutor(max_workers=workers) as executor:
             futures = {

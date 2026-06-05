@@ -261,7 +261,7 @@ def run_web(
             console=console,
             auto_refresh=False,
         )
-        task = progress.add_task("enrich-web", total=total, rate=0.0)
+        task = progress.add_task("enrich-web (papers)", total=total, rate=0.0)
 
         def _refresh():
             _clear_screen()

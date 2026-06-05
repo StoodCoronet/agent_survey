@@ -339,7 +339,7 @@ def run(
         failed = 0
 
         with Progress(console=console) as prog:
-            task = prog.add_task("extracting citations", total=len(rows))
+            task = prog.add_task("extracting citations (papers)", total=len(rows))
             for idx, r in enumerate(rows, 1):
                 pid = r["paper_id"]
                 title_short = r.get("title", "")[:40]

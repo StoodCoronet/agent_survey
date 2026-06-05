@@ -382,8 +382,8 @@ def keywords_filter(
 def classify(
     force: bool = False,
     limit: int = typer.Option(0, help="0 = no limit"),
-    batch_size: int | None = typer.Option(None, "--batch-size", help="papers per LLM call (default from classify_config.yaml)"),
-    workers: int | None = typer.Option(None, "--workers", "-w", help="parallel API workers (default from classify_config.yaml)"),
+    batch_size: int | None = typer.Option(None, "--batch-size", help="papers per LLM call (default from config/stages/classify.yaml)"),
+    workers: int | None = typer.Option(None, "--workers", "-w", help="parallel API workers (default from config/stages/classify.yaml)"),
     topic: str = _topic_option(),
 ):
     """Stage 3: LLM (Flash) venue-aware batch classify."""

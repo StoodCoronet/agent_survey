@@ -102,7 +102,7 @@ def run(
 
     with Live(Group(token_line, prog), console=console, refresh_per_second=4):
         task = prog.add_task(
-            f"summary ({stage_cfg.model}) [{workers}w]",
+            f"summary (papers) ({stage_cfg.model}) [{workers}w]",
             total=total,
             saved=0,
         )

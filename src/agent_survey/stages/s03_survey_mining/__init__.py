@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from rich.progress import BarColumn, Progress, TextColumn, TimeElapsedColumn, TimeRemainingColumn
@@ -79,11 +80,13 @@ def run(
                     BarColumn(), TextColumn("[{task.completed}/{task.total}]"),
                     TimeElapsedColumn(), TimeRemainingColumn(), console=console,
                 )
-                task = progress.add_task("survey discovery", total=len(batches))
+                task = progress.add_task("survey discovery (batches)", total=len(batches))
 
                 # Reuse shared LLM client (respects per-stage proxy + caching)
                 llm_client = DeepSeekClient(cfg, stage_name="survey_mining")
 
+                submit_t0 = time.time()
+                console.print(f"[dim]Submitting {len(batches)} batches to {workers} workers...[/dim]")
                 with progress:
                     with ThreadPoolExecutor(max_workers=workers) as pool:
                         futures = {}
@@ -97,9 +100,15 @@ def run(
                                 max_tokens=sconf["llm"]["max_tokens"],
                             )
                             futures[f] = b
+                        submit_dt = time.time() - submit_t0
+                        console.print(f"[dim]All {len(batches)} batches submitted in {submit_dt:.1f}s[/dim]")
 
+                        done_count = 0
                         for f in as_completed(futures):
                             batch = futures[f]
+                            done_count += 1
+                            if done_count <= 3 or done_count % 50 == 0:
+                                console.print(f"[dim]batch {done_count}/{len(batches)} completed (batch_size={len(batch)})[/dim]")
                             try:
                                 result = f.result()
                                 data = result.get("content", result)

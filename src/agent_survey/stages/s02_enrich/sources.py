@@ -34,18 +34,15 @@ _source_workers: dict[str, int] | None = None
 
 
 def _load_config():
-    """Load enrich config from stage-specific YAML file."""
+    """Load enrich config from config/stages/enrich.yaml."""
     global _venue_strategies, _source_workers
     if _venue_strategies is not None:
         return
-    from pathlib import Path
-    import yaml
+    from ...core.config import load_stage_config
 
-    config_path = Path(__file__).resolve().parent / "enrich_config.yaml"
-    if config_path.exists():
-        data = yaml.safe_load(config_path.read_text()) or {}
-        _venue_strategies = data.get("venue_strategies", {}) or {}
-        _source_workers = data.get("source_workers", {}) or {}
+    data = load_stage_config("enrich")
+    _venue_strategies = data.get("venue_strategies", {}) or {}
+    _source_workers = data.get("source_workers", {}) or {}
     # Merge with defaults for any missing venues
     merged = dict(_DEFAULT_VENUE_STRATEGIES)
     merged.update(_venue_strategies or {})

@@ -7,8 +7,8 @@ limit: 0
 
 # DeepSeek-Flash call concurrency
 llm:
-  workers: 100         # parallel DeepSeek API calls (reduce if SSL timeout)
-  batch_size: 5      # papers per single LLM call (title + abstract)
+  workers: 100          # parallel DeepSeek API calls (reduce if SSL timeout)
+  batch_size: 5       # papers per single LLM call (title + abstract)
   model: "deepseek-v4-flash"
   temperature: 0.0
   max_tokens: 2048

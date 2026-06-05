@@ -58,7 +58,7 @@ def run(cfg: Config, *, topic_name: str = "") -> dict:
             TimeRemainingColumn(),
             console=console,
         ) as prog:
-            task = prog.add_task("keywords-filter", total=len(rows), hits=0)
+            task = prog.add_task("keywords-filter (papers)", total=len(rows), hits=0)
             for row in rows:
                 text = f"{row.get('title') or ''} {row.get('abstract') or ''}"
                 hit_cats: dict[str, list[str]] = {}

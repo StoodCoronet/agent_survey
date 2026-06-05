@@ -135,7 +135,7 @@ def run(
 
         with Live(Group(token_line, prog), console=console, refresh_per_second=4):
             task = prog.add_task(
-                f"taxonomy-classify ({stage_cfg.model}) [{workers}w][{topic_name}]",
+                f"taxonomy-classify (papers) ({stage_cfg.model}) [{workers}w][{topic_name}]",
                 total=total,
                 saved=0,
             )

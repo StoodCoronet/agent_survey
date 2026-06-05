@@ -67,7 +67,7 @@ def run(
             db._conn.commit()
 
         with Progress(console=console) as prog:
-            task = prog.add_task(f"deepdive ({stage_cfg.model})[{topic_name}]", total=len(rows))
+            task = prog.add_task(f"deepdive (papers) ({stage_cfg.model})[{topic_name}]", total=len(rows))
             for r in rows:
                 title = r.get("title") or "?"
                 prog.update(task, description=f"[cyan]{title[:60]}[/cyan]")

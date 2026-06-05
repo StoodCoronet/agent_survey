@@ -137,9 +137,20 @@ class Config(BaseModel):
     http_proxy: str = ""
 
     def get_proxy(self, stage_name: str = "") -> str | None:
-        """Return proxy for a stage: stage override > default http_proxy > None."""
+        """Return proxy for a stage: stage override > default http_proxy > None.
+
+        Supports two stage_proxies key styles:
+          - plain:  "survey_mining"
+          - ordered: "s03_survey_mining"
+        """
         if stage_name:
             override = self.network.stage_proxies.get(stage_name)
+            # Fallback: try sNN_<stage_name> pattern
+            if override is None:
+                for key in self.network.stage_proxies:
+                    if key.endswith(f"_{stage_name}"):
+                        override = self.network.stage_proxies[key]
+                        break
             if override is not None:
                 return override if override else None
         return self.network.http_proxy or None
@@ -287,25 +298,20 @@ def load_topic_config(topic_name: str) -> TopicConfig:
 
 
 def load_stage_config(stage_name: str) -> dict[str, Any]:
-    """Load a stage-specific config from config/stages/<name>.yaml.
+    """Load a stage-specific config from config/stages/.
 
-    Falls back to the legacy location inside src/agent_survey/stages/.
+    Supports two naming conventions (checked in order):
+      1. sNN_<stage_name>.yaml  — e.g. s02_enrich.yaml (preferred, pipeline-ordered)
+      2. <stage_name>.yaml       — plain name fallback
     """
-    # Primary location
-    primary = CONFIG_DIR / "stages" / f"{stage_name}.yaml"
-    if primary.exists():
-        return yaml.safe_load(primary.read_text()) or {}
-
-    # Legacy fallbacks (keep compatibility during transition)
-    legacy_map = {
-        "enrich": PROJECT_ROOT / "src" / "agent_survey" / "stages" / "s02_enrich" / "enrich_config.yaml",
-        "survey_mining": PROJECT_ROOT / "src" / "agent_survey" / "stages" / "s03_survey_mining" / "survey_mining_config.yaml",
-        "classify": PROJECT_ROOT / "src" / "agent_survey" / "stages" / "s05_classify" / "classify_config.yaml",
-        "taxonomy": PROJECT_ROOT / "src" / "agent_survey" / "stages" / "s06_taxonomy" / "taxonomy_config.yaml",
-    }
-    legacy = legacy_map.get(stage_name)
-    if legacy and legacy.exists():
-        return yaml.safe_load(legacy.read_text()) or {}
+    stages_dir = CONFIG_DIR / "stages"
+    ordered = stages_dir / f"s??_{stage_name}.yaml"
+    candidates = sorted(stages_dir.glob(f"s*_{stage_name}.yaml"))
+    if candidates:
+        return yaml.safe_load(candidates[0].read_text()) or {}
+    plain = stages_dir / f"{stage_name}.yaml"
+    if plain.exists():
+        return yaml.safe_load(plain.read_text()) or {}
     return {}
 
 

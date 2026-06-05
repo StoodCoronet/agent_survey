@@ -814,7 +814,7 @@ def run():
                 elif action == "enrich":
                     _clear_screen()
                     console.print(f"[bold {C_PURPLE}]执行步骤: {action}[/bold {C_PURPLE}]\n")
-                    console.print(f"[dim]并发策略: src/agent_survey/stages/s01_enrich/enrich_config.yaml[/dim]\n")
+                    console.print(f"[dim]并发策略: config/stages/enrich.yaml[/dim]\n")
                     patch = _read_line("patch 模式 (修复异常 abstract, y/N): ").strip().lower()
                     if patch in ("y", "yes"):
                         action_args.append("--patch")

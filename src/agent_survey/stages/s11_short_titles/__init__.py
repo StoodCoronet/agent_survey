@@ -55,7 +55,7 @@ def run(
             console.print("[bold]Extracting PDF snippets...[/bold]")
             pdf_rows = [r for r in long_rows if r.get("pdf_path")]
             with Progress(console=console) as prog:
-                task = prog.add_task("reading PDFs", total=len(pdf_rows))
+                task = prog.add_task("reading PDFs (papers)", total=len(pdf_rows))
 
                 def _read_one(r):
                     return r["paper_id"], _pdf_snippet(r.get("pdf_path"))

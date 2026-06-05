@@ -70,7 +70,7 @@ def run(
         db_path = cfg.abs_path("db")
 
         with Progress(console=console) as prog:
-            task = prog.add_task("download pdfs", total=len(rows))
+            task = prog.add_task("download pdfs (papers)", total=len(rows))
 
             if workers > 1:
                 with ThreadPoolExecutor(max_workers=workers) as executor:
