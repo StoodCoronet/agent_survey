@@ -3,7 +3,7 @@
 limit: 0
 
 llm:
-  workers: 20           # parallel DeepSeek API calls (keep ≤20 to avoid connection pool exhaustion)
+  workers: 50           # parallel DeepSeek API calls (keep ≤20 to avoid connection pool exhaustion)
   batch_size: 5        # papers per single LLM call
   model: "deepseek-v4-flash"
   temperature: 0.0
