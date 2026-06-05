@@ -7,7 +7,7 @@
 | Topic | Harvest | Enrich | Survey-Mining | Keywords-Filter | Classify | Taxonomy | Dedup | Fulltext | Citation | Deepdive | Short-Titles | Summary | Category-Desc | Report |
 |-------|---------|--------|---------------|-----------------|----------|----------|-------|----------|----------|----------|--------------|---------|---------------|--------|
 | llm-context-management | ✅ | ✅ | ✅ | ✅ | ✅ | 🔄 | · | · | · | · | · | · | · | · |
-| automated-research | ✅ | ✅ | · | · | · | · | · | · | · | · | · | · | · | · |
+| automated-research | ✅ | ✅ | 🔄 | · | · | · | · | · | · | · | · | · | · | · |
 | llm-se-tools | ✅ | ✅ | · | · | · | · | · | · | · | · | · | · | · | · |
 | llm-agent | ✅ | ✅ | · | · | · | · | · | · | · | · | · | · | · | · |
 
@@ -33,16 +33,20 @@ Legend: ✅ done · not started 🔄 in progress
 ## Immediate Next Steps (This Week)
 
 ### Topic: automated-research
-1. ⏳ **survey-mining discover** — full run (56K papers, batch_size=50, workers=10)
-2. ⏳ **keywords-filter** — keyword regex prefilter
-3. ⏳ **classify** — DeepSeek-Flash batch classification
-4. ⏳ **taxonomy** — multi-dimensional tree classification
+1. 🔄 **survey-mining discover** — in progress (~56K papers, batch_size=5, workers=100)
+2. ⏳ **survey-mining download** — blocked until proxy fixed (now fixed ✅)
+3. ⏳ **survey-mining keywords** — Phase 3 implemented, ready to run
+4. ⏳ **keywords-filter** — keyword regex prefilter
+5. ⏳ **classify** — DeepSeek-Flash batch classification
+6. ⏳ **taxonomy** — multi-dimensional tree classification
 
 ### Topic: llm-se-tools
 1. ⏳ **survey-mining discover** — full run
-2. ⏳ **keywords-filter**
-3. ⏳ **classify**
-4. ⏳ **taxonomy**
+2. ⏳ **survey-mining download**
+3. ⏳ **survey-mining keywords**
+4. ⏳ **keywords-filter**
+5. ⏳ **classify**
+6. ⏳ **taxonomy**
 
 ### Topic: llm-context-management
 1. ⏳ **taxonomy** — finish in-progress run
@@ -75,6 +79,8 @@ Legend: ✅ done · not started 🔄 in progress
 | `docs/` generated files untracked | Low | Should `.gitignore` `docs/*/` or commit per-topic generated sites |
 | `.claude/settings.local.json` changes | Low | IDE settings leaking into git diff |
 | `test-topic` in DB | Low | Empty test topic; harmless |
+| ~~Dead proxy `192.168.1.106:7890`~~ | **Fixed** | Replaced with `socks5://10.20.197.128:7890`; `socksio` added for httpx SOCKS5 support |
+| arXiv 429 rate limit | Low | Occasional; add backoff / sleep between downloads |
 
 ---
 

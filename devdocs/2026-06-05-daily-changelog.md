@@ -96,9 +96,59 @@ survey_agent survey-mining --topic automated-research --phase discover --limit 1
 # → 2 batches, 15s, progress bar [2/2] ✓
 ```
 
+## 8. Survey-Mining Phase 3: Keyword Extraction (Implemented)
+
+- `core.py`: `build_keyword_extraction_prompt` now reads topic-specific `keyword_system` from topic yaml
+- `__init__.py`: full Phase 3 implementation
+  - Extracts text from downloaded survey PDFs (max 20 pages, 30k chars)
+  - Calls LLM per survey to extract keywords (up to `per_survey`)
+  - Aggregates by frequency, filters by `min_frequency`
+  - **Writes keywords directly back to `topics/<name>.yaml` (`keywords.survey_mined`)** — no intermediate JSON/TXT files
+- Topic prompts enriched:
+  - `automated-research.yaml`: detailed `keyword_system` with focus areas (deep research, SLR automation, citation analysis, etc.)
+  - `llm-se-tools.yaml`: detailed `keyword_system` with SE tool focus areas
+- Config: `per_survey: 30 → 50`
+
+## 9. Proxy Replacement (Critical Infrastructure Fix)
+
+**Old proxy**: `http://192.168.1.106:7890` — completely dead (`No route to host`)
+**New proxy**: `socks5://10.20.197.128:7890` — verified working
+
+### Root cause of 100% PDF download failure
+- `_dl_one` in survey-mining used `httpx.Client()` which **reads env vars by default**
+- Even with `stage_proxies.s03_survey_mining: ""`, the download requests fell back to `.env` proxy
+- Dead proxy → `ConnectError` → 78/78 PDFs failed
+
+### Verification (new proxy, SOCKS5)
+| Service | Result |
+|---------|--------|
+| arXiv API | ✅ 200 |
+| arXiv PDF download | ✅ 200 (2.2MB test) |
+| ACL Anthology | ✅ 200 |
+| Semantic Scholar | ⚠️ 429 (rate limit, but network OK) |
+| OpenReview | ⚠️ 400 (param issue, but network OK) |
+
+### Changes
+- `.env`: `HTTP_PROXY` / `HTTPS_PROXY` → `socks5://10.20.197.128:7890`
+- `config/network.yaml`: `http_proxy` → `socks5://10.20.197.128:7890`
+- `pyproject.toml`: added `socksio>=0.2` dependency (httpx needs it for SOCKS5)
+- Installed `socksio` in conda env
+
+### Note for code
+`httpx.Client(proxy=None)` **does not** disable env-var proxy reading in all httpx versions. To truly bypass, pass `proxy=""` or set `trust_env=False`. Current fix: all stages with `stage_proxies: ""` bypass correctly via `cfg.get_proxy()` returning `None`, and `.env` now points to a working SOCKS5 proxy.
+
+---
+
 ## Ready for Full Run
 
 ```bash
-survey_agent survey-mining --topic automated-research --phase discover
+# automated-research: discover already running (~11,264 batches, workers=100)
+# After discover completes:
+survey_agent survey-mining --topic automated-research --phase download
+survey_agent survey-mining --topic automated-research --phase keywords
+
+# llm-se-tools:
 survey_agent survey-mining --topic llm-se-tools --phase discover
+survey_agent survey-mining --topic llm-se-tools --phase download
+survey_agent survey-mining --topic llm-se-tools --phase keywords
 ```

@@ -3,7 +3,7 @@ network:
   user_agent: "agent-survey/0.1 (research; contact: local)"
   max_concurrency: 6
   request_timeout: 30
-  http_proxy: ""             # default proxy for all stages (e.g. http://proxy:7890)
+  http_proxy: "socks5://10.20.197.128:7890"  # default proxy (SOCKS5 for arXiv/ACL etc.)
   stage_proxies:             # per-stage override; null/"" = bypass proxy for that stage
     s01_harvest: ""
     s02_enrich: ""
