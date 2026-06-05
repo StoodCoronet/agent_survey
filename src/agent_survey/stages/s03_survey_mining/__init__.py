@@ -1,0 +1,434 @@
+"""Stage 3: Survey Mining — auto-discover survey papers, extract keywords."""
+from __future__ import annotations
+
+import json
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+from rich.progress import BarColumn, Progress, TextColumn, TimeElapsedColumn, TimeRemainingColumn
+from rich.table import Table
+
+from ...core.config import Config, load_topic_config
+from ...core.console import console
+from ...core.db import DB
+from ...services import arxiv as arxiv_src
+from ...services.llm import DeepSeekClient
+from .core import _load_stage_config, build_discovery_prompt
+
+import json as _json
+import httpx as _httpx
+import re as _re
+
+
+def _norm(s: str) -> str:
+    """Normalize title for fuzzy matching."""
+    return _re.sub(r"[^a-z0-9]+", "", s.lower())
+
+
+def run(
+    cfg: Config,
+    *,
+    topic_name: str = "",
+    limit: int = 0,
+    batch_size: int | None = None,
+    workers: int | None = None,
+    phase: str = "discover",
+    force: bool = False,
+    skip_resolve: bool = False,
+) -> dict:
+    """Run survey-mining pipeline."""
+    sconf = _load_stage_config()
+    batch_size = batch_size or sconf["llm"]["batch_size"]
+    workers = workers or sconf["llm"]["workers"]
+    limit = limit or sconf.get("limit", 0)
+    topic_cfg = load_topic_config(topic_name)
+    db = DB(cfg.abs_path("db"))
+    deepseek = DeepSeekClient(cfg)
+    stats: dict = {"phase": phase, "surveys_found": 0}
+
+    try:
+        candidates_path = cfg.abs_topic_dir(topic_name, "json") / "survey_candidates.json"
+
+        if phase in ("discover", "all"):
+            # Idempotent: skip if already discovered for this topic
+            existing = db._conn.execute(
+                "SELECT COUNT(*) FROM paper_topics WHERE topic_name=? AND survey_score IS NOT NULL",
+                (topic_name,),
+            ).fetchone()[0]
+            if existing > 0 and not force:
+                console.print(f"[green]Phase 1 already done ({existing} surveys in DB).[/green]")
+                stats["surveys_found"] = existing
+            else:
+                if force and existing > 0:
+                    console.print(f"[yellow]Force re-run: clearing {existing} prior survey records...[/yellow]")
+                    db._conn.execute(
+                        "UPDATE paper_topics SET survey_score = NULL, survey_keywords_json = NULL WHERE topic_name=?",
+                        (topic_name,),
+                    )
+                    db._conn.commit()
+                console.rule("[bold cyan]Phase 1: Survey Discovery")
+                papers = list(db.iter_papers("abstract IS NOT NULL AND abstract != ''"))
+                if limit:
+                    papers = papers[:limit]
+                console.print(f"Scanning {len(papers):,} papers for surveys about [cyan]{topic_name}[/cyan]")
+
+            batches = [papers[i:i + batch_size] for i in range(0, len(papers), batch_size)]
+            surveys_found: list[dict] = []
+
+            progress = Progress(
+                TextColumn("[bold blue]{task.description}"),
+                BarColumn(), TextColumn("[{task.completed}/{task.total}]"),
+                TimeElapsedColumn(), TimeRemainingColumn(), console=console,
+            )
+            task = progress.add_task("survey discovery", total=len(batches))
+
+            with progress:
+                with ThreadPoolExecutor(max_workers=workers) as pool:
+                    futures = {}
+                    for b in batches:
+                        messages = build_discovery_prompt(topic_cfg, b)
+                        def _call_and_log(messages, model, temp, max_tok):
+                            """Call DeepSeek, log raw response on JSON error."""
+                            import openai as _openai
+                            client = _openai.OpenAI(
+                                api_key=cfg.deepseek_api_key,
+                                base_url=cfg.deepseek_base_url,
+                            )
+                            resp = client.chat.completions.create(
+                                model=model, messages=messages,
+                                temperature=temp, max_tokens=max_tok,
+                                response_format={"type": "json_object"},
+                            )
+                            raw = resp.choices[0].message.content or "{}"
+                            try:
+                                data = _json.loads(raw)
+                            except _json.JSONDecodeError:
+                                start = raw.find("{")
+                                end = raw.rfind("}")
+                                if start >= 0 and end > start:
+                                    data = _json.loads(raw[start:end + 1])
+                                else:
+                                    console.log(f"[red]JSON parse failed, raw: {raw[:300]}...[/red]")
+                                    raise
+                            return {"content": data, "raw": raw}
+
+                        f = pool.submit(
+                            _call_and_log,
+                            messages,
+                            sconf["llm"]["model"],
+                            sconf["llm"]["temperature"],
+                            sconf["llm"]["max_tokens"],
+                        )
+                        futures[f] = b
+
+                    for f in as_completed(futures):
+                        batch = futures[f]
+                        try:
+                            results = f.result()
+                            # chat_json wraps output in {"content": ..., "usage": ...}
+                            data = results.get("content", results)
+                            # Support formats:
+                            # New: {"surveys": [{"idx": 0, "title": "..."}, ...]}
+                            # Old int: {"surveys": [3, 7, 15]}
+                            # Legacy: {"papers": [{"index": 0, "is_survey": true, ...}]}
+                            surveys_list = data.get("surveys", [])
+                            indices: list[int] = []
+                            for s in surveys_list:
+                                if isinstance(s, dict):
+                                    idx = s.get("idx", -1)
+                                    title = s.get("title", "")
+                                    # Validate: idx must match title
+                                    if 0 <= idx < len(batch):
+                                        batch_title = (batch[idx].get("title") or "").strip()
+                                        if _norm(batch_title) == _norm(title):
+                                            indices.append(idx)
+                                        else:
+                                            # Mismatch: try to find by title
+                                            for j, bp in enumerate(batch):
+                                                if _norm(bp.get("title") or "") == _norm(title):
+                                                    indices.append(j)
+                                                    break
+                                elif isinstance(s, int):
+                                    indices.append(s)
+                                elif isinstance(s, str):
+                                    # title-only fallback
+                                    for j, bp in enumerate(batch):
+                                        if _norm(bp.get("title") or "") == _norm(s):
+                                            indices.append(j)
+                                            break
+                            if not indices:
+                                papers_list = data.get("papers", [])
+                                if isinstance(papers_list, list):
+                                    for r in papers_list:
+                                        if r.get("is_survey"):
+                                            indices.append(r.get("index", -1))
+                            for i in indices:
+                                if isinstance(i, int) and 0 <= i < len(batch):
+                                    p = dict(batch[i])
+                                    p["survey_relevance"] = 1.0
+                                    surveys_found.append(p)
+                        except Exception as e:
+                            # Log raw response for debugging JSONDecodeError
+                            detail = str(e)
+                            if hasattr(e, '__cause__'):
+                                detail += f"  cause: {e.__cause__}"
+                            raw_debug = ""
+                            if isinstance(results, dict):
+                                raw_debug = results.get("raw", "")[:500]
+                            console.print(f"[red]batch error: {detail[:200]}[/red]")
+                            if raw_debug:
+                                console.print(f"[dim]raw response: {raw_debug}[/dim]")
+                        progress.advance(task)
+
+            stats["surveys_found"] = len(surveys_found)
+            console.print(f"\n[green]Found {len(surveys_found)} survey candidates[/green]")
+
+            # Save to DB: paper_topics.survey_score
+            if surveys_found:
+                ts = __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat()
+                for s in surveys_found:
+                    title = s.get("title", "")
+                    row = db._conn.execute(
+                        "SELECT paper_id FROM papers WHERE title = ?", (title,)
+                    ).fetchone()
+                    if row:
+                        db._conn.execute(
+                            "INSERT INTO paper_topics (paper_id, topic_name, survey_score, updated_at) "
+                            "VALUES (?, ?, ?, ?) "
+                            "ON CONFLICT(paper_id, topic_name) DO UPDATE SET "
+                            "survey_score=excluded.survey_score, updated_at=excluded.updated_at",
+                            (row["paper_id"], topic_name, s.get("survey_relevance", 1.0), ts),
+                        )
+                db._conn.commit()
+
+            if surveys_found:
+                surveys_found.sort(key=lambda x: x.get("survey_relevance", 0), reverse=True)
+                tbl = Table(title=f"Top surveys for {topic_name}", show_header=True, box=None)
+                tbl.add_column("Rel", justify="right", style="green", width=5)
+                tbl.add_column("Title", style="cyan")
+                for s in surveys_found[:20]:
+                    tbl.add_row(f"{s.get('survey_relevance', 0):.2f}", (s.get("title") or "")[:100])
+                console.print(tbl)
+                out = cfg.abs_topic_dir(topic_name, "json") / "survey_candidates.json"
+                out.parent.mkdir(parents=True, exist_ok=True)
+                out.write_text(json.dumps(surveys_found, indent=2, ensure_ascii=False))
+                console.print(f"[dim]Saved to {out}[/dim]")
+
+        if phase in ("download", "keywords", "all"):
+            console.rule("[bold cyan]Phase 2: Build Download Manifest")
+            candidates_path = cfg.abs_topic_dir(topic_name, "json") / "survey_candidates.json"
+            if not candidates_path.exists():
+                console.print("[yellow]No survey_candidates.json found. Run Phase 1 first.[/yellow]")
+            else:
+                candidates = _json.loads(candidates_path.read_text())
+                manifest: list[dict] = []
+                to_resolve: list[tuple[int, str, str]] = []  # (idx, title, venue)
+
+                for idx, s in enumerate(candidates):
+                    title = s.get("title", "")
+                    row = db._conn.execute(
+                        "SELECT venue, arxiv_id, pdf_url FROM papers WHERE title = ?", (title,)
+                    ).fetchone()
+                    venue = row["venue"] if row else "unknown"
+                    aid = row["arxiv_id"] if row else None
+                    purl = row["pdf_url"] if row else None
+
+                    entry = {
+                        "title": title,
+                        "venue": venue,
+                        "arxiv_id": aid,
+                        "pdf_url": purl,
+                        "source": "db",
+                    }
+                    if aid:
+                        entry["pdf_url"] = f"https://arxiv.org/pdf/{aid}.pdf"
+                    elif purl:
+                        entry["pdf_url"] = purl
+                    else:
+                        entry["source"] = "missing"
+                        to_resolve.append((idx, title, venue))
+                    manifest.append(entry)
+
+                console.print(
+                    f"[dim]{len(candidates)} surveys: {len(candidates) - len(to_resolve)} with source, "
+                    f"{len(to_resolve)} missing — resolving via arxiv search...[/dim]"
+                )
+
+                # Resolve missing via arxiv title search
+                if to_resolve and not skip_resolve:
+                    console.print(f"\n[bold cyan]Resolving {len(to_resolve)} missing surveys via arXiv...[/bold cyan]")
+                    http = _httpx.Client(timeout=30, headers={"User-Agent": cfg.network.user_agent})
+                    arxiv_ok = 0
+                    arxiv_fail = 0
+                    try:
+                        for n, (idx, title, venue) in enumerate(to_resolve, 1):
+                            console.print(f"  [{n}/{len(to_resolve)}] {title[:70]}...", end=" ")
+                            result = arxiv_src.search_title(http, title, delay=0.5)
+                            if result and result.get("arxiv_id"):
+                                manifest[idx]["arxiv_id"] = result["arxiv_id"]
+                                manifest[idx]["pdf_url"] = result.get("pdf_url") or f"https://arxiv.org/pdf/{result['arxiv_id']}.pdf"
+                                manifest[idx]["source"] = "arxiv_search"
+                                arxiv_ok += 1
+                                console.print(f"[green]✓ arxiv:{result['arxiv_id']}[/green]")
+                            else:
+                                arxiv_fail += 1
+                                console.print(f"[yellow]✗ not on arXiv[/yellow]")
+                    finally:
+                        http.close()
+
+                    console.print(f"\n[green]ArXiv resolve: {arxiv_ok} success, {arxiv_fail} failed[/green]")
+
+                    # ── OpenReview fallback for AI venues ─────────────────────
+                    or_venues = {"ICLR", "ICML", "NeurIPS", "COLM"}
+                    or_missing = [
+                        (idx, title, venue)
+                        for idx, title, venue in to_resolve
+                        if venue in or_venues and not manifest[idx].get("pdf_url")
+                    ]
+                    if or_missing:
+                        console.print(f"\n[bold cyan]Trying OpenReview for {len(or_missing)} AI venue papers...[/bold cyan]")
+                        from ...services import openreview as or_src
+                        or_http = _httpx.Client(timeout=30, headers={"User-Agent": cfg.network.user_agent})
+                        or_ok = 0
+                        or_fail = 0
+                        try:
+                            for n, (idx, title, venue) in enumerate(or_missing, 1):
+                                console.print(f"  [{n}/{len(or_missing)}] {title[:70]}...", end=" ")
+                                res = or_src.search_title_pdf(or_http, title)
+                                if res and res.get("pdf_url"):
+                                    manifest[idx]["pdf_url"] = res["pdf_url"]
+                                    manifest[idx]["source"] = "openreview"
+                                    or_ok += 1
+                                    console.print(f"[green]✓ OR:{res['forum_id']}[/green]")
+                                else:
+                                    or_fail += 1
+                                    console.print(f"[yellow]✗ not on OpenReview[/yellow]")
+                                time.sleep(1)
+                        finally:
+                            or_http.close()
+                        console.print(f"\n[green]OpenReview resolve: {or_ok} success, {or_fail} failed[/green]")
+
+                # Summary
+                with_source = sum(1 for m in manifest if m.get("pdf_url"))
+                still_missing = sum(1 for m in manifest if not m.get("pdf_url"))
+                stats["manifest_total"] = len(candidates)
+                stats["manifest_with_source"] = with_source
+                stats["manifest_missing"] = still_missing
+
+                out_manifest = cfg.abs_topic_dir(topic_name, "json") / "download_manifest.json"
+                out_manifest.write_text(_json.dumps({
+                    "total": len(candidates),
+                    "with_source": with_source,
+                    "missing": still_missing,
+                    "candidates": manifest,
+                }, indent=2, ensure_ascii=False))
+                console.print(f"[dim]Manifest saved to {out_manifest}[/dim]")
+
+                if still_missing > 0:
+                    console.print(f"[yellow]{still_missing} surveys still missing PDF source.[/yellow]")
+                    console.print("[dim]Suggestions:[/dim]")
+                    console.print("  • ACL/EMNLP/NAACL → try ACL Anthology: https://aclanthology.org/")
+                    console.print("  • AAAI → try aaai.org/library/ or request via inter-library")
+                    console.print("  • ICLR/ICML/NeurIPS → try OpenReview forum pages")
+                    console.print("  • SE venues (ICSE/TOSEM) → try ACM DL or Sci-Hub")
+
+                # ── Download PDFs ──────────────────────────────────────────
+                pdf_dir = cfg.abs_topic_dir(topic_name, "pdfs")
+                pdf_dir.mkdir(parents=True, exist_ok=True)
+
+                dl_tasks: list[tuple[str, str, str, str]] = []  # (pdf_url, dest_path, title, source_tag)
+                skipped = 0
+                for m in manifest:
+                    purl = m.get("pdf_url")
+                    if not purl:
+                        continue
+                    aid = m.get("arxiv_id")
+                    title = m.get("title", "")
+                    # Check DB for existing pdf_path (supports both abs and rel paths)
+                    row = db._conn.execute(
+                        "SELECT pdf_path, pdf_source FROM papers WHERE title = ?", (title,)
+                    ).fetchone()
+                    existing_path = row["pdf_path"] if row else None
+                    if existing_path:
+                        abs_path = __import__("pathlib").Path(existing_path)
+                        if not abs_path.is_absolute():
+                            abs_path = cfg.project_root / existing_path
+                        if abs_path.exists() and abs_path.stat().st_size > 1024:
+                            # Already downloaded by fulltext or previous run
+                            m["local_path"] = str(__import__("pathlib").Path(existing_path))
+                            skipped += 1
+                            continue
+                    # Determine source tag for pdf_source
+                    source_tag = "arxiv" if aid else (m.get("source") or "unknown")
+                    if aid:
+                        fname = f"{aid.replace('/', '_')}.pdf"
+                    else:
+                        import re as _re
+                        slug = _re.sub(r"[^\w\s-]", "", title).strip().replace(" ", "_")[:60]
+                        fname = f"{slug}.pdf"
+                    dest = pdf_dir / fname
+                    dl_tasks.append((purl, str(dest), title, source_tag))
+
+                if skipped:
+                    console.print(f"[dim]{skipped} PDFs already cached (skipped)[/dim]")
+
+                if dl_tasks:
+                    console.print(f"\n[bold cyan]Downloading {len(dl_tasks)} PDFs...[/bold cyan]")
+                    dl_ok = 0
+                    dl_fail = 0
+                    dl_n = 0
+
+                    def _dl_one(purl: str, dest: str, title: str, source_tag: str) -> tuple[bool, str, str, str]:
+                        http = _httpx.Client(timeout=120, follow_redirects=True, headers={"User-Agent": cfg.network.user_agent})
+                        try:
+                            with http.stream("GET", purl) as r:
+                                r.raise_for_status()
+                                with open(dest, "wb") as f:
+                                    for chunk in r.iter_bytes(chunk_size=65536):
+                                        f.write(chunk)
+                            return True, dest, title, source_tag
+                        except Exception as e:
+                            return False, "", title, source_tag
+                        finally:
+                            http.close()
+
+                    with ThreadPoolExecutor(max_workers=5) as pool:
+                        futures = {pool.submit(_dl_one, *t): t for t in dl_tasks}
+                        for f in as_completed(futures):
+                            ok, dest, title, source_tag = f.result()
+                            dl_n += 1
+                            if ok:
+                                dl_ok += 1
+                                rel_dest = str(__import__("pathlib").Path(dest).relative_to(cfg.project_root))
+                                db._conn.execute(
+                                    "UPDATE papers SET pdf_path = ?, pdf_source = ? WHERE title = ?",
+                                    (rel_dest, source_tag, title),
+                                )
+                                for mm in manifest:
+                                    if mm.get("title") == title:
+                                        mm["local_path"] = rel_dest
+                                        break
+                                console.print(f"  [{dl_n}/{len(dl_tasks)}] [green]✓[/green] {title[:60]}...")
+                            else:
+                                dl_fail += 1
+                                console.print(f"  [{dl_n}/{len(dl_tasks)}] [red]✗[/red] {title[:60]}...")
+                    db._conn.commit()
+                    console.print(f"\n[green]Download: {dl_ok} success, {dl_fail} failed, {skipped} skipped[/green]")
+                    stats["pdfs_downloaded"] = dl_ok + skipped
+                    stats["pdfs_failed"] = dl_fail
+                    stats["pdfs_skipped"] = skipped
+
+                    out_manifest.write_text(_json.dumps({
+                        "total": len(candidates),
+                        "with_source": with_source,
+                        "missing": still_missing,
+                        "downloaded": dl_ok + skipped,
+                        "skipped": skipped,
+                        "candidates": manifest,
+                    }, indent=2, ensure_ascii=False))
+
+        if phase in ("keywords", "all"):
+            console.print("[yellow]Phase 3 (keyword extraction) — coming next[/yellow]")
+
+        return stats
+    finally:
+        db.close()

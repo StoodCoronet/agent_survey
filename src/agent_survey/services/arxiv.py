@@ -59,8 +59,12 @@ def _parse_entries(xml_text: str) -> list[dict]:
     return out
 
 
-def search_title(client: httpx.Client, title: str) -> dict | None:
-    """Search arXiv by exact title (first match)."""
+def search_title(client: httpx.Client, title: str, delay: float = REQ_DELAY) -> dict | None:
+    """Search arXiv by exact title (first match).
+
+    Args:
+        delay: seconds to sleep after the request (override for bulk operations).
+    """
     q = title.replace('"', "").strip()
     if not q:
         return None
@@ -79,16 +83,98 @@ def search_title(client: httpx.Client, title: str) -> dict | None:
     if xml_text is None:
         return None
     entries = _parse_entries(xml_text)
-    time.sleep(REQ_DELAY)
+    time.sleep(delay)
     if not entries:
         return None
-    # fuzzy match: normalize lowercase + alnum
-    def norm(s: str) -> str:
-        return re.sub(r"[^a-z0-9]+", "", s.lower())
-    if norm(entries[0]["title"]) == norm(title):
-        return entries[0]
-    # still return best match if similarity high enough (cheap check)
-    return entries[0] if norm(entries[0]["title"])[:40] == norm(title)[:40] else None
+    # fuzzy match: strip all spaces and non-alphanumeric chars
+    def _norm(s: str) -> str:
+        return re.sub(r"[^a-z0-9]", "", s.lower())
+
+    def _match(e_title: str, db_title: str) -> bool:
+        """Loose title matching: exact, substring (for long titles), or prefix."""
+        e_norm = _norm(e_title)
+        db_norm = _norm(db_title)
+        if e_norm == db_norm:
+            return True
+        # Substring match for long titles (handles suffix differences like "Transformers")
+        if len(db_norm) >= 20 and (db_norm in e_norm or e_norm in db_norm):
+            return True
+        # Prefix fallback
+        if len(db_norm) > 30 and len(e_norm) > 30 and e_norm[:40] == db_norm[:40]:
+            return True
+        return False
+
+    # Check all entries (arxiv search may return wrong first result)
+    for e in entries:
+        if _match(e["title"], title):
+            return e
+    return None
+
+
+def _search_exact(client: httpx.Client, title: str, delay: float) -> dict | None:
+    """Internal: single exact-title search."""
+    q = title.replace('"', "").strip()
+    if not q:
+        return None
+    params = {
+        "search_query": f'ti:"{q}"',
+        "max_results": 3,
+        "sortBy": "relevance",
+    }
+    xml_text: str | None = None
+    try:
+        xml_text = _query(client, params)
+    except Exception:
+        xml_text = curl_get_xml_text(ARXIV_API, params=params, timeout=3)
+    if xml_text is None:
+        return None
+    entries = _parse_entries(xml_text)
+    time.sleep(delay)
+    if not entries:
+        return None
+    def _norm(s: str) -> str:
+        return re.sub(r"[^a-z0-9]", "", s.lower())
+
+    def _match(e_title: str, db_title: str) -> bool:
+        e_norm = _norm(e_title)
+        db_norm = _norm(db_title)
+        if e_norm == db_norm:
+            return True
+        if len(db_norm) >= 20 and (db_norm in e_norm or e_norm in db_norm):
+            return True
+        if len(db_norm) > 30 and len(e_norm) > 30 and e_norm[:40] == db_norm[:40]:
+            return True
+        return False
+
+    for e in entries:
+        if _match(e["title"], title):
+            return e
+    return None
+
+
+def search_title(client: httpx.Client, title: str, delay: float = REQ_DELAY) -> dict | None:
+    """Search arXiv by title (multiple variants). Tries exact title,
+    CamelCase-split, and ampersand-normalized forms.
+    """
+    variants = [title]
+    # CamelCase split: RingAttention -> Ring Attention
+    camel = re.sub(r"([a-z])([A-Z])", r"\1 \2", title)
+    if camel != title:
+        variants.append(camel)
+    # Remove & and normalize spaces
+    no_amp = title.replace("&", " ")
+    if no_amp != title:
+        variants.append(no_amp)
+    # Keywords fallback: first 5 words
+    words = title.split()[:5]
+    if len(words) >= 3:
+        variants.append(" ".join(words))
+
+    for v in variants:
+        result = _search_exact(client, v, delay)
+        if result:
+            return result
+    return None
 
 
 def search_query(

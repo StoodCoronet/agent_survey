@@ -1,0 +1,20 @@
+# Network and proxy settings
+network:
+  user_agent: "agent-survey/0.1 (research; contact: local)"
+  max_concurrency: 6
+  request_timeout: 30
+  http_proxy: ""             # default proxy for all stages (e.g. http://proxy:7890)
+  stage_proxies:             # per-stage override; null/"" = bypass proxy for that stage
+    s01_harvest: ""
+    s02_enrich: ""
+    s03_survey_mining: ""
+    s04_keywords_filter: ""
+    s05_classify: ""
+    s06_taxonomy: ""
+    s07_dedup: ""
+    s08_fulltext: ""
+    s09_citation: ""
+    s10_deepdive: ""
+    s11_short_titles: ""
+    s12_summary: ""
+    s13_category_desc: ""

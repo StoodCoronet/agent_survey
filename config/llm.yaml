@@ -1,0 +1,22 @@
+# LLM settings
+llm:
+  stage3_classify:
+    model: deepseek-v4-flash
+    temperature: 0.0
+    max_tokens: 512
+    prompt_version: v1
+  stage5_deepdive:
+    model: deepseek-reasoner
+    temperature: 0.0
+    max_tokens: 4096
+    prompt_version: v1
+  stage10_category_desc:
+    model: deepseek-reasoner
+    temperature: 0.3
+    max_tokens: 2048
+    prompt_version: v1
+  stage11_summary:
+    model: deepseek-v4-flash
+    temperature: 0.0
+    max_tokens: 512
+    prompt_version: v1

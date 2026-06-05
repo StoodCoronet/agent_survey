@@ -1,0 +1,67 @@
+```yaml
+categories:
+  - name: Context Window and Position Encoding
+    keywords:
+      - context window extension
+      - length extrapolation
+      - position interpolation
+      - length generalization
+      - rotary position embedding (RoPE)
+      - ALiBi
+      - NTK-aware interpolation
+      - YARN
+      - position bias
+      - lost-in-the-middle problem
+      - attention sink
+      - position encoding scaling
+  - name: KV Cache Optimization
+    keywords:
+      - KV cache compression
+      - KV cache quantization
+      - KV cache eviction
+      - low-bit quantization
+      - post-training quantization
+      - token merging
+      - flash attention compatibility
+      - grouped-query attention compatibility
+  - name: Retrieval-Augmented Generation (RAG)
+    keywords:
+      - retrieval-augmented generation (RAG)
+      - in-context learning
+      - many-shot in-context learning
+      - open-domain question answering
+      - multi-document question answering
+      - retrieval-based techniques
+      - external memory retrieval
+      - retrieval augmentation
+  - name: Attention Mechanisms and Efficient Transformers
+    keywords:
+      - sparse attention
+      - linear attention
+      - flash attention
+      - efficient transformer
+      - decoder-only transformer
+      - linear complexity attention
+      - blockwise sparse attention
+      - hybrid attention (convolutions, Mamba)
+  - name: Long-Context Evaluation and Benchmarks
+    keywords:
+      - long-context evaluation
+      - needle-in-a-haystack test
+      - LongBench
+      - L-Eval
+      - passkey retrieval
+      - single-document question answering
+      - multi-document question answering
+      - long-context benchmark
+      - time-to-first-token (TTFT)
+  - name: Memory and Compression Techniques
+    keywords:
+      - context compression
+      - prompt compression
+      - memory compression
+      - long-term memory
+      - working memory
+      - short-term memory
+      - hierarchical summarization
+      - token pruning

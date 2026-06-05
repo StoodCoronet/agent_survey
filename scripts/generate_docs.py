@@ -1,6 +1,7 @@
-"""Generate docs/ static site from DB data."""
+"""Generate docs/ static site from DB data (per-topic)."""
 from __future__ import annotations
 
+import argparse
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -8,16 +9,34 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from agent_survey.core.config import load_config
+from agent_survey.core.config import load_config, list_topics
 from agent_survey.core.db import DB
 
 
-def _build_tree_hierarchy(tree_papers_flat: dict[str, list[str]]) -> list[dict]:
+def _build_tree_hierarchy(tree_name: str, tree_papers_flat: dict[str, list[str]]) -> list[dict]:
     """Convert flat {path: [pids]} dict to hierarchical tree."""
     root: dict[str, dict] = {}
+    tn_dash = tree_name.replace("_", "-")
 
     for path, pids in tree_papers_flat.items():
-        parts = path.split("/")
+        # Strip tree-name prefix if present (e.g. "technical-approach/Context Retrieval & RAG")
+        # This normalises topics that store full paths vs topics that store relative paths.
+        if path.startswith(tn_dash + "/"):
+            path = path[len(tn_dash) + 1:]
+        # Use partition to preserve "/" inside leaf names (e.g. "Novel Method / Algorithm").
+        # For nested trees like llm-agent, subsequent "/" are real levels.
+        parts = []
+        rest = path
+        while rest:
+            part, sep, rest = rest.partition("/")
+            # If the remaining segment starts with " " after a "/", it's likely
+            # a "/" inside a leaf name (e.g. "Novel Method / Algorithm").
+            # Rejoin and stop splitting.
+            if sep and rest.startswith(" "):
+                parts.append(part + sep + rest)
+                rest = ""
+            else:
+                parts.append(part)
         node = root
         for part in parts:
             if part not in node:
@@ -41,47 +60,73 @@ def _build_tree_hierarchy(tree_papers_flat: dict[str, list[str]]) -> list[dict]:
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Generate docs/ static site from DB data")
+    parser.add_argument("--topic", "-t", default="", help="Topic name (default: all topics)")
+    args = parser.parse_args()
+
     cfg = load_config()
+    topic_names = [args.topic] if args.topic else list_topics()
+    if not topic_names:
+        print("No topics found.")
+        return
+
+    for topic_name in topic_names:
+        _generate_topic(cfg, topic_name)
+
+    _write_root_index(cfg)
+
+
+def _generate_topic(cfg, topic_name: str):
     db = DB(cfg.abs_path("db"))
-    docs_dir = cfg.project_root / "docs"
+    docs_dir = cfg.project_root / "docs" / topic_name
     docs_dir.mkdir(parents=True, exist_ok=True)
 
     papers = []
-    for r in db.iter_papers("relevance = 'core'"):
-        tax = {}
-        if r.get("taxonomy_json"):
+    for pt in db.iter_paper_topics(topic_name, "relevance = 'core'"):
+        # Per-topic data from paper_topics
+        tax = pt.get("taxonomy_json") or {}
+        if isinstance(tax, str):
             try:
-                tax = json.loads(r["taxonomy_json"])
+                tax = json.loads(tax)
             except Exception:
-                pass
+                tax = {}
+
         cit = {}
-        if r.get("citation_json"):
+        # citation lives on papers table
+        paper = db.get_paper(pt["paper_id"])
+        if paper and paper.get("citation_json"):
             try:
-                cit = json.loads(r["citation_json"])
+                cit = json.loads(paper["citation_json"])
             except Exception:
                 pass
-        short = r.get("short_title") or ""
+
+        short = pt.get("short_title") or ""
         if not short:
-            t = r["title"]
+            t = pt.get("title") or ""
             short = t if len(t) <= 40 else t[:38] + "..."
+
         pdf_url = ""
-        if r.get("pdf_url"):
-            pdf_url = r["pdf_url"]
-        elif r.get("pdf_path"):
-            pdf_url = "./pdfs/" + Path(r["pdf_path"]).name
+        pdf_path = paper.get("pdf_path") if paper else None
+        if paper and paper.get("pdf_url"):
+            pdf_url = paper["pdf_url"]
+        elif pdf_path:
+            pdf_url = "../pdfs/" + Path(pdf_path).name  # relative from docs/<topic>/
+
+        # Normalize taxonomy keys: hyphens -> underscores for JS
+        tax_norm = {k.replace("-", "_"): v for k, v in tax.items()}
         papers.append({
-            "id": r["paper_id"],
-            "title": r["title"],
+            "id": pt["paper_id"],
+            "title": pt.get("title", ""),
             "short_title": short,
-            "venue": r.get("venue", ""),
-            "year": r.get("year"),
-            "venue_area": r.get("venue_area", ""),
-            "abstract": r.get("abstract", "") or "",
-            "summary_en": r.get("summary_en", "") or "",
-            "summary_zh": r.get("summary_zh", "") or "",
-            "taxonomy": tax,
+            "venue": pt.get("venue", ""),
+            "year": pt.get("year"),
+            "venue_area": pt.get("venue_area", ""),
+            "abstract": pt.get("abstract", "") or "",
+            "summary_en": pt.get("summary_en", "") or "",
+            "summary_zh": pt.get("summary_zh", "") or "",
+            "taxonomy": tax_norm,
             "citation": cit,
-            "has_pdf": bool(r.get("pdf_path")),
+            "has_pdf": bool(pdf_path),
             "pdf_url": pdf_url,
         })
 
@@ -90,15 +135,16 @@ def main():
     cross_counts = Counter()
     for p in papers:
         for tree, paths in p["taxonomy"].items():
+            tn = tree.replace("-", "_")
             if isinstance(paths, list):
                 for path in paths:
-                    tree_papers_flat[tree][path].append(p["id"])
-        for tag in p["taxonomy"].get("cross_cutting", []):
+                    tree_papers_flat[tn][path].append(p["id"])
+        for tag in p["taxonomy"].get("cross_cutting", p["taxonomy"].get("cross-cutting", [])):
             cross_counts[tag] += 1
 
     tree_hierarchy = {}
     for tree_name, paths in tree_papers_flat.items():
-        tree_hierarchy[tree_name] = _build_tree_hierarchy(paths)
+        tree_hierarchy[tree_name] = _build_tree_hierarchy(tree_name, paths)
 
     # Assign 1-based paper numbers
     for i, p in enumerate(papers, 1):
@@ -131,7 +177,7 @@ def main():
 
     # taxonomy descriptions
     taxonomy_descs = {}
-    for row in db.iter_taxonomy_descs():
+    for row in db.iter_taxonomy_descs(topic_name):
         key = f"{row['tree_name']}:{row['path']}"
         meta = {}
         if row.get("metadata_json"):
@@ -163,26 +209,218 @@ def main():
     (docs_dir / "data.json").write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     print(f"[green]wrote data.json ({len(papers)} papers)[/green]")
 
-    _sync_pdfs(docs_dir, cfg, db)
-    _write_index(docs_dir)
+    stats = _build_topic_stats(db, topic_name)
+    (docs_dir / "stats.json").write_text(json.dumps(stats, ensure_ascii=False), encoding="utf-8")
+
+    _sync_pdfs(docs_dir, cfg, db, topic_name)
+    _write_index(docs_dir, topic_name, stats)
+    _write_analysis(docs_dir, topic_name, stats)
     _write_taxonomy(docs_dir)
     _write_mindmap(docs_dir)
     _write_papers(docs_dir)
     _write_citation(docs_dir)
 
     db.close()
-    print(f"[green]docs generated in {docs_dir}[/green]")
+    print(f"[green]docs generated for '{topic_name}' in {docs_dir}[/green]")
 
 
-def _sync_pdfs(docs_dir: Path, cfg, db) -> None:
-    """Copy local PDFs from output/pdfs/ to docs/pdfs/ so they are served with the static site."""
+def _build_topic_stats(db: DB, topic_name: str) -> dict:
+    """Build pipeline + analysis stats for a topic."""
+    total = db.count()
+    with_abstract = db.count("abstract IS NOT NULL AND abstract != ''")
+
+    # prefilter_hit — 兼容旧格式和新格式
+    prefilter_hit = 0
+    for row in db.iter_papers(
+        "prefilter_hit IS NOT NULL AND prefilter_hit != '' AND prefilter_hit != '{}' AND prefilter_hit != '[]'"
+    ):
+        ph = row.get("prefilter_hit") or "{}"
+        try:
+            phd = json.loads(ph) if isinstance(ph, str) else ph
+        except Exception:
+            phd = {}
+        if isinstance(phd, dict) and phd.get(topic_name):
+            prefilter_hit += 1
+
+    classified = db.count_topic(topic_name, "relevance IS NOT NULL AND relevance != ''")
+    core = db.count_topic(topic_name, "relevance = 'core'")
+    related = db.count_topic(topic_name, "relevance = 'related'")
+    adjacent = db.count_topic(topic_name, "relevance = 'adjacent'")
+
+    topic_classified = db.count_topic(
+        topic_name,
+        "relevance IN ('core','related','adjacent') AND topics_json IS NOT NULL AND topics_json != '' AND topics_json != '[]'",
+    )
+    topic_need = db.count_topic(topic_name, "relevance IN ('core','related','adjacent')")
+
+    if classified > 0:
+        need_enrich = db._conn.execute(
+            "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+            "WHERE pt.topic_name=? AND pt.relevance IN ('core','related','adjacent')",
+            (topic_name,),
+        ).fetchone()[0]
+        enriched = db._conn.execute(
+            "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+            "WHERE pt.topic_name=? AND pt.relevance IN ('core','related','adjacent') "
+            "AND p.abstract IS NOT NULL AND p.abstract != ''",
+            (topic_name,),
+        ).fetchone()[0]
+    else:
+        need_enrich = total
+        enriched = with_abstract
+
+    web_enriched = db._conn.execute(
+        "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+        "WHERE pt.topic_name=? AND pt.relevance IN ('core','related','adjacent') AND p.enrich_source='web'",
+        (topic_name,),
+    ).fetchone()[0]
+    need_web = db._conn.execute(
+        "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+        "WHERE pt.topic_name=? AND pt.relevance IN ('core','related','adjacent') "
+        "AND (p.abstract IS NULL OR p.abstract = '' OR LENGTH(p.abstract) < 30)",
+        (topic_name,),
+    ).fetchone()[0]
+
+    dedup_core = db.count_topic(
+        topic_name,
+        "relevance = 'core' AND dedup_keep_json IS NOT NULL AND dedup_keep_json LIKE '%\"core\"%'",
+    )
+    dedup_related = db.count_topic(
+        topic_name,
+        "relevance = 'related' AND dedup_keep_json IS NOT NULL AND dedup_keep_json LIKE '%\"related\"%'",
+    )
+    dedup_adjacent = db.count_topic(
+        topic_name,
+        "relevance = 'adjacent' AND dedup_keep_json IS NOT NULL AND dedup_keep_json LIKE '%\"adjacent\"%'",
+    )
+
+    tax_core = db.count_topic(
+        topic_name,
+        "relevance = 'core' AND taxonomy_json IS NOT NULL AND taxonomy_json != '' AND taxonomy_json != '{}'",
+    )
+    tax_related = db.count_topic(
+        topic_name,
+        "relevance = 'related' AND taxonomy_json IS NOT NULL AND taxonomy_json != '' AND taxonomy_json != '{}'",
+    )
+    tax_adjacent = db.count_topic(
+        topic_name,
+        "relevance = 'adjacent' AND taxonomy_json IS NOT NULL AND taxonomy_json != '' AND taxonomy_json != '{}'",
+    )
+
+    pdf_core = db._conn.execute(
+        "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+        "WHERE pt.topic_name=? AND pt.relevance='core' AND pt.dedup_keep_json LIKE '%\"core\": true%' "
+        "AND p.pdf_path IS NOT NULL AND p.pdf_path != ''",
+        (topic_name,),
+    ).fetchone()[0]
+    pdf_related = db._conn.execute(
+        "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+        "WHERE pt.topic_name=? AND pt.relevance='related' AND pt.dedup_keep_json LIKE '%\"related\": true%' "
+        "AND p.pdf_path IS NOT NULL AND p.pdf_path != ''",
+        (topic_name,),
+    ).fetchone()[0]
+    pdf_adjacent = db._conn.execute(
+        "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+        "WHERE pt.topic_name=? AND pt.relevance='adjacent' AND pt.dedup_keep_json LIKE '%\"adjacent\": true%' "
+        "AND p.pdf_path IS NOT NULL AND p.pdf_path != ''",
+        (topic_name,),
+    ).fetchone()[0]
+
+    ft_core = db._conn.execute(
+        "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+        "WHERE pt.topic_name=? AND pt.relevance='core' AND pt.dedup_keep_json LIKE '%\"core\": true%' "
+        "AND p.arxiv_id IS NOT NULL AND p.arxiv_id != ''",
+        (topic_name,),
+    ).fetchone()[0]
+    ft_related = db._conn.execute(
+        "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+        "WHERE pt.topic_name=? AND pt.relevance='related' AND pt.dedup_keep_json LIKE '%\"related\": true%' "
+        "AND p.arxiv_id IS NOT NULL AND p.arxiv_id != ''",
+        (topic_name,),
+    ).fetchone()[0]
+    ft_adjacent = db._conn.execute(
+        "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+        "WHERE pt.topic_name=? AND pt.relevance='adjacent' AND pt.dedup_keep_json LIKE '%\"adjacent\": true%' "
+        "AND p.arxiv_id IS NOT NULL AND p.arxiv_id != ''",
+        (topic_name,),
+    ).fetchone()[0]
+
+    cit_core = db._conn.execute(
+        "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+        "WHERE pt.topic_name=? AND pt.relevance='core' AND p.citation_json IS NOT NULL AND p.citation_json != '' AND p.citation_json != '{}'",
+        (topic_name,),
+    ).fetchone()[0]
+    cit_related = db._conn.execute(
+        "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+        "WHERE pt.topic_name=? AND pt.relevance='related' AND p.citation_json IS NOT NULL AND p.citation_json != '' AND p.citation_json != '{}'",
+        (topic_name,),
+    ).fetchone()[0]
+    cit_adjacent = db._conn.execute(
+        "SELECT COUNT(*) FROM paper_topics pt JOIN papers p ON pt.paper_id=p.paper_id "
+        "WHERE pt.topic_name=? AND pt.relevance='adjacent' AND p.citation_json IS NOT NULL AND p.citation_json != '' AND p.citation_json != '{}'",
+        (topic_name,),
+    ).fetchone()[0]
+
+    short_done = db.count_topic(topic_name, "short_title IS NOT NULL AND short_title != ''")
+    cat_desc_row = db._conn.execute(
+        "SELECT COUNT(*) AS n FROM taxonomy_descriptions WHERE topic_name=? AND (desc_en IS NOT NULL OR desc_zh IS NOT NULL)",
+        (topic_name,),
+    ).fetchone()
+    cat_desc_done = cat_desc_row["n"] if cat_desc_row else 0
+    summary_done = db.count_topic(
+        topic_name, "relevance = 'core' AND summary_en IS NOT NULL AND summary_en != ''"
+    )
+
+    # venue-year distribution for analysis
+    venue_year = Counter()
+    for row in db.iter_paper_topics(topic_name, "relevance = 'core'"):
+        venue_year[(row.get("venue"), row.get("year"))] += 1
+
+    return {
+        "topic": topic_name,
+        "pipeline": {
+            "harvest": {"state": "done" if total > 0 else "pending", "total": total},
+            "enrich": {"state": "done" if enriched >= need_enrich else "partial" if enriched > 0 else "pending", "done": enriched, "need": need_enrich},
+            "enrich_web": {"state": "done" if need_web == 0 else "partial" if web_enriched > 0 else "pending", "done": web_enriched, "need": need_web},
+            "prefilter": {"state": "done" if prefilter_hit > 0 else "pending", "hit": prefilter_hit},
+            "classify": {"state": "done" if classified > 0 else "pending", "core": core, "related": related, "adjacent": adjacent},
+            "classify_topics": {"state": "done" if topic_classified >= topic_need else "partial" if topic_classified > 0 else "pending", "done": topic_classified, "need": topic_need},
+            "dedup": {"state": "done" if dedup_core >= core and dedup_related >= related and dedup_adjacent >= adjacent else "partial" if dedup_core > 0 or dedup_related > 0 or dedup_adjacent > 0 else "pending", "core": dedup_core, "related": dedup_related, "adjacent": dedup_adjacent},
+            "taxonomy": {"state": "done" if tax_core >= core and tax_related >= related and tax_adjacent >= adjacent else "partial" if tax_core > 0 or tax_related > 0 or tax_adjacent > 0 else "pending", "core": tax_core, "related": tax_related, "adjacent": tax_adjacent},
+            "fulltext": {"state": "done" if pdf_core >= core and pdf_related >= related and pdf_adjacent >= adjacent else "partial" if pdf_core > 0 or pdf_related > 0 or pdf_adjacent > 0 else "pending", "core": pdf_core, "related": pdf_related, "adjacent": pdf_adjacent},
+            "citation": {"state": "done" if cit_core >= core and cit_related >= related and cit_adjacent >= adjacent else "partial" if cit_core > 0 or cit_related > 0 or cit_adjacent > 0 else "pending", "core": cit_core, "related": cit_related, "adjacent": cit_adjacent},
+            "deepdive": {"state": "pending"},
+            "report": {"state": "pending"},
+            "short_titles": {"state": "done" if short_done > 0 else "pending", "done": short_done},
+            "category_desc": {"state": "done" if cat_desc_done > 0 else "pending", "done": cat_desc_done},
+            "summary": {"state": "done" if summary_done >= core and core > 0 else "pending", "done": summary_done},
+            "generate_docs": {"state": "pending"},
+        },
+        "overview": {
+            "total": total,
+            "with_abstract": with_abstract,
+            "prefilter_hit": prefilter_hit,
+            "classified": classified,
+            "core": core,
+            "related": related,
+            "adjacent": adjacent,
+        },
+        "venue_year": {f"{v}/{y}": c for (v, y), c in sorted(venue_year.items(), key=lambda x: x[0])},
+    }
+
+
+def _sync_pdfs(docs_dir: Path, cfg, db, topic_name: str) -> None:
+    """Copy local PDFs from output/pdfs/ to docs/<topic>/pdfs/."""
     import shutil
     src_dir = cfg.abs_path("pdfs")
     dst_dir = docs_dir / "pdfs"
     dst_dir.mkdir(parents=True, exist_ok=True)
     copied = 0
-    for r in db.iter_papers("relevance = 'core'"):
-        pdf_path = r.get("pdf_path")
+    for pt in db.iter_paper_topics(topic_name, "relevance = 'core'"):
+        paper = db.get_paper(pt["paper_id"])
+        if not paper:
+            continue
+        pdf_path = paper.get("pdf_path")
         if not pdf_path:
             continue
         src = Path(pdf_path)
@@ -214,47 +452,58 @@ def _infer_area(venue: str) -> str:
     return "Other"
 
 
-def _write_index(docs_dir: Path) -> None:
-    html = """<!DOCTYPE html>
+def _write_index(docs_dir: Path, topic_name: str, stats: dict) -> None:
+    html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agent Survey Dashboard</title>
+<title>{topic_name} — Agent Survey</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; }
-  .header { background: #fff; padding: 20px 24px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; }
-  .header h1 { font-size: 20px; }
-  .nav { display: flex; gap: 8px; }
-  .nav a { padding: 6px 14px; border-radius: 6px; text-decoration: none; color: #333; font-size: 14px; background: #f0f0f0; }
-  .nav a:hover { background: #e0e0e0; }
-  .nav a.active { background: #333; color: #fff; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
-  .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-  .stat-card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-  .stat-card .num { font-size: 32px; font-weight: 700; color: #1a1a1a; }
-  .stat-card .label { font-size: 13px; color: #666; margin-top: 4px; }
-  .section { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
-  .section h2 { font-size: 16px; margin-bottom: 12px; }
-  .bar { display: flex; align-items: center; margin-bottom: 8px; }
-  .bar-name { width: 300px; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .bar-track { flex: 1; height: 20px; background: #f0f0f0; border-radius: 4px; overflow: hidden; position: relative; }
-  .bar-fill { height: 100%; border-radius: 4px; }
-  .bar-val { margin-left: 8px; font-size: 12px; color: #666; min-width: 30px; }
-  .color-se { background: #5470c6; }
-  .color-security { background: #ee6666; }
-  .color-ai { background: #91cc75; }
-  .color-nlp { background: #fac858; }
-  .color-hci { background: #73c0de; }
-  .color-default { background: #999; }
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; }}
+  .header {{ background: #fff; padding: 16px 24px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; }}
+  .header h1 {{ font-size: 18px; }}
+  .nav {{ display: flex; gap: 8px; align-items: center; }}
+  .nav a {{ padding: 6px 14px; border-radius: 6px; text-decoration: none; color: #333; font-size: 14px; background: #f0f0f0; }}
+  .nav a:hover {{ background: #e0e0e0; }}
+  .nav a.active {{ background: #333; color: #fff; }}
+  .nav .back {{ background: transparent; color: #666; }}
+  .container {{ max-width: 1200px; margin: 0 auto; padding: 24px; }}
+  .stats-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }}
+  .stat-card {{ background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }}
+  .stat-card .num {{ font-size: 32px; font-weight: 700; color: #1a1a1a; }}
+  .stat-card .label {{ font-size: 13px; color: #666; margin-top: 4px; }}
+  .section {{ background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }}
+  .section h2 {{ font-size: 16px; margin-bottom: 12px; }}
+  .pipeline-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }}
+  .pipe-item {{ display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; background: #fafafa; border: 1px solid #eee; }}
+  .pipe-dot {{ width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }}
+  .pipe-done {{ background: #34d399; }}
+  .pipe-partial {{ background: #fbbf24; }}
+  .pipe-pending {{ background: #d1d5db; }}
+  .pipe-name {{ font-size: 13px; font-weight: 500; }}
+  .pipe-data {{ font-size: 12px; color: #888; margin-left: auto; }}
+  .bar {{ display: flex; align-items: center; margin-bottom: 8px; }}
+  .bar-name {{ width: 300px; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
+  .bar-track {{ flex: 1; height: 20px; background: #f0f0f0; border-radius: 4px; overflow: hidden; position: relative; }}
+  .bar-fill {{ height: 100%; border-radius: 4px; }}
+  .bar-val {{ margin-left: 8px; font-size: 12px; color: #666; min-width: 30px; }}
+  .color-se {{ background: #5470c6; }}
+  .color-security {{ background: #ee6666; }}
+  .color-ai {{ background: #91cc75; }}
+  .color-nlp {{ background: #fac858; }}
+  .color-hci {{ background: #73c0de; }}
+  .color-default {{ background: #999; }}
 </style>
 </head>
 <body>
 <div class="header">
-  <h1>Agent Survey Dashboard</h1>
+  <h1>{topic_name}</h1>
   <div class="nav">
+    <a href="../index.html" class="back">&#8592; Topics</a>
     <a href="index.html" class="active">Overview</a>
+    <a href="analysis.html">Analysis</a>
     <a href="taxonomy.html">Taxonomy</a>
     <a href="mindmap.html">Mindmap</a>
     <a href="papers.html">Papers</a>
@@ -263,6 +512,10 @@ def _write_index(docs_dir: Path) -> None:
 </div>
 <div class="container">
   <div class="stats-grid" id="stats"></div>
+  <div class="section">
+    <h2>Pipeline Progress</h2>
+    <div class="pipeline-grid" id="pipeline"></div>
+  </div>
   <div class="section">
     <h2>Application Domain</h2>
     <div id="app-domain"></div>
@@ -281,40 +534,75 @@ def _write_index(docs_dir: Path) -> None:
   </div>
 </div>
 <script>
-async function load() {
-  const res = await fetch('data.json?v=' + Date.now());
-  const data = await res.json();
-  const stats = data.stats;
+async function load() {{
+  const [dataRes, statsRes] = await Promise.all([
+    fetch('data.json?v=' + Date.now()),
+    fetch('stats.json?v=' + Date.now())
+  ]);
+  const data = await dataRes.json();
+  const stats = await statsRes.json();
+
+  const s = data.stats;
   document.getElementById('stats').innerHTML = `
-    <div class="stat-card"><div class="num">${stats.total}</div><div class="label">Core Papers</div></div>
-    <div class="stat-card"><div class="num">${stats.with_taxonomy}</div><div class="label">With Taxonomy</div></div>
-    <div class="stat-card"><div class="num">${stats.with_citation}</div><div class="label">With Citation</div></div>
-    <div class="stat-card"><div class="num">${stats.with_pdf}</div><div class="label">With PDF</div></div>
-    <div class="stat-card"><div class="num">${data.graph.edges.length}</div><div class="label">Citation Edges</div></div>
+    <div class="stat-card"><div class="num">${{s.total}}</div><div class="label">Core Papers</div></div>
+    <div class="stat-card"><div class="num">${{s.with_taxonomy}}</div><div class="label">With Taxonomy</div></div>
+    <div class="stat-card"><div class="num">${{s.with_citation}}</div><div class="label">With Citation</div></div>
+    <div class="stat-card"><div class="num">${{s.with_pdf}}</div><div class="label">With PDF</div></div>
+    <div class="stat-card"><div class="num">${{data.graph.edges.length}}</div><div class="label">Citation Edges</div></div>
   `;
 
-  function renderBars(containerId, items, max) {
+  const pipe = stats.pipeline;
+  const order = [
+    ['harvest','Harvest'],
+    ['enrich','Enrich'],
+    ['enrich_web','Enrich-Web'],
+    ['prefilter','Prefilter'],
+    ['classify','Classify'],
+    ['classify_topics','Classify-Topics'],
+    ['dedup','Dedup'],
+    ['taxonomy','Taxonomy'],
+    ['fulltext','Fulltext'],
+    ['citation','Citation'],
+    ['deepdive','Deepdive'],
+    ['report','Report'],
+    ['short_titles','Short-Titles'],
+    ['category_desc','Category-Desc'],
+    ['summary','Summary'],
+    ['generate_docs','Generate-Docs']
+  ];
+  document.getElementById('pipeline').innerHTML = order.map(([k,label]) => {{
+    const st = pipe[k];
+    const cls = st.state === 'done' ? 'pipe-done' : st.state === 'partial' ? 'pipe-partial' : 'pipe-pending';
+    let info = '';
+    if (st.total !== undefined) info = st.total;
+    else if (st.done !== undefined && st.need !== undefined) info = `${{st.done}}/${{st.need}}`;
+    else if (st.hit !== undefined) info = st.hit;
+    else if (st.core !== undefined) info = `c:${{st.core}}`;
+    return `<div class="pipe-item"><div class="pipe-dot ${{cls}}"></div><div class="pipe-name">${{label}}</div><div class="pipe-data">${{info}}</div></div>`;
+  }}).join('');
+
+  function renderBars(containerId, items, max) {{
     const el = document.getElementById(containerId);
     el.innerHTML = items.map(([name, count]) => `
       <div class="bar">
-        <div class="bar-name" title="${name}">${name}</div>
-        <div class="bar-track"><div class="bar-fill color-default" style="width:${(count/max*100).toFixed(1)}%"></div></div>
-        <div class="bar-val">${count}</div>
+        <div class="bar-name" title="${{name}}">${{name}}</div>
+        <div class="bar-track"><div class="bar-fill color-default" style="width:${{(count/max*100).toFixed(1)}}%"></div></div>
+        <div class="bar-val">${{count}}</div>
       </div>
     `).join('');
-  }
+  }}
 
   const tp = data.tree_papers;
-  const maxApp = Math.max(...Object.values(tp['application_domain'] || {}).map(x => x.length), 1);
-  const maxTech = Math.max(...Object.values(tp['technical_approach'] || {}).map(x => x.length), 1);
-  const maxGoal = Math.max(...Object.values(tp['research_goal'] || {}).map(x => x.length), 1);
-  const maxCross = Math.max(...Object.values(data.cross_counts || {}), 1);
+  const maxApp = Math.max(...Object.values(tp['application_domain'] || {{}}).map(x => x.length), 1);
+  const maxTech = Math.max(...Object.values(tp['technical_approach'] || {{}}).map(x => x.length), 1);
+  const maxGoal = Math.max(...Object.values(tp['research_goal'] || {{}}).map(x => x.length), 1);
+  const maxCross = Math.max(...Object.values(data.cross_counts || {{}}), 1);
 
-  renderBars('app-domain', Object.entries(tp['application_domain'] || {}).map(([k,v])=>[k,v.length]).sort((a,b)=>b[1]-a[1]).slice(0,20), maxApp);
-  renderBars('tech-approach', Object.entries(tp['technical_approach'] || {}).map(([k,v])=>[k,v.length]).sort((a,b)=>b[1]-a[1]).slice(0,20), maxTech);
-  renderBars('research-goal', Object.entries(tp['research_goal'] || {}).map(([k,v])=>[k,v.length]).sort((a,b)=>b[1]-a[1]).slice(0,20), maxGoal);
-  renderBars('cross-tags', Object.entries(data.cross_counts || {}).sort((a,b)=>b[1]-a[1]), maxCross);
-}
+  renderBars('app-domain', Object.entries(tp['application_domain'] || {{}}).map(([k,v])=>[k,v.length]).sort((a,b)=>b[1]-a[1]).slice(0,20), maxApp);
+  renderBars('tech-approach', Object.entries(tp['technical_approach'] || {{}}).map(([k,v])=>[k,v.length]).sort((a,b)=>b[1]-a[1]).slice(0,20), maxTech);
+  renderBars('research-goal', Object.entries(tp['research_goal'] || {{}}).map(([k,v])=>[k,v.length]).sort((a,b)=>b[1]-a[1]).slice(0,20), maxGoal);
+  renderBars('cross-tags', Object.entries(data.cross_counts || {{}}).sort((a,b)=>b[1]-a[1]), maxCross);
+}}
 load();
 </script>
 </body>
@@ -1659,6 +1947,241 @@ load();
 </body>
 </html>"""
     (docs_dir / "mindmap.html").write_text(html, encoding="utf-8")
+
+
+def _write_analysis(docs_dir: Path, topic_name: str, stats: dict) -> None:
+    venue_year = stats.get("venue_year", {})
+    overview = stats.get("overview", {})
+    pipeline = stats.get("pipeline", {})
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analysis — {topic_name}</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; }}
+  .header {{ background: #fff; padding: 16px 24px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; }}
+  .header h1 {{ font-size: 18px; }}
+  .nav {{ display: flex; gap: 8px; align-items: center; }}
+  .nav a {{ padding: 6px 14px; border-radius: 6px; text-decoration: none; color: #333; font-size: 14px; background: #f0f0f0; }}
+  .nav a:hover {{ background: #e0e0e0; }}
+  .nav a.active {{ background: #333; color: #fff; }}
+  .nav .back {{ background: transparent; color: #666; }}
+  .container {{ max-width: 1200px; margin: 0 auto; padding: 24px; }}
+  .grid-2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }}
+  .grid-3 {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }}
+  .section {{ background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }}
+  .section h2 {{ font-size: 16px; margin-bottom: 12px; }}
+  .chart {{ width: 100%; height: 300px; }}
+  .chart-tall {{ width: 100%; height: 400px; }}
+  .metric-row {{ display: flex; gap: 16px; flex-wrap: wrap; }}
+  .metric {{ background: #fafafa; padding: 12px 16px; border-radius: 8px; border: 1px solid #eee; min-width: 120px; }}
+  .metric .num {{ font-size: 24px; font-weight: 700; color: #1a1a1a; }}
+  .metric .label {{ font-size: 12px; color: #666; margin-top: 2px; }}
+  .pipe-table {{ width: 100%; border-collapse: collapse; font-size: 13px; }}
+  .pipe-table th {{ text-align: left; padding: 8px 12px; background: #f5f5f5; border-bottom: 1px solid #e0e0e0; }}
+  .pipe-table td {{ padding: 8px 12px; border-bottom: 1px solid #f0f0f0; }}
+  .dot {{ display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }}
+  .dot-done {{ background: #34d399; }}
+  .dot-partial {{ background: #fbbf24; }}
+  .dot-pending {{ background: #d1d5db; }}
+  @media (max-width: 800px) {{ .grid-2, .grid-3 {{ grid-template-columns: 1fr; }} }}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>{topic_name} — Analysis</h1>
+  <div class="nav">
+    <a href="../index.html" class="back">&#8592; Topics</a>
+    <a href="index.html">Overview</a>
+    <a href="analysis.html" class="active">Analysis</a>
+    <a href="taxonomy.html">Taxonomy</a>
+    <a href="mindmap.html">Mindmap</a>
+    <a href="papers.html">Papers</a>
+    <a href="citation_graph.html">Citation Graph</a>
+  </div>
+</div>
+<div class="container">
+  <div class="section">
+    <h2>Overview</h2>
+    <div class="metric-row">
+      <div class="metric"><div class="num">{overview.get('total', 0):,}</div><div class="label">Total Papers</div></div>
+      <div class="metric"><div class="num">{overview.get('with_abstract', 0):,}</div><div class="label">With Abstract</div></div>
+      <div class="metric"><div class="num">{overview.get('prefilter_hit', 0):,}</div><div class="label">Prefilter Hit</div></div>
+      <div class="metric"><div class="num">{overview.get('core', 0):,}</div><div class="label">Core</div></div>
+      <div class="metric"><div class="num">{overview.get('related', 0):,}</div><div class="label">Related</div></div>
+      <div class="metric"><div class="num">{overview.get('adjacent', 0):,}</div><div class="label">Adjacent</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>Pipeline Progress</h2>
+    <div id="pipeline-table"></div>
+  </div>
+  <div class="grid-2">
+    <div class="section"><h2>Relevance Distribution</h2><div id="pie-chart" class="chart"></div></div>
+    <div class="section"><h2>Venue / Year Heatmap</h2><div id="heatmap-chart" class="chart"></div></div>
+  </div>
+</div>
+<script>
+const stats = {json.dumps(stats, ensure_ascii=False)};
+const overview = stats.overview;
+const pipeline = stats.pipeline;
+
+// Pipeline table
+const pipeOrder = [
+  ['harvest','Harvest'],
+  ['enrich','Enrich'],
+  ['enrich_web','Enrich-Web'],
+  ['prefilter','Prefilter'],
+  ['classify','Classify'],
+  ['classify_topics','Classify-Topics'],
+  ['dedup','Dedup'],
+  ['taxonomy','Taxonomy'],
+  ['fulltext','Fulltext'],
+  ['citation','Citation'],
+  ['deepdive','Deepdive'],
+  ['report','Report'],
+  ['short_titles','Short-Titles'],
+  ['category_desc','Category-Desc'],
+  ['summary','Summary'],
+  ['generate_docs','Generate-Docs']
+];
+document.getElementById('pipeline-table').innerHTML = `
+<table class="pipe-table">
+  <thead><tr><th>Status</th><th>Step</th><th>Data</th></tr></thead>
+  <tbody>
+    ${{pipeOrder.map(([k,label])=>{{
+      const st = pipeline[k];
+      const dot = st.state === 'done' ? 'dot-done' : st.state === 'partial' ? 'dot-partial' : 'dot-pending';
+      let info = '-';
+      if (st.total !== undefined) info = st.total;
+      else if (st.done !== undefined && st.need !== undefined) info = `${{st.done}} / ${{st.need}}`;
+      else if (st.hit !== undefined) info = st.hit;
+      else if (st.core !== undefined) info = `c:${{st.core}}`;
+      return `<tr><td><span class="dot ${{dot}}"></span>${{st.state}}</td><td>${{label}}</td><td>${{info}}</td></tr>`;
+    }}).join('')}}
+  </tbody>
+</table>`;
+
+// Pie chart
+const pie = echarts.init(document.getElementById('pie-chart'));
+pie.setOption({{
+  tooltip: {{ trigger: 'item' }},
+  series: [{{
+    type: 'pie',
+    radius: ['40%', '70%'],
+    data: [
+      {{ value: overview.core, name: 'Core' }},
+      {{ value: overview.related, name: 'Related' }},
+      {{ value: overview.adjacent, name: 'Adjacent' }}
+    ],
+    label: {{ formatter: '{{b}}: {{c}} ({{d}}%)' }},
+    color: ['#5470c6', '#91cc75', '#fac858']
+  }}]
+}});
+
+// Heatmap
+const vy = stats.venue_year || {{}};
+const venues = [...new Set(Object.keys(vy).map(k=>k.split('/')[0]))].sort();
+const years = [...new Set(Object.keys(vy).map(k=>parseInt(k.split('/')[1])))].sort((a,b)=>a-b);
+const heatData = [];
+Object.entries(vy).forEach(([k,v])=>{{
+  const [venue, year] = k.split('/');
+  heatData.push([venues.indexOf(venue), years.indexOf(parseInt(year)), v]);
+}});
+const heat = echarts.init(document.getElementById('heatmap-chart'));
+heat.setOption({{
+  tooltip: {{ position: 'top' }},
+  grid: {{ top: 10, bottom: 80, left: 120, right: 20 }},
+  xAxis: {{ type: 'category', data: years, splitArea: {{ show: true }} }},
+  yAxis: {{ type: 'category', data: venues, splitArea: {{ show: true }} }},
+  visualMap: {{ min: 0, max: Math.max(...Object.values(vy), 1), calculable: true, orient: 'horizontal', left: 'center', bottom: 10 }},
+  series: [{{ type: 'heatmap', data: heatData, label: {{ show: true }}, emphasis: {{ itemStyle: {{ shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.5)' }} }} }}]
+}});
+
+window.addEventListener('resize', () => {{ pie.resize(); heat.resize(); }});
+</script>
+</body>
+</html>"""
+    (docs_dir / "analysis.html").write_text(html, encoding="utf-8")
+
+
+def _write_root_index(cfg) -> None:
+    db = DB(cfg.abs_path("db"))
+    topics = []
+    for row in db._conn.execute("SELECT topic_name, display_name, description, created_at FROM topics ORDER BY topic_name").fetchall():
+        tn = row["topic_name"]
+        stats = _build_topic_stats(db, tn)
+        ov = stats.get("overview", {})
+        topics.append({
+            "name": tn,
+            "display": row["display_name"] or tn,
+            "desc": (row["description"] or "")[:120],
+            "created": row["created_at"] or "",
+            "total": ov.get("total", 0),
+            "core": ov.get("core", 0),
+            "related": ov.get("related", 0),
+            "adjacent": ov.get("adjacent", 0),
+        })
+    db.close()
+
+    cards = "\n".join(
+        f"""<div class="topic-card">
+  <a href="{t['name']}/index.html" class="topic-link"></a>
+  <h3>{t['display']}</h3>
+  <p>{t['desc']}...</p>
+  <div class="topic-stats">
+    <span><strong>{t['total']:,}</strong> total</span>
+    <span><strong>{t['core']:,}</strong> core</span>
+    <span><strong>{t['related']:,}</strong> related</span>
+    <span><strong>{t['adjacent']:,}</strong> adjacent</span>
+  </div>
+</div>"""
+        for t in topics
+    )
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Survey — Topics</title>
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; }}
+  .header {{ background: #fff; padding: 40px 24px 20px; text-align: center; border-bottom: 1px solid #e0e0e0; }}
+  .header h1 {{ font-size: 28px; font-weight: 700; color: #1a1a1a; }}
+  .header p {{ font-size: 16px; color: #666; margin-top: 8px; }}
+  .container {{ max-width: 1000px; margin: 0 auto; padding: 32px 24px; }}
+  .grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }}
+  .topic-card {{ background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); position: relative; transition: transform 0.15s, box-shadow 0.15s; }}
+  .topic-card:hover {{ transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }}
+  .topic-card h3 {{ font-size: 18px; margin-bottom: 8px; color: #1a1a1a; }}
+  .topic-card p {{ font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 16px; }}
+  .topic-stats {{ display: flex; gap: 16px; flex-wrap: wrap; }}
+  .topic-stats span {{ font-size: 12px; color: #888; }}
+  .topic-stats strong {{ color: #333; font-size: 14px; }}
+  .topic-link {{ position: absolute; inset: 0; border-radius: 12px; }}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Agent Survey</h1>
+  <p>Select a topic to explore the survey dashboard and analysis.</p>
+</div>
+<div class="container">
+  <div class="grid">
+    {cards}
+  </div>
+</div>
+</body>
+</html>"""
+    root = cfg.project_root / "docs" / "index.html"
+    root.write_text(html, encoding="utf-8")
+    print(f"[green]wrote root index to {root}[/green]")
 
 
 if __name__ == "__main__":

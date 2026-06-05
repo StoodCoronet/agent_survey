@@ -1,0 +1,331 @@
+# =============================================================================
+# Topic: Automated Research & Deep Research Systems
+# Survey systems that use AI/LLM/agents to automate or assist academic
+# literature investigation — the direct related-work space for survey_agent.
+#
+# Scope INCLUDES:
+#   - End-to-end automated deep research (multi-source search → synthesis)
+#   - Academic paper QA / chat systems (RAG over scholarly documents)
+#   - Systematic literature review (SLR) automation tools
+#   - Citation network / scholarly graph analysis systems with LLM
+#   - Knowledge base construction from academic text
+#   - Research assistant / copilot tools for scientists
+#   - Claim extraction, fact verification, evidence synthesis from papers
+#
+# Scope EXCLUDES (intentionally narrow):
+#   - Generic RAG systems (enterprise KB, customer support) not targeting papers
+#   - Pure NLP methods (NER, summarization) without a research-assistant system
+#   - Traditional bibliometrics / citation analysis without LLM/agent component
+#   - LLM tools for code/testing/debugging (see llm-se-tools topic)
+#   - Domain-specific ML models (bioinformatics, material science) without literature focus
+#
+# Why this matters: survey_agent lives in this space.  We need a clean,
+# bounded related-work landscape to position our contribution.
+# =============================================================================
+
+name: "Automated Research & Deep Research Systems"
+description: >
+  Systems that use AI, LLMs, or agents to automate academic literature
+  investigation: deep research, paper QA, SLR automation, citation analysis,
+  knowledge base construction from papers, and research-assistant tools.
+  Excludes generic RAG, code tools, and domain-specific ML without
+  literature focus.
+
+# ------ Prefilter keywords ------
+keywords:
+  agent_core:
+    - "deep research"
+    - "automated literature review"
+    - "automated survey"
+    - "systematic literature review automation"
+    - "SLR automation"
+    - "paper QA"
+    - "paper question answering"
+    - "academic search agent"
+    - "research assistant"
+    - "scientific discovery system"
+    - "knowledge base construction papers"
+    - "scholarly document understanding"
+    - "claim extraction"
+    - "evidence synthesis"
+    - "fact verification scientific"
+    - "citation graph analysis"
+    - "paper recommendation system"
+    - "literature mining"
+    - "academic RAG"
+    - "retrieval augmented generation academic"
+  agent_generic:
+    - "literature review"
+    - "literature survey"
+    - "systematic review"
+    - "domain expert system"
+    - "knowledge extraction papers"
+    - "scientific claim extraction"
+    - "paper summarization system"
+    - "research trend analysis"
+    - "bibliometric analysis LLM"
+    - "scholarly NLP"
+    - "academic text mining"
+    - "survey generation"
+  se_context:
+    - "evidence-based software engineering"
+    - "SLR software engineering"
+    - "systematic mapping study"
+    - "meta-analysis software"
+    - "knowledge graph construction"
+    - "citation network analysis"
+    - "paper replication"
+    - "research synthesis"
+  sec_context:
+    - "attribution"
+    - "source tracing"
+    - "grounding"
+    - "hallucination detection"
+    - "factual consistency"
+
+# ------ Search recall queries ------
+search_queries:
+  - "deep research agent"
+  - "automated literature review LLM"
+  - "systematic review automation"
+  - "paper QA system"
+  - "academic question answering LLM"
+  - "retrieval augmented generation scholarly documents"
+  - "knowledge base construction academic papers"
+  - "scientific claim extraction"
+  - "evidence synthesis LLM"
+  - "citation graph analysis system"
+  - "research assistant LLM"
+  - "paper recommendation system"
+  - "literature mining tool"
+  - "scholarly document understanding"
+  - "survey generation LLM"
+
+# ------ Classify (Stage 3) ------
+classify:
+  relevance_levels:
+    - core
+    - related
+    - adjacent
+    - irrelevant
+
+  domain_labels:
+    - "Deep Research System"
+    - "Paper QA / Chat System"
+    - "SLR / Survey Automation"
+    - "Citation / Scholarly Graph Analysis"
+    - "Knowledge Base Construction"
+    - "Claim / Fact Extraction"
+    - "Research Assistant / Copilot"
+    - "Evidence Synthesis"
+    - "Academic Search / Discovery"
+
+  method_labels:
+    - "System/Tool"
+    - "Benchmark/Dataset"
+    - "Empirical Study"
+    - "Survey/Review"
+    - "Framework/Architecture"
+    - "Evaluation Method"
+    - "Case Study"
+    - "Position Paper"
+
+  core_venues:
+    - ICSE
+    - FSE
+    - ASE
+    - EMNLP
+    - ACL
+    - NAACL
+    - AAAI
+    - NeurIPS
+    - ICML
+    - ICLR
+    - CHI
+    - WWW
+    - SIGIR
+    - KDD
+
+  system_prompt: |
+    You are a meticulous research assistant surveying systems that use
+    AI/LLM/agents to automate academic literature investigation.
+    Respond with strict JSON only.
+
+    Classification criteria:
+
+    1. RELEVANCE — four levels
+       • core — proposes or evaluates a system/tool for: automated deep
+         research, academic paper QA, systematic literature review
+         automation, citation/scholarly graph analysis with LLM,
+         knowledge base construction from papers, claim/fact extraction
+         and verification from scientific text, evidence synthesis,
+         or research-assistant tools.
+       • related — component technique relevant to automated research:
+         RAG for documents, summarization of academic text, citation
+         analysis, claim extraction, factual grounding/attribution,
+         or knowledge graph construction from text.
+       • adjacent — general NLP/AI work (document understanding,
+         generic RAG, LLM agents) that does NOT target academic
+         literature investigation.
+       • irrelevant — not about literature investigation, knowledge
+         synthesis, or scholarly document processing.
+
+    2. DOMAIN — pick ONE primary
+       • Deep Research System — end-to-end automated multi-source
+         research with search, reading, and synthesis.
+       • Paper QA / Chat System — interactive QA over paper collections.
+       • SLR / Survey Automation — tools for systematic literature
+         reviews or automated survey generation.
+       • Citation / Scholarly Graph Analysis — systems analyzing
+         citation networks or scholarly knowledge graphs.
+       • Knowledge Base Construction — building structured KBs from
+         academic text.
+       • Claim / Fact Extraction — extracting and verifying claims
+         from scientific papers.
+       • Research Assistant / Copilot — general research support tools.
+       • Evidence Synthesis — combining findings across papers.
+       • Academic Search / Discovery — intelligent paper search/discovery.
+
+    3. METHOD — pick 1–3 tags
+       • System/Tool — proposes or builds a concrete system.
+       • Benchmark/Dataset — introduces or uses a benchmark/dataset.
+       • Empirical Study — measurement, user study, or large-scale analysis.
+       • Survey/Review — surveys existing work in this space.
+       • Framework/Architecture — proposes a conceptual architecture.
+       • Evaluation Method — new metric or evaluation protocol.
+       • Case Study — real-world application or deployment report.
+       • Position Paper — argues for a new direction or paradigm.
+
+  user_prompt_template: |
+    You are labeling ONE paper for a survey of automated research systems
+    that use AI/LLM/agents for academic literature investigation.
+
+    Paper:
+    - Title: {title}
+    - Venue: {venue} ({year})
+    - Abstract: {abstract}
+
+    Label it with:
+
+    1. `relevance`: one of {relevance_levels}.
+       - core: system for automated deep research, paper QA, SLR
+         automation, citation analysis, KB construction from papers,
+         claim/fact extraction, evidence synthesis, or research assistant.
+       - related: component technique (RAG for docs, summarization,
+         citation analysis, claim extraction, grounding/attribution).
+       - adjacent: general NLP/AI not targeting academic literature.
+       - irrelevant: unrelated.
+
+    2. `domain_primary`: ONE from {domain_labels}. Required.
+
+    3. `domain_secondary`: zero or more from {domain_labels}. Omit if none.
+
+    4. `method_tags`: 1–3 from {method_labels}.
+
+    5. `tldr`: one sentence summarizing the paper's contribution.
+
+    Output format:
+    {{"relevance": "...", "domain_primary": "...", "domain_secondary": [...], "method_tags": [...], "tldr": "..."}}
+
+# ------ Seed topics for stage 6 sub-topic classification ------
+seed_topics:
+  - "Deep Research Systems"
+  - "Paper QA and Chat Systems"
+  - "Systematic Literature Review Automation"
+  - "Citation and Scholarly Graph Analysis"
+  - "Knowledge Base Construction from Papers"
+  - "Claim Extraction and Fact Verification"
+  - "Evidence Synthesis"
+  - "Academic Search and Discovery"
+  - "Research Assistant and Copilot Tools"
+
+# ------ Taxonomy (Stage 7) ------
+taxonomy:
+  trees:
+    system_type:
+      label: "System Type"
+      categories:
+        - name: "Deep Research (end-to-end search + synthesis)"
+        - name: "Paper QA / Chat"
+        - name: "SLR / Survey Automation"
+        - name: "Citation / Graph Analysis"
+        - name: "Knowledge Base Construction"
+        - name: "Claim / Fact Extraction"
+        - name: "Research Assistant / Copilot"
+    technique:
+      label: "Core Technique"
+      categories:
+        - name: "Retrieval-Augmented Generation"
+        - name: "Multi-Document Synthesis"
+        - name: "Structured Information Extraction"
+        - name: "Citation Graph Analysis"
+        - name: "Embedding + Vector Search"
+        - name: "LLM-as-Judge Evaluation"
+        - name: "Agent-based Search"
+        - name: "Claim Verification"
+    domain:
+      label: "Literature Domain"
+      categories:
+        - name: "General Academic (multi-domain)"
+        - name: "Software Engineering"
+        - name: "AI / ML / NLP"
+        - name: "Biomedical / Life Sciences"
+        - name: "Social Sciences"
+  cross_cutting_tags:
+    - "Open Source"
+    - "Proprietary / Commercial"
+    - "Uses LLM API"
+    - "Requires Local Model"
+    - "Human-in-the-Loop"
+    - "Fully Automated"
+    - "Multi-Modal (Figures/Tables)"
+    - "Text-Only"
+    - "Persistent Knowledge Base"
+    - "Session-Only / Stateless"
+    - "Evaluated via User Study"
+    - "Evaluated via Automated Metrics"
+  flat_labels: {}
+
+  # Auto-maintenance settings
+  auto_create_leaves: true
+  auto_create_threshold: 3
+  auto_create_judge_model: "deepseek-v4-pro"
+  auto_create_min_papers: 3
+  auto_create_write_yaml: true
+  auto_create_fallback: true
+
+# ------ Deepdive extraction fields (Stage 5) ------
+deepdive:
+  system_prompt: |
+    You are extracting structured information about an automated research
+    or deep research system from an academic paper.
+  user_prompt_template: |
+    Paper: {title}
+    Authors: {authors}
+    Venue: {venue} {year}
+    Abstract: {abstract}
+
+    Full text excerpt:
+    {fulltext_excerpt}
+
+    Extract the following structured fields:
+    1. system_name: name of the proposed system
+    2. system_type: [tool, framework, benchmark, study, survey, position]
+    3. core_technique: primary technique [RAG, multi-doc synthesis,
+       structured extraction, citation analysis, agent search,
+       claim verification, embedding search, other]
+    4. input_modality: what it consumes [PDFs, abstracts, search results,
+       citation graph, user queries, other]
+    5. output_modality: what it produces [answers, summaries, structured
+       facts, knowledge graph, survey report, other]
+    6. persistent_kb: maintains persistent knowledge? [yes, no]
+    7. evidence_tracing: traces claims to source? [yes, no]
+    8. human_in_loop: human-in-the-loop design? [yes, no]
+    9. evaluation_method: [automated benchmark, user study, case study,
+       none, other]
+    10. llm_used: which LLM was used (if specified)
+    11. open_source: code available? [yes, no]
+    12. key_claims: 2-4 key contributions
+    13. limitations_noted: limitations acknowledged
+    14. relevance_to_survey_agent: how relevant to building an automated
+        literature survey system (1-5 scale, with justification)

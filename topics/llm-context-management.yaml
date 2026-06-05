@@ -1,0 +1,415 @@
+# =============================================================================
+# Topic: llm-context-management
+# Custom survey topic
+# =============================================================================
+
+name: "llm-context-management"
+description: "LLM context management — long context windows, prompt compression, KV-cache, context retrieval, multi-turn state"
+
+survey_mining:
+  topic_desc: |
+    LLM context management: mechanisms for extending, compressing, organizing,
+    and detecting how large language models handle long input contexts.
+    Core directions:
+    1. Context window extension: position encoding (RoPE, ALiBi, YaRN, NTK-aware),
+       attention architecture (sparse, linear, ring attention), extrapolation vs interpolation.
+    2. Context compression & selection: prompt compression, token pruning,
+       summarization-based compression, selective retention, dialogue-state compression.
+    3. Memory architecture: hierarchical memory (short-term + long-term), external memory
+       (vector DB, knowledge graph), memory budget allocation, selective forgetting / rewriting.
+    4. KV-cache optimization: KV-cache quantization/pruning/early eviction,
+       sparse KV attention (e.g., H2O, SnapKV), KV-cache vs context-length coupling.
+    5. Context detection & inference:
+       - Black-box side-channel: infer strategy type and parameters via API call analysis
+         (response time, output quality changes, input-length thresholds).
+       - White-box interpretability: analyze open-model weights/code/attention patterns
+         to understand internal context handling.
+       - Benchmark-based probing: designed long-context tasks to reverse-engineer behavior.
+    6. Context injection attack / defense: prompt injection leveraging context-window
+       characteristics; context leakage detection.
+    7. Context interpretability: attention-pattern analysis, context-quality degradation
+       under model compression.
+    NOT included:
+    - General RAG (retrieval quality, reranking, embedding) unless about context budget.
+    - General dialogue systems (task-oriented, open-domain) unless about memory architecture.
+    - Adversarial robustness, fairness, hallucination unrelated to context.
+    - GNN, robotics, computer vision, bioinformatics, or other unrelated domains.
+    - Software-engineering topics (code clone, smart-contract security, decompilation).
+  discovery_system: |
+    You are a research librarian identifying survey/review/benchmark papers about LLM context management.
+    A "survey" must be one of: systematic review, literature review, survey, taxonomy,
+    OR a benchmark study that covers MULTIPLE works and evaluates long-context / memory / KV-cache behavior.
+    Include ONLY if the paper is about:
+    - Long-context mechanisms (position encoding, attention architecture, extrapolation)
+    - Context compression / prompt pruning / summarization / selective retention
+    - Memory architecture (hierarchical, external, budget allocation, forgetting)
+    - KV-cache optimization (quantization, pruning, eviction, sparse attention)
+    - Context detection / inference (black-box side-channel, white-box interpretability, probing)
+    - Context injection / leakage related to window characteristics
+    - Context interpretability or quality degradation under compression
+    EXCLUDE if about:
+    - General RAG retrieval quality, reranking, embedding learning
+    - General dialogue systems without memory architecture focus
+    - Adversarial robustness, fairness, hallucination not tied to context length
+    - GNN, robotics, computer vision, bioinformatics, chemistry, physics
+    - Software engineering (code clone, testing, smart-contract security, decompilation)
+    - Climate, agriculture, food science, education, HCI without LLM context focus
+    Return JSON: {"surveys": [{"idx": 0, "title": "Exact Title"}, {"idx": 3, "title": "Another Exact Title"}]}
+    Use the EXACT index and title from the list below. If idx and title mismatch, trust the title. NOTHING else.
+  keyword_system: |
+    Extract technical keywords about LLM context management from these survey papers.
+    Return JSON: {"keywords": ["term1", "term2", ...]}
+
+keywords:
+  # ── Core keywords: hit ANY of these → paper is immediately relevant ──
+  agent_core:
+    # 1. Context Compression & Summarization
+    - "context compression"
+    - "compressed context"
+    - "prompt compression"
+    - "memory compression"
+    - "hierarchical summarization"
+    - "incremental summarization"
+    - "selective context retention"
+    - "context pruning"
+    - "token pruning"
+    # 2. Memory Architecture
+    - "long-term memory"
+    - "working memory"
+    - "short-term memory"
+    - "episodic memory"
+    - "semantic memory"
+    - "external memory retrieval"
+    - "memory consolidation"
+    - "memory augmentation"
+    - "memory architecture"
+    - "hierarchical memory"
+    # 3. Retrieval & Knowledge
+    - "retrieval-augmented generation"
+    - "retrieval augmentation"
+    - "external knowledge integration"
+    - "knowledge retrieval"
+    - "multi-document context"
+    - "knowledge graph augmentation"
+    - "contextual retrieval"
+    # 4. Dialogue & Session
+    - "multi-turn dialogue"
+    - "multi-turn conversation"
+    - "conversation history"
+    - "conversation history management"
+    - "dialogue state tracking"
+    - "session management"
+    - "cross-turn context"
+    - "cross-turn retention"
+    # 5. Agent & Reasoning
+    - "context-aware agent"
+    - "context-aware reasoning"
+    - "agent state management"
+    - "agent memory architecture"
+    - "stateful agent"
+    - "contextual reasoning chain"
+    # 6. Tool-Use & Skill
+    - "tool-use context"
+    - "tool use context"
+    - "skill context"
+    - "function calling context"
+    - "API context management"
+    - "tool execution history"
+    - "skill composition"
+    # 7. Security
+    - "prompt injection defense"
+    - "prompt injection"
+    - "context defense"
+    - "context isolation"
+    - "sensitive information filtering"
+    - "context privacy protection"
+    # 8. Long-context phenomena
+    - "lost-in-the-middle"
+    - "lost in the middle"
+    - "attention sink"
+    - "position bias"
+    - "context window extension"
+    - "context length scaling"
+
+  # ── Generic keywords: must pair with se_context OR sec_context ──
+  agent_generic:
+    - "context window"
+    - "context management"
+    - "context handling"
+    - "memory system"
+    - "knowledge integration"
+    - "information retrieval"
+    - "dialogue management"
+    - "conversation management"
+    - "agent framework"
+    - "expert system"
+    - "reasoning chain"
+    - "in-context learning"
+    - "many-shot learning"
+    - "RAG"
+    - "retriever"
+
+  # ── SE-context: software/system angle ──
+  se_context:
+    - "system"
+    - "framework"
+    - "architecture"
+    - "implementation"
+    - "scalable"
+    - "efficient"
+    - "optimization"
+    - "design"
+    - "module"
+    - "pipeline"
+    - "benchmark"
+    - "evaluation"
+
+  # ── Security-context: safety/privacy angle ──
+  sec_context:
+    - "security"
+    - "safety"
+    - "privacy"
+    - "adversarial"
+    - "attack"
+    - "defense"
+    - "robustness"
+    - "leakage"
+    - "poisoning"
+    - "jailbreak"
+
+search_queries:
+  - "example query"
+
+classify:
+  relevance_levels:
+    - core
+    - related
+    - adjacent
+    - irrelevant
+  domain_labels:
+    - "Context Compression"
+    - "Memory Architecture"
+    - "Retrieval / Knowledge Augmentation"
+    - "Dialogue / Session Management"
+    - "Context-Aware Agent"
+    - "Context Security / Defense"
+    - "Context Extension"
+    - "Context Detection / Inference"
+  method_labels:
+    - "Survey / Review"
+    - "Benchmark / Dataset"
+    - "Framework / System"
+    - "Method / Algorithm"
+    - "Empirical Study"
+    - "Theoretical Analysis"
+  system_prompt: |
+    You are a meticulous research assistant classifying papers for a survey on **LLM Context Management in Applications** (chatbots, agents, expert systems, and skill-based systems).
+
+    Focus on **application-level** context management: how systems organize, compress, retrieve, secure, and reason over context when LLMs are used in real-world applications.
+
+    EXCLUDE papers that are purely about:
+    - Low-level model optimizations (KV cache compression, quantization, pruning)
+    - Position encoding / attention architecture (RoPE, ALiBi, sparse attention, Flash Attention)
+    - General model training or fine-tuning without context-management focus
+    - Pure computer vision, robotics, or bioinformatics
+
+    Unless the paper explicitly connects these techniques to **context management in applications** (e.g., "we use KV cache compression to enable longer agent conversations"), mark them as "adjacent" or "irrelevant".
+
+    You must respond with strict JSON only.
+  user_prompt_template: |
+    Classify this paper for a survey on LLM Context Management in Applications.
+
+    Paper:
+    - Title: {title}
+    - Venue: {venue}
+    - Year: {year}
+    - Abstract: {abstract}
+
+    Relevance levels: {relevance_levels}
+    Domain labels: {domain_labels}
+    Method labels: {method_labels}
+
+    Return strict JSON:
+    {{
+      "relevance": "core|related|adjacent|irrelevant",
+      "domain_primary": "one of the domain labels",
+      "domain_secondary": "optional second domain",
+      "method_tags": ["one or more method labels"],
+      "tldr": "1-sentence summary of contribution (omit if irrelevant)",
+      "rationale": "why this relevance and domain (omit if irrelevant)"
+    }}
+  user_prompt_title_only: |
+    Classify this paper (title only) for a survey on LLM Context Management in Applications.
+
+    Paper:
+    - Title: {title}
+    - Venue: {venue}
+    - Year: {year}
+
+    Relevance levels: {relevance_levels}
+    Domain labels: {domain_labels}
+    Method labels: {method_labels}
+
+    Return strict JSON:
+    {{
+      "relevance": "core|related|adjacent|irrelevant",
+      "domain_primary": "one of the domain labels",
+      "domain_secondary": "optional second domain",
+      "method_tags": ["one or more method labels"],
+      "tldr": "1-sentence summary",
+      "rationale": "why this relevance and domain"
+    }}
+  batch_user_prompt_template: |
+    Classify {count} papers for a survey on LLM Context Management in Applications.
+
+    Relevance levels: {relevance_levels}
+    Domain labels: {domain_labels}
+    Method labels: {method_labels}
+
+    Papers:
+    {paper_blocks}
+
+    Return strict JSON array with exactly {count} objects, one per paper in order.
+    Each object must use these exact keys:
+    {{
+      "relevance": "core|related|adjacent|irrelevant",
+      "domain_primary": "one of the domain labels",
+      "domain_secondary": ["optional second domain"],
+      "method_tags": ["one or more method labels"],
+      "tldr": "1-sentence summary (omit for irrelevant papers)",
+      "rationale": "why this relevance and domain (omit for irrelevant papers)"
+    }}
+
+deepdive:
+  system_prompt: |
+    You are a careful research assistant extracting structured information.
+    Return strict JSON only.
+  user_prompt_template: |
+    Analyze this paper:
+    Title: {title}
+    ---
+    {body}
+    ---
+    Extract JSON with: problem, approach, evaluation, datasets, key_results.
+
+taxonomy:
+  system_prompt: |
+    You are an expert research taxonomist classifying LLM context-management papers into a multi-dimensional taxonomy.
+
+    Rules:
+    - A paper can belong to MULTIPLE trees and MULTIPLE paths within each tree.
+    - Assign paths at the LEAF level (e.g. "Position Encoding & Context Extension/RoPE & Extrapolation", not just "Position Encoding & Context Extension").
+    - You MUST choose from the existing leaf nodes listed in the taxonomy below. Use EXACTLY the names as written.
+    - Do NOT invent new leaf names. Do NOT use kebab-case. Do NOT abbreviate or rename categories.
+    - If a paper does not fit any existing leaf, use "Other".
+    - Cross-cutting tags are secondary attributes, not primary tree paths.
+    - Output strict JSON only.
+  trees:
+    application-domain:
+      "Chatbots & Conversational Agents": []
+      "Autonomous Agents & Tool-use": []
+      "Coding Assistants & IDEs": []
+      "Multi-modal Applications": []
+      "Scientific Research & Analysis": []
+      "Enterprise & Productivity": []
+      "Information Retrieval & Search": []
+      "Data Analysis & Forecasting": []
+      "General-purpose & Foundational Research": []
+      "Domain-specific":
+        - "Health & Medical"
+        - "Education"
+        - "Legal & Finance"
+      "Other": []
+    technical-approach:
+      "Position Encoding & Context Extension":
+        - "RoPE & Extrapolation"
+        - "Interpolation (YaRN, NTK, PI)"
+        - "Alternative Position Encodings (ALiBi, etc.)"
+        - "Long-context Attention Architecture"
+        - "Other"
+      "KV-Cache Optimization":
+        - "KV-Cache Quantization & Compression"
+        - "KV-Cache Pruning & Eviction"
+        - "Sparse KV Attention"
+        - "Other"
+      "Context Compression & Selection":
+        - "Prompt Compression"
+        - "Token Pruning & Selection"
+        - "Summarization-based Compression"
+        - "Other"
+      "Memory Architecture":
+        - "Short-term / Working Memory"
+        - "Long-term External Memory (Vector DB, KG)"
+        - "Memory Budget, Forgetting & Retrieval"
+        - "Other"
+      "Context Retrieval & Augmentation":
+        - "In-context Demonstration Selection"
+        - "Retrieval-Augmented Generation (RAG)"
+        - "Other"
+      "Context-aware Reasoning & Planning":
+        - "Chain-of-Thought & Step-by-step Reasoning"
+        - "Multi-step Planning"
+        - "Tool-use & Agent Planning"
+        - "Other"
+      "Context Security & Trustworthiness":
+        - "Prompt Injection & Jailbreak Defense"
+        - "Context Leakage & Privacy"
+        - "Hallucination Mitigation in Long Context"
+        - "Other"
+      "Session & Dialogue Management":
+        - "Dialogue State Tracking"
+        - "Multi-turn Context Coherence"
+        - "Other"
+      "Context Evaluation & Understanding":
+        - "Long-context Benchmarks (Needle, Passkey)"
+        - "Context Utilization & Attribution Analysis"
+        - "Other"
+      "Other": []
+    research-goal:
+      "Novel Method / Algorithm": []
+      "Framework / System": []
+      "Benchmark / Dataset": []
+      "Empirical Study / Analysis": []
+      "Theoretical Analysis": []
+      "Survey / Position Paper": []
+      "Other": []
+  cross_cutting_tags:
+    - "LLM"
+    - "Multi-agent"
+    - "Evaluation"
+    - "Safety"
+  flat_labels: {}
+  auto_create_leaves: false
+  auto_create_threshold: 0.8
+  # ── Fully-automatic maintenance with deepseek-v4-pro judge ──
+  auto_create_judge_model: "deepseek-v4-pro"
+  auto_create_min_papers: 5
+  auto_create_write_yaml: false
+  auto_create_fallback: false
+  user_prompt_template: |
+    Classify the following papers using this taxonomy:
+
+    {tree_description}
+
+    For each paper, assign:
+    1. One or more leaf paths per tree (e.g. "Position Encoding & Context Extension/RoPE & Extrapolation")
+    2. Zero or more cross-cutting tags
+
+    Papers to classify ({count}):
+    ---
+    {paper_blocks}
+    ---
+
+    Return strict JSON:
+    {{
+      "papers": [
+        {{
+          "paper_idx": 1,
+          "application_domain": ["Domain-specific/Health & Medical"],
+          "technical_approach": ["Position Encoding & Context Extension/RoPE & Extrapolation"],
+          "research_goal": ["Benchmark / Dataset"],
+          "cross_cutting": ["Evaluation"],
+          "new_leaves": []
+        }}
+      ]
+    }}

@@ -7,7 +7,7 @@ from typing import Iterator
 
 import httpx
 
-from agent_survey.sources.dblp import make_paper_id
+from agent_survey.services.dblp import make_paper_id
 
 
 def fetch_json_papers(
@@ -83,8 +83,11 @@ def fetch_json_papers(
             "source_flags": ["external_json", venue_name.lower()],
             "abstract": abstract,
         }
+        # Ensure unique paper_id per (venue, year, uid) so that different
+        # years of the same external mini-conf do not overwrite each other.
+        unique_key = f"{venue_name.lower()}:{year}:{uid}" if uid else None
         paper["paper_id"] = make_paper_id(
-            {"dblp_key": uid, "doi": doi, "title": title, "year": year}
+            {"dblp_key": unique_key, "doi": doi, "title": title, "year": year}
         )
         yield paper
 

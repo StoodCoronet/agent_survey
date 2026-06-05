@@ -1,0 +1,403 @@
+# =============================================================================
+# Topic: LLM-based Tools & Systems
+# Survey tool/demo/system papers that use LLMs as a core technique to build
+# practical systems solving engineering, knowledge, or data-processing tasks.
+#
+# Scope INCLUDES:
+#   - Code engineering tools (generation, testing, debugging, repair, review)
+#   - Data processing / analysis / transformation tools (e.g. TradeSweep)
+#   - Document / knowledge management tools
+#   - Research assistance / deep research / literature investigation tools
+#   - Human-in-the-loop systems with LLM backends
+#   - Agent-based systems for practical tasks (SWE-agent, Devin-like)
+#   - Domain-specific LLM tools (bioinformatics, legal, education, etc.)
+#
+# Scope EXCLUDES (critical boundary):
+#   - Pure model training / fine-tuning / architecture papers without
+#     a concrete tool/system contribution (e.g. "we train a 7B code model")
+#   - Empirical studies that use LLMs but do not propose a new tool/system
+#   - Survey, position, or vision papers without implementation
+#   - Theoretical algorithms without a deployed artifact
+#
+# Why this matters: This topic answers "what makes an LLM tool paper
+# publishable at top venues?"  TradeSweep (ICSE 2025) is the archetype:
+# focused problem + working system + rigorous evaluation.  Deep research
+# systems belong here too — they are LLM tools for literature investigation.
+# =============================================================================
+
+name: "LLM-based Tools & Systems"
+description: >
+  Tool, demo, and system papers that use LLMs as a core technique to build
+  practical systems: code engineering, data processing, document/knowledge
+  management, research assistance, and domain-specific tools.  Excludes
+  pure model training, empirical studies without tool contribution, and
+  theoretical work without an artifact.
+
+# ------ Prefilter keywords ------
+keywords:
+  agent_core:
+    - "LLM tool"
+    - "LLM-based tool"
+    - "LLM system"
+    - "LLM-based system"
+    - "code generation tool"
+    - "automated testing LLM"
+    - "test generation LLM"
+    - "program repair LLM"
+    - "automated debugging LLM"
+    - "code review LLM"
+    - "vulnerability detection LLM"
+    - "documentation generation LLM"
+    - "program comprehension LLM"
+    - "code refactoring LLM"
+    - "code translation LLM"
+    - "human-in-the-loop LLM"
+    - "LLM agent system"
+    - "coding agent"
+    - "swe-agent"
+    - "tool demo"
+    - "artifact evaluation"
+    - "deep research tool"
+    - "automated survey tool"
+    - "literature review tool"
+    - "paper analysis tool"
+    - "data preprocessing LLM"
+    - "data cleaning LLM"
+    - "spreadsheet LLM"
+    - "document processing LLM"
+    - "knowledge management LLM"
+    - "research assistant tool"
+    - "scientific discovery tool"
+  agent_generic:
+    - "large language model application"
+    - "LLM application"
+    - "LLM for software engineering"
+    - "AI-assisted development"
+    - "AI pair programming"
+    - "LLM code assistant"
+    - "generative AI software"
+    - "LLM program synthesis"
+    - "neural code generation"
+    - "LLM bug fix"
+    - "LLM patch generation"
+    - "LLM data analysis"
+    - "LLM document understanding"
+    - "LLM knowledge extraction"
+    - "automated research LLM"
+    - "LLM survey generation"
+  se_context:
+    - "software engineering tool"
+    - "program analysis tool"
+    - "static analysis LLM"
+    - "dynamic analysis LLM"
+    - "symbolic execution LLM"
+    - "fuzzing LLM"
+    - "mutation testing LLM"
+    - "regression testing LLM"
+    - "software maintenance LLM"
+    - "technical debt LLM"
+    - "data processing tool"
+    - "data transformation tool"
+    - "spreadsheet tool"
+    - "end-user programming LLM"
+  sec_context:
+    - "secure code generation"
+    - "vulnerability repair"
+    - "exploit generation LLM"
+    - "malware detection LLM"
+    - "security audit LLM"
+    - "data privacy LLM tool"
+
+# ------ Search recall queries ------
+search_queries:
+  - "LLM tool software engineering ICSE"
+  - "large language model tool demo"
+  - "code generation tool ASE"
+  - "automated testing LLM tool"
+  - "program repair LLM system"
+  - "code review LLM tool"
+  - "documentation generation LLM"
+  - "LLM agent system"
+  - "human-in-the-loop code generation"
+  - "vulnerability detection LLM tool"
+  - "data preprocessing LLM spreadsheet"
+  - "LLM debugging tool"
+  - "coding agent system"
+  - "program synthesis tool demo"
+  - "LLM-based development tool evaluation"
+  - "deep research tool system"
+  - "automated literature review tool"
+  - "LLM data cleaning tool"
+  - "LLM document processing system"
+  - "knowledge management LLM tool"
+
+# ------ Classify (Stage 3) ------
+classify:
+  relevance_levels:
+    - core
+    - related
+    - adjacent
+    - irrelevant
+
+  domain_labels:
+    - "Code Generation / Synthesis"
+    - "Testing / Test Generation"
+    - "Debugging / Fault Localization"
+    - "Program Repair / Patch Generation"
+    - "Code Review / Quality Analysis"
+    - "Vulnerability / Security Analysis"
+    - "Documentation / Comprehension"
+    - "Refactoring / Translation"
+    - "Data Processing / Analysis / Transformation"
+    - "Document / Knowledge Management"
+    - "Research Assistance / Deep Research"
+    - "Domain-Specific Tool"
+    - "General-Purpose Assistant / Agent"
+
+  method_labels:
+    - "System/Tool"
+    - "Benchmark/Dataset"
+    - "Empirical Study"
+    - "Survey/Review"
+    - "Framework/Architecture"
+    - "Evaluation Method"
+    - "Case Study"
+    - "Position Paper"
+
+  core_venues:
+    - ICSE
+    - FSE
+    - ASE
+    - ISSTA
+    - OOPSLA
+    - PLDI
+    - ESEC/FSE
+    - MSR
+    - ICSME
+    - SANER
+    - ISSRE
+    - TOSEM
+    - TSE
+    - NeurIPS
+    - ICML
+    - ICLR
+    - EMNLP
+    - ACL
+    - NAACL
+    - AAAI
+    - WWW
+    - SIGIR
+    - KDD
+    - CHI
+    - UIST
+
+  system_prompt: |
+    You are surveying tool and system papers that use LLMs to build
+    practical systems.  Respond with strict JSON only.
+
+    Classification criteria:
+
+    1. RELEVANCE — four levels
+       • core — proposes or evaluates a concrete tool/system that uses
+         LLMs to solve a practical task.  Examples: code generation tools,
+         testing/debugging/repair systems, data preprocessing tools
+         (e.g. spreadsheet cleaning), document/knowledge management
+         systems, research assistance tools (e.g. deep research, paper QA),
+         domain-specific LLM applications.  Must have an implemented
+         system or artifact (not just a model training recipe).
+       • related — component technique relevant to LLM tools: prompt
+         engineering, retrieval-augmented generation, LLM fine-tuning
+         for applications, embedding/retrieval, agent architectures,
+         human-in-the-loop design, or evaluation methodology for
+         LLM systems.
+       • adjacent — general LLM/agent work without a concrete tool/system
+         (e.g. pure model training, theoretical agent frameworks, or
+         commercial products without academic evaluation).
+       • irrelevant — not about LLM-based tools or systems.
+
+       IMPORTANT: Distinguish "tool/system paper" from "training paper":
+       - Tool paper: "We built X that uses LLM to do Y" (evaluate on tasks)
+       - Training paper: "We trained a 7B model on Z dataset" (evaluate on
+         benchmarks like HumanEval, MMLU) → adjacent unless it builds a
+         concrete application system.
+
+    2. DOMAIN — pick ONE primary
+       • Code Generation / Synthesis — generating, completing, or
+         translating code with LLMs.
+       • Testing / Test Generation — automated test case/oracle generation.
+       • Debugging / Fault Localization — locating or explaining bugs.
+       • Program Repair / Patch Generation — automatically fixing defects.
+       • Code Review / Quality Analysis — static analysis, smell detection,
+         review assistance.
+       • Vulnerability / Security Analysis — security-focused detection/repair.
+       • Documentation / Comprehension — doc generation, code summarization.
+       • Refactoring / Translation — code transformation, modernization.
+       • Data Processing / Analysis / Transformation — cleaning,
+         transforming, or analyzing data (e.g. TradeSweep for spreadsheets,
+         log analysis, config management).
+       • Document / Knowledge Management — document understanding,
+         knowledge base construction, information extraction from documents.
+       • Research Assistance / Deep Research — tools for literature
+         investigation, paper analysis, survey generation (overlap with
+         automated-research topic but viewed as "tool" here).
+       • Domain-Specific Tool — tools for specific domains (bioinformatics,
+         legal, education, finance) using LLMs.
+       • General-Purpose Assistant / Agent — multi-purpose agents
+         (SWE-agent, coding agents, general assistants).
+
+    3. METHOD — pick 1–3 tags
+       • System/Tool — proposes or builds a concrete system.
+       • Benchmark/Dataset — introduces or uses a benchmark/dataset.
+       • Empirical Study — measurement, user study, or large-scale analysis.
+       • Survey/Review — surveys existing tools.
+       • Framework/Architecture — proposes a conceptual architecture.
+       • Evaluation Method — new metric or evaluation protocol.
+       • Case Study — real-world application report.
+       • Position Paper — argues for a new direction.
+
+  user_prompt_template: |
+    You are labeling ONE paper for a survey of LLM-based tools and systems.
+
+    Paper:
+    - Title: {title}
+    - Venue: {venue} ({year})
+    - Abstract: {abstract}
+
+    Label it with:
+
+    1. `relevance`: one of {relevance_levels}.
+       - core: concrete LLM tool/system for code engineering, data
+         processing, document management, research assistance, or
+         domain-specific tasks. Must have an implemented artifact.
+         NOT a pure model training paper (e.g. "we train a 7B model").
+       - related: component technique (prompt engineering, RAG,
+         fine-tuning for applications, agent architecture, evaluation).
+       - adjacent: pure model training, theoretical frameworks, or
+         commercial products without academic evaluation.
+       - irrelevant: unrelated.
+
+    2. `domain_primary`: ONE from {domain_labels}. Required.
+
+    3. `domain_secondary`: zero or more from {domain_labels}. Omit if none.
+
+    4. `method_tags`: 1–3 from {method_labels}.
+
+    5. `tldr`: one sentence summarizing the paper's contribution.
+
+    Output format:
+    {{"relevance": "...", "domain_primary": "...", "domain_secondary": [...], "method_tags": [...], "tldr": "..."}}
+
+# ------ Seed topics for stage 6 sub-topic classification ------
+seed_topics:
+  - "Code Generation and Synthesis Tools"
+  - "Automated Testing and Test Generation"
+  - "Debugging and Fault Localization"
+  - "Program Repair and Patch Generation"
+  - "Code Review and Quality Analysis"
+  - "Vulnerability Detection and Security"
+  - "Documentation and Comprehension Tools"
+  - "Refactoring and Code Translation"
+  - "Data Processing and Transformation Tools"
+  - "Document and Knowledge Management"
+  - "Research Assistance and Deep Research"
+  - "Domain-Specific LLM Tools"
+  - "General-Purpose Agents and Assistants"
+
+# ------ Taxonomy (Stage 7) ------
+taxonomy:
+  trees:
+    task:
+      label: "Application Task"
+      categories:
+        - name: "Code Engineering"
+        - name: "Data Processing / Transformation"
+        - name: "Document / Knowledge Management"
+        - name: "Research Assistance"
+        - name: "Domain-Specific Application"
+        - name: "General-Purpose Assistant"
+    technique:
+      label: "Core LLM Technique"
+      categories:
+        - name: "Prompt Engineering"
+        - name: "Retrieval-Augmented Generation"
+        - name: "Fine-tuning / Domain Adaptation"
+        - name: "Agent-based Interaction"
+        - name: "Human-in-the-Loop"
+        - name: "Embedding / Retrieval"
+        - name: "Multi-Model Ensemble"
+    evaluation:
+      label: "Evaluation Approach"
+      categories:
+        - name: "Automated Benchmark"
+        - name: "User Study"
+        - name: "Case Study"
+        - name: "A/B Comparison"
+        - name: "Expert Evaluation"
+  cross_cutting_tags:
+    - "Open Source"
+    - "Proprietary / Commercial"
+    - "Uses LLM API"
+    - "Requires Local Model"
+    - "Human-in-the-Loop"
+    - "Fully Automated"
+    - "IDE Plugin"
+    - "Web Interface"
+    - "Command-Line Tool"
+    - "Evaluated on Real Projects"
+    - "Evaluated on Benchmark"
+    - "User Study Conducted"
+  flat_labels: {}
+
+  # Auto-maintenance settings
+  auto_create_leaves: true
+  auto_create_threshold: 3
+  auto_create_judge_model: "deepseek-v4-pro"
+  auto_create_min_papers: 3
+  auto_create_write_yaml: true
+  auto_create_fallback: true
+
+# ------ Deepdive extraction fields (Stage 5) ------
+deepdive:
+  system_prompt: |
+    You are extracting structured information about an LLM-based tool
+    or system from an academic paper.  Focus on tool characteristics,
+    problem scope, and evaluation rigor.
+  user_prompt_template: |
+    Paper: {title}
+    Authors: {authors}
+    Venue: {venue} {year}
+    Abstract: {abstract}
+
+    Full text excerpt:
+    {fulltext_excerpt}
+
+    Extract the following structured fields:
+    1. system_name: name of the proposed tool/system
+    2. system_type: [tool, plugin, webapp, CLI, framework, benchmark, study]
+    3. application_task: primary task [code engineering, data processing,
+       document management, research assistance, domain-specific,
+       general assistant, other]
+    4. core_technique: primary LLM technique [prompt engineering, RAG,
+       fine-tuning, agent, human-in-the-loop, embedding retrieval,
+       multi-model, other]
+    5. input: what the tool takes [natural language, code, data file,
+       document, user query, other]
+    6. output: what the tool produces [code, test, patch, cleaned data,
+       summary, answer, structured knowledge, other]
+    7. target_users: who uses it [developers, researchers, end users,
+       domain experts, other]
+    8. human_in_loop: does it involve human feedback? [yes, no]
+    9. open_source: code available? [yes, no, partial]
+    10. llm_used: which LLM (if specified)
+    11. evaluation_method: [automated benchmark, user study, case study,
+        expert evaluation, none, other]
+    12. baseline_compared: baselines compared against (if any)
+    13. key_metrics: main metrics reported (e.g. accuracy, BLEU, pass@k, SUS,
+        task completion time, error rate)
+    14. key_claims: 2-4 key contributions
+    15. limitations_noted: limitations acknowledged
+    16. relevance_to_tool_paper: how well does this exemplify a publishable
+        LLM tool (1-5 scale, with justification).
+        Consider: problem clarity, system completeness, evaluation rigor.
+        TradeSweep (benchmark + user study) and deep research systems
+        (end-to-end pipeline + automated metrics) are both good exemplars.

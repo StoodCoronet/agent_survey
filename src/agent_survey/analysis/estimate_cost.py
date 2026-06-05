@@ -8,20 +8,20 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
-from ..core.config import Config
+from ..core.config import Config, load_topic_config, resolve_topic
 from ..core.console import console
-from ..services.llm import (
-    STAGE3_SYSTEM,
-    STAGE3_USER_TEMPLATE,
-    STAGE3_USER_TITLE_ONLY,
-)
 
-CORE_VENUES = {"ICSE", "FSE", "ASE", "ISSTA", "SP", "CCS", "USS", "NDSS"}
 
 def _count_tokens_approx(text: str) -> int:
     return max(1, len(text) // 4)
 
-def run(cfg: Config) -> dict:
+
+def run(cfg: Config, topic_name: str = "") -> dict:
+    topic_name = resolve_topic(topic_name, cfg)
+    tc = load_topic_config(topic_name)
+    classify_cfg = tc.classify
+
+    core_venues = set(classify_cfg.core_venues)
     db_path = cfg.abs_path("db")
     conn = sqlite3.connect(str(db_path))
     rows = conn.execute("SELECT venue, title, abstract FROM papers").fetchall()
@@ -35,31 +35,39 @@ def run(cfg: Config) -> dict:
     output_tokens = 0
     OUTPUT_TOKENS_PER_PAPER = 120
 
+    sys_tokens = _count_tokens_approx(classify_cfg.system_prompt)
+
     for venue, title, abstract in rows:
-        is_core = venue in CORE_VENUES
+        is_core = venue in core_venues
         has_abs = bool(abstract and abstract.strip())
         if is_core:
             core_count += 1
             if has_abs:
                 core_with_abstract += 1
-                prompt = STAGE3_USER_TEMPLATE.format(
+                prompt = classify_cfg.user_prompt_template.format(
                     title=title or "", abstract=abstract, venue=venue or "", year="",
-                    relevance_levels="...", domain_labels="...", method_labels="...",
+                    relevance_levels=classify_cfg.relevance_levels,
+                    domain_labels=classify_cfg.domain_labels,
+                    method_labels=classify_cfg.method_labels,
                 )
             else:
-                prompt = STAGE3_USER_TITLE_ONLY.format(
+                prompt = classify_cfg.user_prompt_title_only.format(
                     title=title or "", venue=venue or "", year="",
-                    relevance_levels="...", domain_labels="...", method_labels="...",
+                    relevance_levels=classify_cfg.relevance_levels,
+                    domain_labels=classify_cfg.domain_labels,
+                    method_labels=classify_cfg.method_labels,
                 )
-            core_input_tokens += _count_tokens_approx(STAGE3_SYSTEM)
+            core_input_tokens += sys_tokens
             core_input_tokens += _count_tokens_approx(prompt)
         else:
             noncore_count += 1
-            prompt = STAGE3_USER_TITLE_ONLY.format(
+            prompt = classify_cfg.user_prompt_title_only.format(
                 title=title or "", venue=venue or "", year="",
-                relevance_levels="...", domain_labels="...", method_labels="...",
+                relevance_levels=classify_cfg.relevance_levels,
+                domain_labels=classify_cfg.domain_labels,
+                method_labels=classify_cfg.method_labels,
             )
-            noncore_input_tokens += _count_tokens_approx(STAGE3_SYSTEM)
+            noncore_input_tokens += sys_tokens
             noncore_input_tokens += _count_tokens_approx(prompt)
         output_tokens += OUTPUT_TOKENS_PER_PAPER
 
@@ -76,6 +84,7 @@ def run(cfg: Config) -> dict:
     console.print("=" * 60)
     console.print("DeepSeek API Cost Estimate")
     console.print("=" * 60)
+    console.print(f"\nTopic: {topic_name}")
     console.print(f"\nPapers:")
     console.print(f"  Core venues (title+abstract):    {core_count:,}")
     console.print(f"    - with abstract:               {core_with_abstract:,}")
@@ -102,6 +111,7 @@ def run(cfg: Config) -> dict:
     console.print(f"\nIf only prefilter hits ({HIT_RATE:.0%}):   {hit_papers:,} papers, ${hit_cost:.2f}")
 
     return {
+        "topic": topic_name,
         "total_papers": core_count + noncore_count,
         "core_papers": core_count,
         "noncore_papers": noncore_count,

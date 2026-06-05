@@ -16,15 +16,15 @@ cp .env.example .env                 # then fill DEEPSEEK_API_KEY
 ## Pipeline (each stage is resumable + prints stats)
 
 ```bash
-agent-survey harvest           # DBLP listings (all venues × years)
-agent-survey enrich            # S2/arXiv → abstract + arxiv_id + pdf_url
-agent-survey search-recall     # S2/arXiv keyword search → flip prefilter_hit
-agent-survey prefilter         # local keyword regex over title+abstract
-agent-survey stats             # inspect DB breakdown, decide whether to continue
-agent-survey classify          # DeepSeek-Flash: relevance + domain + method tags
-agent-survey fulltext          # download arXiv PDFs for classified papers
-agent-survey deepdive          # DeepSeek-Pro: structured extraction on full text
-agent-survey report            # Obsidian vault + survey.md + JSON
+survey_agent harvest           # DBLP listings (all venues × years)
+survey_agent enrich            # S2/arXiv → abstract + arxiv_id + pdf_url
+survey_agent search-recall     # S2/arXiv keyword search → flip prefilter_hit
+survey_agent prefilter         # local keyword regex over title+abstract
+survey_agent stats             # inspect DB breakdown, decide whether to continue
+survey_agent classify          # DeepSeek-Flash: relevance + domain + method tags
+survey_agent fulltext          # download arXiv PDFs for classified papers
+survey_agent deepdive          # DeepSeek-Pro: structured extraction on full text
+survey_agent report            # Obsidian vault + survey.md + JSON
 ```
 
 Or: `bash scripts/run_all.sh` — pauses before paid stages.

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-`agent-survey` crawls AI-agent papers (especially computer-use / GUI agent) from SE/Security/AI venues (2023--now), classifies them with DeepSeek, and produces an Obsidian-ready survey. See `PLAN.md` for the full design doc, `TAXONOMY_SPEC.md` for the taxonomy system, and `架构重构方案.md` for the architecture refactoring plan.
+`survey_agent` crawls academic papers from SE/Security/AI venues, classifies them with DeepSeek, and produces an Obsidian-ready survey. Supports multiple survey topics via per-topic configuration. See `PLAN.md` for the full design, `PLAN_MULTI_TOPIC.md` for the multi-topic refactoring spec.
 
 ## Setup
 
@@ -12,122 +12,134 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 conda activate survey_agent            # python 3.12
 uv pip install -e .
 cp .env.example .env                   # then fill DEEPSEEK_API_KEY
+python -m playwright install chromium  # for enrich-web
 ```
 
 ## Commands
 
+All pipeline commands accept `--topic` / `-t` to specify the survey topic (default: active topic from config.yaml).
+
 ```bash
-agent-survey harvest              # DBLP listings (venue × year)
-agent-survey search-recall        # S2/arXiv keyword search → flip prefilter_hit
-agent-survey enrich               # S2/arXiv/OpenReview → abstract + arxiv_id
-agent-survey enrich-web           # Playwright fallback for failed abstracts
-agent-survey prefilter            # local keyword regex over title+abstract
-agent-survey stats                # DB overview
-agent-survey classify             # DeepSeek-Flash batch classification
-agent-survey classify-topics      # incremental multi-label topic classification
-agent-survey dedup                # sub-topic dedup (3 scopes: core/related/adjacent)
-agent-survey taxonomy             # multi-dimensional taxonomy classification
-agent-survey fulltext             # download + extract arXiv PDFs
-agent-survey citation             # extract citations from PDFs + build graph
-agent-survey deepdive             # DeepSeek-Pro structured extraction on full text
-agent-survey short-titles         # generate abbreviated titles
-agent-survey category-desc        # bilingual taxonomy category descriptions
-agent-survey summary              # bilingual 3-4 sentence paper summaries
-agent-survey report               # Obsidian vault + JSON + Markdown
-agent-survey generate-docs        # static docs/ site from DB data
-agent-survey tui                  # interactive TUI menu
+# Topic management
+survey_agent topic list              # list available topics
+survey_agent topic show [name]      # show topic config overview
+survey_agent topic use <name>        # set active topic in config.yaml
+survey_agent topic new <name>        # create new topic scaffold
+
+# Pipeline (each stage resumable, --topic <name> to select topic)
+survey_agent harvest                 # DBLP listings (venue × year)
+survey_agent search-recall           # S2/arXiv keyword search → flip prefilter_hit
+survey_agent enrich                  # S2/arXiv/OpenReview → abstract + arxiv_id
+survey_agent enrich-web              # Playwright fallback for failed abstracts
+survey_agent prefilter               # topic-specific keyword regex filter
+survey_agent stats                   # DB overview (topic-aware)
+survey_agent classify                # DeepSeek-Flash batch classification (per-topic prompts)
+survey_agent classify-topics         # incremental multi-label topic classification
+survey_agent dedup                   # sub-topic dedup (3 scopes: core/related/adjacent)
+survey_agent taxonomy                # multi-dimensional taxonomy classification (per-topic trees)
+survey_agent fulltext                # download arXiv PDFs for classified papers
+survey_agent citation                # extract citations from PDFs + build D3 graph
+survey_agent deepdive                # DeepSeek-Pro structured extraction (per-topic fields)
+survey_agent short-titles            # generate abbreviated titles
+survey_agent category-desc           # bilingual taxonomy category descriptions
+survey_agent summary                 # bilingual 3-4 sentence paper summaries
+survey_agent report                  # Obsidian vault + JSON + Markdown
+survey_agent generate-docs           # static docs/ site (per-topic under docs/<topic>/)
+survey_agent serve-docs              # serve docs/ at http://localhost:48000
+survey_agent tui                     # interactive TUI menu
 
 # Analysis helpers
-agent-survey abstract-coverage    # abstract coverage by venue
-agent-survey keyword-stats        # keyword hit distribution
-agent-survey estimate-cost        # API cost estimate before classify
+survey_agent abstract-coverage       # abstract coverage by venue
+survey_agent keyword-stats           # keyword hit distribution
+survey_agent estimate-cost           # API cost estimate before classify
 ```
 
-Every stage is independently resumable — it skips papers already marked `done` in `stage_status_json`. LLM calls are cached by input hash (keyed on `stage + model + prompt_version + messages`), so re-runs don't re-spend.
+## Multi-topic architecture
+
+Topics are defined in `topics/<name>.yaml`. Each topic has its own:
+- **keywords** for prefilter (agent_core / agent_generic / se_context / sec_context)
+- **search_queries** for search-recall
+- **classify prompts** (system + user templates, relevance levels, domain/method labels)
+- **deepdive prompts** (system + user template with extraction fields)
+- **taxonomy trees** (3 trees + cross-cutting tags)
+- **seed_topics** for stage 6 topic classification
+
+The active topic is set in `config.yaml` (`active_topic: gui-agent`) or via `survey_agent topic use <name>`.
+
+## DB schema
+
+Three key tables for multi-topic:
+
+| Table | Purpose |
+|-------|---------|
+| `papers` | Paper metadata (title, abstract, venue, year) — topic-independent |
+| `paper_topics` | Paper × topic join with per-topic classification results (relevance, domain, taxonomy, short_title, summaries) |
+| `topic_deepdive` | Per-topic structured extraction (fields vary by topic) |
+| `topics` | Topic registry (name, display_name, active flag) |
+| `taxonomy_descriptions` | Per-topic category descriptions (EN/ZH) |
 
 ## Architecture
 
 ```
 src/agent_survey/
-├── cli.py              # Typer CLI (~20 subcommands), each decorated with logfile capture
+├── cli.py              # Typer CLI (~25 subcommands) + topic group
 ├── tui.py              # Rich interactive TUI with pipeline progress
 ├── core/
-│   ├── config.py       # Pydantic models for config.yaml + dotenv loading
-│   ├── db.py           # SQLite schema, CRUD, LLM cache, harvest checkpoints
+│   ├── config.py       # Config + TopicConfig Pydantic models, topic loading
+│   ├── db.py           # SQLite schema, CRUD, paper_topics, topic_deepdive
 │   └── console.py      # Rich console + transcript logging
 ├── services/
-│   ├── llm.py          # DeepSeekClient (OpenAI SDK) + cached_chat_json + prompt templates
+│   ├── llm.py          # DeepSeekClient (OpenAI SDK) + cached_chat_json
 │   ├── dblp.py         # DBLP JSON/XML harvest
 │   ├── s2.py           # Semantic Scholar API
 │   ├── arxiv.py        # arXiv API
 │   ├── openreview.py   # OpenReview venue data
 │   ├── external.py     # Generic HTTP helpers
 │   ├── pdf_extract.py  # pdfplumber section-aware extraction
-│   ├── taxonomy.py     # 3-tree taxonomy + seed topics + TaxonomyManager
+│   ├── taxonomy.py     # TaxonomyManager, seed topics, tree definitions
 │   ├── citation_extract.py
 │   └── _curl_fallback.py
-├── stages/             # Pipeline stages s00-s11, each called by cli.py
-│   ├── s00_harvest.py
-│   ├── s00b_search_recall.py
-│   ├── s01_enrich.py
-│   ├── s01_enrich_web.py       # Playwright-based arXiv scraping
-│   ├── s02_prefilter.py
-│   ├── s03_classify.py         # batch + concurrent LLM classification
-│   ├── s04_fulltext.py
-│   ├── s05_deepdive.py
-│   ├── s06_topics.py
-│   ├── s06b_subtopic_dedup.py
-│   ├── s07_taxonomy.py
-│   ├── s08_citation.py
-│   ├── s09_short_titles.py
-│   ├── s10_category_desc.py
-│   └── s11_summary.py
+├── stages/             # Pipeline stages s00-s11
+│   ├── s00_harvest.py, s00b_search_recall.py
+│   ├── s01_enrich.py, s01_enrich_web.py
+│   ├── s02_prefilter.py, s03_classify.py
+│   ├── s04_fulltext.py, s05_deepdive.py
+│   ├── s06_topics.py, s06b_subtopic_dedup.py
+│   ├── s07_taxonomy.py, s08_citation.py
+│   ├── s09_short_titles.py, s10_category_desc.py, s11_summary.py
 ├── analysis/           # stats, cost estimation, keyword analysis
-├── report/             # obsidian.py (vault writer), markdown.py (survey renderer)
+├── report/             # obsidian.py, markdown.py
 └── __init__.py
 ```
 
-### Key design decisions
+## Key design decisions
 
-- **SQLite is the single source of truth** — `papers` table holds everything from harvest through deepdive. All stages read/write the same DB. Paper IDs are DBLP keys or arXiv IDs, with DOI fallback.
-- **Stage resumability** — each stage checks `stage_status_json` (a JSON map `{stage: "done"|"skipped"|...}`) and only processes papers not yet marked done. Use `--force` to re-run.
-- **LLM caching** — `llm_calls` table keyed by `input_hash` (SHA256 of stage+model+prompt_version+messages). Cache hits skip the API call entirely.
-- **DeepSeek models**: `deepseek-chat` (V4-Flash, non-thinking) for classification/summaries; `deepseek-reasoner` (V4-Pro, thinking mode) for deepdive and category descriptions.
-- **Pipeline has two entry branches**: (A) DBLP full harvest by venue+year → enrich → prefilter; (B) S2/arXiv keyword search → reverse-filter by venue. Both merge into the same DB with dedup.
-- **Config-driven**: venues, keywords, LLM settings, and paths are all in `config.yaml`. The `Config` Pydantic model validates at load time.
-- **Enrich has a Playwright fallback** (`enrich-web`) for papers where API-based enrichment returns no abstract — it scrapes arXiv abstract pages with a single reusable browser process across workers.
+- **Multi-topic**: Shared pipeline code, per-topic `topics/<name>.yaml` configs. Papers can belong to multiple topics with independent classification results.
+- **SQLite is the single source of truth** — Paper IDs are DBLP keys or arXiv IDs with DOI fallback.
+- **Stage resumability** — `stage_status_json` tracks per-topic stage completion. Use `--force` to re-run.
+- **LLM caching** — `llm_calls` table keyed by input hash (stage+model+prompt_version+messages). Cache hits skip the API call.
+- **DeepSeek models**: `deepseek-chat` (Flash) for classification/summaries; `deepseek-reasoner` (Pro, thinking mode) for deepdive and category descriptions.
+- **Enrich Playwright fallback** — `enrich-web` scrapes arXiv via Playwright with shared browser across workers.
 
-### Taxonomy system
+## Config
 
-Three independent trees (defined in `services/taxonomy.py`):
-1. `application-domain` — where the agent operates (web, mobile, desktop, code, etc.)
-2. `technical-approach` — core technique (planning, learning, tool-use, multi-agent, etc.)
-3. `research-goal` — what the paper studies (benchmark, attack, defense, framework, etc.)
+- `config.yaml` — global: venues, years, network, active_topic, docs port
+- `topics/<name>.yaml` — per-topic: keywords, prompts, taxonomy, search queries
+- `.env` — DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL, SEMANTIC_SCHOLAR_API_KEY
 
-Plus cross-cutting tags: performance, testing-verification, attack-vulnerability, defense-mitigation, benchmark-evaluation.
-
-Category descriptions (bilingual EN/ZH) are generated in stage 10 and stored in the `taxonomy_descriptions` table.
-
-### DB schema notes
-
-The `papers` table uses lightweight migrations (try/except ALTER TABLE ADD COLUMN pattern in `db.py`). JSON-serialized columns: `authors_json`, `stage_status_json`, `deepdive_json`, `topics_json`, `taxonomy_json`, `dedup_keep_json`, `citation_json`. The `dedup_keep_json` stores a dict like `{"core": true, "related": false, "adjacent": false}` — each scope is independent.
-
-### Concurrency patterns
-
-- `classify` uses `ThreadPoolExecutor` with batch+split-half fallback: tries a batch LLM call first; on failure, splits the batch in half and recurses; tiny batches (≤3) fall through to single-paper calls.
-- `enrich` uses ThreadPoolExecutor workers calling arXiv → S2 → OpenReview in sequence per paper.
-- `enrich-web` uses a single Playwright browser shared across worker threads.
-- Token/cost tracking is accumulated thread-locally then merged with a `Lock`.
-
-### Output structure
+## Output structure
 
 ```
+topics/                         # per-topic configs
+  gui-agent.yaml
 output/
-├── db/papers.sqlite          # single source of truth
-├── json/papers.json + taxonomy.json
-├── markdown/survey.md + classification_table.md
-├── obsidian/                 # vault: index MOC + per-paper notes + per-domain tags
-├── pdfs/                     # downloaded arXiv PDFs
-├── stats/{stage}_{ts}.json   # per-stage checkpoint stats
-└── logs/{cmd}_{ts}.log       # Rich transcript logs
+├── db/papers.sqlite            # single source of truth
+├── gui-agent/                  # per-topic output
+│   ├── json/ markdown/ obsidian/ pdfs/ stats/
+├── stats/{stage}_{ts}.json
+└── logs/{cmd}_{ts}.log
+docs/
+├── gui-agent/                  # per-topic static site
+│   ├── data.json, index.html, taxonomy.html, mindmap.html,
+│   ├── papers.html, citation_graph.html, pdfs/
 ```

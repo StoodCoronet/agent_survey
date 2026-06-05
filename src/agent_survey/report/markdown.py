@@ -1,11 +1,11 @@
-"""Export JSON snapshot + markdown survey + classification table."""
+"""Export JSON snapshot + markdown survey + classification table (per-topic)."""
 from __future__ import annotations
 
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from ..core.config import Config
+from ..core.config import Config, load_topic_config, resolve_topic
 from ..core.console import console
 from ..core.db import DB
 
@@ -19,13 +19,14 @@ def _load(raw):
         return None
 
 
-def export_json(cfg: Config) -> dict:
-    out_dir = cfg.abs_dir("json")
+def export_json(cfg: Config, topic_name: str = "") -> dict:
+    topic_name = resolve_topic(topic_name, cfg)
+    out_dir = cfg.abs_topic_dir(topic_name, "json")
     db = DB(cfg.abs_path("db"))
     try:
         papers = []
-        for r in db.iter_papers():
-            r = dict(r)
+        for pt in db.iter_paper_topics(topic_name):
+            r = dict(pt)
             for k in (
                 "authors_json",
                 "prefilter_hit",
@@ -33,14 +34,14 @@ def export_json(cfg: Config) -> dict:
                 "method_tags_json",
                 "deepdive_json",
                 "stage_status_json",
+                "taxonomy_json",
+                "topics_json",
+                "dedup_keep_json",
             ):
                 r[k] = _load(r.get(k))
             papers.append(r)
-        (out_dir / "papers.json").write_text(
-            json.dumps(papers, ensure_ascii=False, indent=2)
-        )
 
-        # taxonomy
+        # taxonomy stats scoped to this topic
         domain_counter: Counter = Counter()
         method_counter: Counter = Counter()
         rel_counter: Counter = Counter()
@@ -58,6 +59,9 @@ def export_json(cfg: Config) -> dict:
             "method_tags": dict(method_counter),
             "by_venue": dict(venue_counter),
         }
+        (out_dir / "papers.json").write_text(
+            json.dumps(papers, ensure_ascii=False, indent=2)
+        )
         (out_dir / "taxonomy.json").write_text(
             json.dumps(tax, ensure_ascii=False, indent=2)
         )
@@ -67,18 +71,22 @@ def export_json(cfg: Config) -> dict:
         db.close()
 
 
-def render_survey_markdown(cfg: Config) -> dict:
-    md_dir = cfg.abs_dir("markdown")
+def render_survey_markdown(cfg: Config, topic_name: str = "") -> dict:
+    topic_name = resolve_topic(topic_name, cfg)
+    tc = load_topic_config(topic_name)
+    md_dir = cfg.abs_topic_dir(topic_name, "markdown")
     db = DB(cfg.abs_path("db"))
     try:
         rows = list(
-            db.iter_papers("relevance IS NOT NULL AND relevance != 'irrelevant'")
+            db.iter_paper_topics(
+                topic_name, "relevance IS NOT NULL AND relevance != 'irrelevant'"
+            )
         )
         if not rows:
             console.print("[yellow]no classified papers yet[/yellow]")
             return {"papers": 0}
 
-        # ---- classification_table.md
+        # ---- classification_table.md ----
         rows_sorted = sorted(
             rows,
             key=lambda r: (
@@ -110,13 +118,13 @@ def render_survey_markdown(cfg: Config) -> dict:
             )
         (md_dir / "classification_table.md").write_text("\n".join(table_lines))
 
-        # ---- survey.md grouped by domain
+        # ---- survey.md grouped by domain ----
         by_domain = defaultdict(list)
         for r in rows_sorted:
             by_domain[r.get("domain_primary") or "Uncategorized"].append(r)
 
         lines = [
-            "# AI Agent Survey — Draft",
+            f"# {tc.description or topic_name} Survey — Draft",
             "",
             f"_Auto-generated from {len(rows)} papers across {cfg.years.start}-{cfg.years.end}._",
             "",

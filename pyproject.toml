@@ -15,10 +15,11 @@ dependencies = [
     "pdfplumber>=0.11",
     "rapidfuzz>=3.9",
     "tqdm>=4.66",
+    "playwright>=1.48",
 ]
 
 [project.scripts]
-agent-survey = "agent_survey.cli:app"
+survey_agent = "agent_survey.cli:app"
 
 [build-system]
 requires = ["hatchling"]

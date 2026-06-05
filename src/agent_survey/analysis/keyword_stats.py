@@ -1,4 +1,4 @@
-"""Keyword hit statistics across harvested papers.
+"""Keyword hit statistics across harvested papers (per-topic).
 
 Reads papers from SQLite, computes per-keyword / per-combination / per-venue
 breakdowns, and writes a JSON + Markdown report for human review.
@@ -12,12 +12,10 @@ from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
 
-import yaml
 from rich.progress import Progress
 
-from ..core.config import Config
+from ..core.config import Config, load_topic_config, resolve_topic
 from ..core.console import console
-from ..core.db import DB
 
 
 def _compile(terms: list[str]) -> list[tuple[re.Pattern, str]]:
@@ -33,18 +31,17 @@ def _match(patterns: list[tuple[re.Pattern, str]], text: str) -> list[str]:
     return [term for pat, term in patterns if pat.search(text)]
 
 
-def run(cfg: Config) -> dict:
-    config_path = cfg.project_root / "config.yaml"
+def run(cfg: Config, topic_name: str = "") -> dict:
+    topic_name = resolve_topic(topic_name, cfg)
+    tc = load_topic_config(topic_name)
+    kw = tc.keywords
+
     db_path = cfg.abs_path("db")
 
-    with open(config_path) as f:
-        yaml_cfg = yaml.safe_load(f)
-    kw = yaml_cfg["keywords"]
-
-    core = _compile(kw["agent_core"])
-    generic = _compile(kw["agent_generic"])
-    se = _compile(kw["se_context"])
-    sec = _compile(kw["sec_context"])
+    core = _compile(kw.agent_core)
+    generic = _compile(kw.agent_generic)
+    se = _compile(kw.se_context)
+    sec = _compile(kw.sec_context)
 
     core_counts = Counter()
     generic_counts = Counter()
@@ -156,7 +153,7 @@ def run(cfg: Config) -> dict:
     conn.close()
 
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_dir = cfg.project_root / "output" / "stats"
+    output_dir = cfg.project_root / "output" / topic_name / "stats"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     def _top_venue_dist(by_venue: dict, term: str, n: int = 5):
@@ -186,6 +183,7 @@ def run(cfg: Config) -> dict:
 
     data = {
         "meta": {
+            "topic": topic_name,
             "total_papers": total_papers,
             "papers_with_abstract": papers_with_abstract,
             "abstract_coverage_pct": round(papers_with_abstract / total_papers * 100, 1),
@@ -207,7 +205,7 @@ def run(cfg: Config) -> dict:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     md_lines = [
-        f"# Keyword Statistics Report ({ts})",
+        f"# Keyword Statistics Report — {topic_name} ({ts})",
         "",
         f"- Total papers: **{total_papers:,}**",
         f"- With abstract: **{papers_with_abstract:,}** ({data['meta']['abstract_coverage_pct']}%)",

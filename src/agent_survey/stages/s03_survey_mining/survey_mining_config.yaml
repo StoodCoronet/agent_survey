@@ -1,0 +1,25 @@
+# Survey Mining stage configuration
+# ==================================
+# Edit directly. Changes take effect on next run.
+
+# Limit papers scanned (0 = all, set to 100 for testing)
+limit: 0
+
+# DeepSeek-Flash call concurrency
+llm:
+  workers: 100         # parallel DeepSeek API calls (reduce if SSL timeout)
+  batch_size: 5      # papers per single LLM call (title + abstract)
+  model: "deepseek-v4-flash"
+  temperature: 0.0
+  max_tokens: 2048
+
+# Survey discovery thresholds
+discovery:
+  min_relevance: 0.6   # 0.0-1.0, papers below this are ignored
+  min_confidence: 0.5  # 0.0-1.0, how confident the LLM must be
+
+# Keyword extraction from survey PDFs
+keywords:
+  max_surveys: 20     # max survey PDFs to process (0 = all found)
+  per_survey: 30      # max keywords to extract per survey
+  min_frequency: 2    # keyword must appear in ≥N surveys to be kept

@@ -1,0 +1,2950 @@
+{
+  "generated_at": "2026-06-02T03:36:32.435781+00:00",
+  "completed_combos": 31,
+  "total_combos": 31,
+  "combos": [
+    {
+      "venue": "CHI",
+      "year": 2023,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/chi/000123",
+          "title": "CHI2023 Course on How to Peer Review for CHI (and Beyond)",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001BV23",
+          "title": "The Halting problem: Video analysis of self-driving cars in traffic",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001C0KWXYYPS23",
+          "title": "Modeling the Trade-off of Privacy Preservation and Activity Recognition on Low-R",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001G23",
+          "title": "Lyric App Framework: A Web-based Framework for Developing Interactive Lyric-driv",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001HDGSCK23",
+          "title": "CodeML: A Machine Learning-Assisted User Interface for Code Identification and L",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001HPSGA23",
+          "title": "Creating Inclusive Voices for the 21st Century: A Non-Binary Text-to-Speech for ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001KHKMOR23",
+          "title": "Hardware is Hard - is it Worth it?",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001MSRJPED23",
+          "title": "Rethinking the Role of AI with Physicians in Oncology: Revealing Perspectives fr",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001MWFPFWW23",
+          "title": "Leveraging driver vehicle and environment interaction: Machine learning using dr",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001P0M23",
+          "title": "BrailleBuddy: A Tangible User Interface to Support Children with Visual Impairme",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "CHI",
+      "year": 2024,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/chi/0001C24",
+          "title": "EXPLORA: A teacher-apprentice methodology for eliciting natural child-computer i",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001CPK24",
+          "title": "Hostile Systems: A Taxonomy of Harms Articulated by Citizens Living with Socio-E",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001DPTBJG24",
+          "title": "A Meta-Bayesian Approach for Rapid Online Parametric Optimization for Wrist-base",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001HGTCDDMORRR24",
+          "title": "An Equal Seat at the Table: Exploring Videoconferencing with Shared Spatial Cont",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001MHHH24",
+          "title": "Seated-WIP: Enabling Walking-in-Place Locomotion for Stationary Chairs in Confin",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001OPSB24",
+          "title": "Big or Small, It&apos;s All in Your Head: Visuo-Haptic Illusion of Size-Change U",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001SBM24",
+          "title": "Assessing the Influence of Visual Cues in Virtual Reality on the Spatial Percept",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001SGK24",
+          "title": "Thermal Masking: When the Illusion Takes Over the Real",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001SMSC24",
+          "title": "The CHI&apos;24 Workshop on the Future of Cognitive Personal Informatics",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001WWDRS0JM24",
+          "title": "Student Design Competitions as an Awareness-building activity for HCI in the Glo",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "CHI",
+      "year": 2025,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/chi/0001CGNGNHN25",
+          "title": "Cultural Game Jams with Youth: A Multiple-Site Case Study",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001FWBZBZWZYZ25",
+          "title": "AIFiligree: A Generative AI Framework for Designing Exquisite Filigree Artworks",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001GSL25",
+          "title": "Everyday AR through AI-in-the-Loop",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001HSS25",
+          "title": "Fewer Than 1% of Explainable AI Papers Validate Explainability with Humans",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001JCLWSY25",
+          "title": "Modeling the Impact of Visual Stimuli on Redirection Noticeability with Gaze Beh",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001LH25",
+          "title": "GenPara: Enhancing the 3D Design Editing Process by Inferring Users&apos; Region",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001LKGKJHLLLLC25",
+          "title": "FluidTrack: Investigating Child-Parent Collaborative Tracking for Pediatric Void",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001LYKLMH25",
+          "title": "&quot;You Go Through So Many Emotions Scrolling Through Instagram&quot;: How Tee",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001NLLMA025",
+          "title": "ReMirrorFugue: Examining the Emotional Experience of Presence and (Illusory) Com",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/0001NV25",
+          "title": "AI Suggestions Homogenize Writing Toward Western Styles and Diminish Cultural Nu",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "CHI",
+      "year": 2026,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/chi/AamirPGJ26",
+          "title": "From Oversight to Insight: Transforming Cybersecurity Governance in Boardrooms",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/AbdalazimZADLS26",
+          "title": "Measured Enough: How Academic Knowledge Workers Negotiate Data Sharing and Contr",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/AbdelkadirYKMGD26",
+          "title": "Beyond Content Exposure: Systemic Factors Driving Moderators&apos; Mental Health",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/Abdelnour-Nocera26",
+          "title": "Crossing the Academia-Practice Divide in Interaction Design",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/AbdlkarimMGLO26",
+          "title": "Belt and whistles - adding lower body collision awareness for MR experiences",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/AbeLHS26",
+          "title": "Understanding the Feasibility of Auditory Hand-Steering Guidance for Blind and L",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/AbusafiaSS26",
+          "title": "Exploring Women&apos;s Perspectives on Learning and Trust in Automated Vehicles:",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/AcherkiNRS26",
+          "title": "Visualization of Tracking Uncertainty in AR-based Surgical Guidance",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/AckermannGLK26",
+          "title": "Same Breath, Different Device: Comparing VR and Smartphone Biofeedback Breathing",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/chi/AckermannWGSK26",
+          "title": "The Impact of a Reward-and-Progression Loop on Engagement with a Mobile Breathin",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "ICML",
+      "year": 2023,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 9,
+        "openreview": 1
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/icml/00010IZ23",
+          "title": "Optimal Goal-Reaching Reinforcement Learning via Quasimetric Learning",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010JL023",
+          "title": "Dimension-independent Certified Neural Network Watermarks via Mollifier Smoothin",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": true
+          },
+          "best_source": "openreview"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010Y0K23",
+          "title": "Hyperbolic Representation Learning: Revisiting and Advancing",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010Z023",
+          "title": "Continuation Path Learning for Homotopy Optimization",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/0001B0FHL0S23",
+          "title": "Paging with Succinct Predictions",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/0001BA23",
+          "title": "Competitive Gradient Optimization",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/0001BDV23",
+          "title": "FARE: Provably Fair Representation Learning with Practical Certificates",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/0001C00S23",
+          "title": "Mixing Predictions for Online Metric Algorithms",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/0001CP23",
+          "title": "Tighter Bounds on the Expressivity of Transformer Encoders",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/0001DMPHGSCGAJB23",
+          "title": "Scaling Vision Transformers to 22 Billion Parameters",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "ICML",
+      "year": 2024,
+      "tested": 10,
+      "ok": 8,
+      "rate_pct": 80.0,
+      "by_source": {
+        "s2": 8
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/icml/000100024",
+          "title": "Ambiguity-Aware Abductive Learning",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:conf/icml/000100024a",
+          "title": "Causal Discovery via Conditional Independence Testing with Proxy Variables",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/0001024",
+          "title": "Tuning-Free Stochastic Optimization",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/0001024a",
+          "title": "E(3)-Equivariant Actor-Critic Methods for Cooperative Multi-Agent Reinforcement ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010CK24",
+          "title": "Learning Modality Knowledge Alignment for Cross-Modality Transfer",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010EKSP24",
+          "title": "Behavior Generation with Latent Actions",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010MW00D24",
+          "title": "Unifying Image Processing as Visual Prompting Question Answering",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010Y24",
+          "title": "Improved Bounds for Pure Private Agnostic Learning: Item-Level and User-Level Pr",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010YYCZZZ24",
+          "title": "Reflected Flow Matching",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010Z24",
+          "title": "DAG-Based Column Generation for Adversarial Team Games",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        }
+      ]
+    },
+    {
+      "venue": "ICML",
+      "year": 2025,
+      "tested": 10,
+      "ok": 6,
+      "rate_pct": 60.0,
+      "by_source": {
+        "openreview": 2,
+        "s2": 4
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/icml/00010000S0025",
+          "title": "Dataflow-Guided Neuro-Symbolic Language Models for Type Inference",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:conf/icml/0001000L25",
+          "title": "Surrogate Prompt Learning: Towards Efficient and Diverse Prompt Learning for Vis",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:conf/icml/0001000YW25",
+          "title": "Causality Inspired Federated Learning for OOD Generalization",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": true
+          },
+          "best_source": "openreview"
+        },
+        {
+          "paper_id": "dblp:conf/icml/000100WX025",
+          "title": "Self-supervised Masked Graph Autoencoder via Structure-aware Curriculum",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:conf/icml/000100XLGWB25",
+          "title": "Gaussian Mixture Flow Matching Models",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/000100ZL025",
+          "title": "DLP: Dynamic Layerwise Pruning in Large Language Models",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/0001025",
+          "title": "Outlier-Aware Post-Training Quantization for Discrete Graph Diffusion Models",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": true
+          },
+          "best_source": "openreview"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010B25",
+          "title": "Automatic Reward Shaping from Confounded Offline Data",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010CAY25",
+          "title": "Retrieval Augmented Time Series Forecasting",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/icml/00010JZZ0C25",
+          "title": "Splitting &amp; Integrating: Out-of-Distribution Detection via Adversarial Gradi",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        }
+      ]
+    },
+    {
+      "venue": "NeurIPS",
+      "year": 2023,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/nips/0001023",
+          "title": "A Theoretical Analysis of Optimistic Proximal Policy Optimization in Linear Mark",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/00010CK23",
+          "title": "Language Semantic Graph Guided Data-Efficient Learning",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/00010H0GJS23",
+          "title": "CARE: Modeling Interacting Dynamics Under Temporal Environmental Variation",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/00010K23",
+          "title": "Characteristic Circuits",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/00010KV23",
+          "title": "Neural Lyapunov Control for Discrete-Time Systems",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/0001ABMSP23",
+          "title": "Feature-Learning Networks Are Consistent Across Widths At Realistic Scales",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/0001AS23",
+          "title": "Computing Optimal Nash Equilibria in Multiplayer Games",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/0001C0SH023",
+          "title": "Subspace Identification for Multi-Source Domain Adaptation",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/0001C23",
+          "title": "R-divergence for Estimating Model-oriented Distribution Discrepancy",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/0001CBP23",
+          "title": "Accelerating Motion Planning via Optimal Transport",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "NeurIPS",
+      "year": 2024,
+      "tested": 10,
+      "ok": 9,
+      "rate_pct": 90.0,
+      "by_source": {
+        "s2": 9
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/nips/000100L024",
+          "title": "InterControl: Zero-shot Human Interaction Generation by Controlling Every Joint",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/000100P0D24",
+          "title": "Contextual Decision-Making with Knapsacks Beyond the Worst Case",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/000100SAMIP24",
+          "title": "MARVEL: Multidimensional Abstraction and Reasoning through Visual Evaluation and",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/00010WR24",
+          "title": "Online Budgeted Matching with General Bids",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/00010WZXJSW24",
+          "title": "Rethinking the Diffusion Models for Missing Data Imputation: A Gradient Flow Per",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:conf/nips/00010Y24",
+          "title": "The Limits of Differential Privacy in Online Learning",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/00010ZF0K24",
+          "title": "Image Understanding Makes for A Good Tokenizer for Image Generation",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/00010ZF0LTCX0L24",
+          "title": "HumanVid: Demystifying Training Data for Camera-controllable Human Image Animati",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/00010ZZC024",
+          "title": "Are Your Models Still Fair? Fairness Attacks on Graph Neural Networks via Node I",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/nips/0001B0R24",
+          "title": "DOPPLER: Differentially Private Optimizers with Low-pass Filter for Privacy Nois",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "EMNLP",
+      "year": 2023,
+      "tested": 10,
+      "ok": 9,
+      "rate_pct": 90.0,
+      "by_source": {
+        "s2": 9
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/emnlp/00010CZBFCLC23",
+          "title": "Conversational Recommender System and Large Language Model Are Made for Each Oth",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/00010HCZH23",
+          "title": "InteMATs: Integrating Granularity-Specific Multilingual Adapters for Cross-Lingu",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/00010L23",
+          "title": "GLEN: Generative Retrieval via Lexical Index Learning",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/000123",
+          "title": "From Words to Wires: Generating Functioning Electronic Devices from Natural Lang",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001BL23",
+          "title": "Unsupervised Lexical Simplification with Context Augmentation",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001BP23",
+          "title": "When Language Models Fall in Love: Animacy Processing in Transformer Language Mo",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001CGRMJ23",
+          "title": "NORMSAGE: Multi-Lingual Multi-Cultural Norm Discovery from Conversations On-the-",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001CWHC23",
+          "title": "Cross-lingual Prompting: Improving Zero-shot Chain-of-Thought Reasoning across L",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001DGL23",
+          "title": "Compressing Context to Enhance Inference Efficiency of Large Language Models",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001DL23",
+          "title": "GRENADE: Graph-Centric Language Model for Self-Supervised Representation Learnin",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "EMNLP",
+      "year": 2024,
+      "tested": 10,
+      "ok": 8,
+      "rate_pct": 80.0,
+      "by_source": {
+        "s2": 8
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/emnlp/00010JZZM24",
+          "title": "A Decoding Algorithm for Length-Control Summarization Based on Directed Acyclic ",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/00010M0024",
+          "title": "Enhancing Byzantine-Resistant Aggregations with Client Embedding",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/00010TYKJGLZY0X24",
+          "title": "Altogether: Image Captioning via Re-aligning Alt-text",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/00010ZM24",
+          "title": "RevMUX: Data Multiplexing with Reversible Adapters for Efficient LLM Batch Infer",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001CFM24",
+          "title": "Identifying High Consideration E-Commerce Search Queries",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001CLS24",
+          "title": "Should Cross-Lingual AMR Parsing go Meta? An Empirical Assessment of Meta-Learni",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001H24",
+          "title": "Self-Training for Sample-Efficient Active Learning for Text Classification with ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001LJWCLTZZC24",
+          "title": "FinDVer: Explainable Claim Verification over Long and Hybrid-content Financial D",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001LZ0L00024",
+          "title": "A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Co",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001MCYYLW24",
+          "title": "SRF: Enhancing Document-Level Relation Extraction with a Novel Secondary Reasoni",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "EMNLP",
+      "year": 2025,
+      "tested": 10,
+      "ok": 8,
+      "rate_pct": 80.0,
+      "by_source": {
+        "s2": 8
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/emnlp/00010Y0F25",
+          "title": "Thinking with DistilQwen: A Tale of Four Distilled Reasoning and Reward Model Se",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001G25",
+          "title": "SciClaims: An End-to-End Generative System for Biomedical Claim Analysis",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001GMXLT25",
+          "title": "From Feedback to Checklists: Grounded Evaluation of AI-Generated Clinical Notes",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001LFCHOF25",
+          "title": "InTriage: Intelligent Telephone Triage in Pre-Hospital Emergency Care",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001LJ0025",
+          "title": "Advancing Language Models through Instruction Tuning: Recent Progress and Challe",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001S025",
+          "title": "Open Political Corpora: Structuring, Searching, and Analyzing Political Text Col",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001SDCASD025",
+          "title": "PledgeTracker: A System for Monitoring the Fulfilment of Pledges",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001WS025",
+          "title": "Efficiency-Effectiveness Reranking FLOPs for LLM-based Rerankers",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001Y0Y025",
+          "title": "EasyDistill: A Comprehensive Toolkit for Effective Knowledge Distillation of Lar",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/emnlp/0001YLT0WN0HSX25",
+          "title": "SlackAgents: Scalable Collaboration of AI Agents in Workspaces",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        }
+      ]
+    },
+    {
+      "venue": "COLM",
+      "year": 2024,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 9,
+        "openreview": 1
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:B1xSperKvH",
+          "title": "Enabling Deep Spiking Neural Networks with Hybrid Conversion and Spike Timing De",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:SJlbGJrtDB",
+          "title": "Dynamic Sparse Training: Find Efficient Sparse Network From Scratch With Trainab",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:HkgxW0EYDS",
+          "title": "Scalable Model Compression by Entropy Penalized Reparameterization",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:HJeiDpVFPr",
+          "title": "An Inductive Bias for Distances: Neural Nets that Respect the Triangle Inequalit",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:r1egIyBFPS",
+          "title": "Deep Symbolic Superoptimization Without Human Knowledge",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": true
+          },
+          "best_source": "openreview"
+        },
+        {
+          "paper_id": "dblp:rkgO66VKDS",
+          "title": "LEARNED STEP SIZE QUANTIZATION",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:SJl5Np4tPr",
+          "title": "Cross-Domain Few-Shot Classification via Learned Feature-Wise Transformation",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:r1lGO0EKDH",
+          "title": "GraphZoom: A Multi-level Spectral Approach for Accurate and Scalable Graph Embed",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:H1emfT4twB",
+          "title": "Few-shot Text Classification with Distributional Signatures",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:HJxNAnVtDS",
+          "title": "On the Convergence of FedAvg on Non-IID Data",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "NAACL",
+      "year": 2024,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/naacl/0001AJJTT24",
+          "title": "Efficient End-to-End Visual Document Understanding with Rationale Distillation",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/0001H24",
+          "title": "Sentence-level Media Bias Analysis with Event Relation Graph",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/0001MQRTXH24",
+          "title": "EMONA: Event-level Moral Opinions in News Articles",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/0001SCWHY24",
+          "title": "Polarity Calibration for Opinion Summarization",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/0002024",
+          "title": "ICLE++: Modeling Fine-Grained Traits for Holistic Essay Scoring",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/00020J000T24",
+          "title": "Improving Machine Translation with Human Feedback: An Exploration of Quality Est",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/0002BLSGI0LLMPR24",
+          "title": "Universal NER: A Gold-Standard Multilingual Named Entity Recognition Benchmark",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/0002DWH024",
+          "title": "Language Models Hallucinate, but May Excel at Fact Verification",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/0002DZWQH24",
+          "title": "Depression Detection in Clinical Interviews with LLM-Empowered Structural Elemen",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/0002E24",
+          "title": "Explaining Text Similarity in Transformer Models",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "NAACL",
+      "year": 2025,
+      "tested": 10,
+      "ok": 9,
+      "rate_pct": 90.0,
+      "by_source": {
+        "s2": 9
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/naacl/0001C0AWL0HXC0B25",
+          "title": "SeaLLMs 3: Open Foundation and Chat Multilingual Large Language Models for South",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/0002B25",
+          "title": "Semi-automatic Sequential Sentence Classification in the Discourse Analysis Tool",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/00030PMRLH025",
+          "title": "Persona-SQ: A Personalized Suggested Question Generation Framework For Real-worl",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/0005Y0G0C0025",
+          "title": "TRUSTEVAL: A Dynamic Evaluation Toolkit on Trustworthiness of Generative Foundat",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:conf/naacl/0013F25",
+          "title": "A Learning-based Multi-Frame Visual Feature Framework for Real-Time Driver Fatig",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/AbdallahMPJ25",
+          "title": "ASRank: Zero-Shot Re-Ranking with Answer Scent for Document Retrieval",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/AbhyankarGRR25",
+          "title": "H-STAR: LLM-driven Hybrid SQL-Text Adaptive Reasoning on Tables",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/AcharyaMKS25",
+          "title": "Benchmarking and Building Zero-Shot Hindi Retrieval Model with Hindi-BEIR and NL",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/AdelaniDSA25",
+          "title": "Does Generative AI speak Nigerian-Pidgin?: Issues about Representativeness and B",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/naacl/AdelaniOAZAHOHBLCBSKMKY25",
+          "title": "IrokoBench: A New Benchmark for African Languages in the Age of Large Language M",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "FSE",
+      "year": 2023,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/sigsoft/0001LZX23",
+          "title": "Automatically Resolving Dependency-Conflict Building Failures via Behavior-Consi",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0001R23",
+          "title": "The Most Agile Teams Are the Most Disciplined: On Scaling out Agile Development",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0001YYZX023",
+          "title": "Distinguishing Look-Alike Innocent and Vulnerable Code by Subtle Semantic Repres",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0001ZP23",
+          "title": "Understanding the Topics and Challenges of GPU Programming by Classifying and An",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/00020C23",
+          "title": "FunProbe: Probing Functions from Binary Code through Probabilistic Analysis",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0002DTS0AS23",
+          "title": "IoPV: On Inconsistent Option Performance Variations",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0002YL0ZDY23",
+          "title": "Recommending Analogical APIs via Knowledge Graph Embedding",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0004PW023",
+          "title": "NeuRI: Diversifying DNN Generation via Inductive Rule Inference",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0004WLR23",
+          "title": "ViaLin: Path-Aware Dynamic Taint Analysis for Android",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0008Y23",
+          "title": "Pre-training Code Representation with Semantic Flow Graph for Effective Bug Loca",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "FSE",
+      "year": 2024,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/sigsoft/00040AAA24",
+          "title": "Application of Quantum Extreme Learning Machines for QoS Prediction of Elevators",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0006WZWL024",
+          "title": "Dodrio: Parallelizing Taint Analysis Based Fuzzing via Redundancy-Free Schedulin",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/AbrahamDZ24",
+          "title": "Productionizing PILAR as a Logstash Plugin",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/AlcocerMFREL24",
+          "title": "A Developer&apos;s Guide to Building and Testing Accessible Mobile Apps",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/AvulaM24",
+          "title": "MineCPP: Mining Bug Fix Pairs and Their Structures",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/BelguithOC24",
+          "title": "Personal Data-Less Personalized Software Applications",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/BettscheiderZ24",
+          "title": "Look Ma, No Input Samples! Mining Input Grammars from Code with Symbolic Parsing",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/BiZQ0GYL24",
+          "title": "ModelFoundry: A Tool for DNN Modularization and On-Demand Model Reuse Inspired b",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/BittnerSMKT24",
+          "title": "Variability-Aware Differencing with DiffDetective",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/CelaCGH0KKLMM24",
+          "title": "Automated End-to-End Dynamic Taint Analysis for WhatsApp",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "FSE",
+      "year": 2025,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/sigsoft/0001025",
+          "title": "Artifact Evaluations for Stronger Research Results",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0001DTXLHX25",
+          "title": "Beyond Stars and Commits: A Fair and Manipulation-Resistant Framework for Measur",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0001LRPP25",
+          "title": "NeuroStrata: Harnessing Neuro-Symbolic Paradigms for Improved Testability and Ve",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0002D0000025",
+          "title": "Are iOS Apps Immune to Abusive Advertising Practices?",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0006AW0RI25",
+          "title": "A Decision-Making Framework to Recommend Quantum-Based Solutions for Fit Problem",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/00070YGLZ0LCCR025",
+          "title": "Te-PID: An Adaptive Erasure Coding Temperature Management System for Optimized C",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0007JDHHYW0H25",
+          "title": "CLSLog: Collaborating Large and Small Models for Log-based Anomaly Detection",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/0014BSX025",
+          "title": "HazSim: An Urban Driving Simulator for Testing Perception Systems of ADSes Again",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/AbadSC25",
+          "title": "Automatic Proof Generation: Fine-tuning and RAG in Reasoner vs. Math LLMs",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/sigsoft/AkbarRKY25",
+          "title": "Quantum Secure DevOps (QSecOps): Integrating Quantum-Based Security Checks into ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "TOSEM",
+      "year": 2023,
+      "tested": 10,
+      "ok": 5,
+      "rate_pct": 50.0,
+      "by_source": {
+        "s2": 5
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:journals/tosem/Pezze23",
+          "title": "EDITORIAL: Announcing Six TOSEM Issues Per Year",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/RobolBPG23",
+          "title": "Consent Verification Monitoring",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/YinXMGQJ23",
+          "title": "Scanner++: Enhanced Vulnerability Detection of Web Applications with Attack Inte",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:journals/tosem/DongLTSGN23",
+          "title": "Bash in the Wild: Language Usage, Code Smells, and Bugs",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:journals/tosem/XuTWZZ23",
+          "title": "Semantics Foundation for Cyber-physical Systems Using Higher-order UTP",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:journals/tosem/WagaAH23",
+          "title": "Parametric Timed Pattern Matching",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/WeynsI23",
+          "title": "ActivFORMS: A Formally Founded Model-based Approach to Engineer Self-adaptive Sy",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/WuC23",
+          "title": "Automated Identification of Uniqueness in JUnit Tests",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:journals/tosem/TamasauskaiteG23",
+          "title": "Defining a Knowledge Graph Development Process Through a Systematic Review",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/Banach23",
+          "title": "Graded Refinement, Retrenchment, and Simulation",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        }
+      ]
+    },
+    {
+      "venue": "TOSEM",
+      "year": 2024,
+      "tested": 10,
+      "ok": 9,
+      "rate_pct": 90.0,
+      "by_source": {
+        "s2": 9
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:journals/tosem/Pezze24",
+          "title": "Editorial: Toward the Future with Eight Issues Per Year",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        },
+        {
+          "paper_id": "dblp:journals/tosem/YangDXCSLS24",
+          "title": "Asteria-Pro: Enhancing Deep Learning-based Binary Code Similarity Detection by I",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/MaCKG24",
+          "title": "A First Look at Dark Mode in Real-world Android Apps",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/WuWJCRX24",
+          "title": "Programming by Example Made Easy",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/BessghaierSOM24",
+          "title": "What Constitutes the Deployment and Runtime Configuration System? An Empirical S",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/HuangSXYXL24",
+          "title": "API Entity and Relation Joint Extraction from Text via Dynamic Prompt-tuned Lang",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/OhBH24",
+          "title": "Finding Near-optimal Configurations in Colossal Spaces with Statistical Guarante",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/SunDGLCWCW24",
+          "title": "An Interleaving Guided Metamorphic Testing Approach for Concurrent Programs",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/TaipalusG24",
+          "title": "Framework for SQL Error Message Design: A Data-Driven Approach",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/ClarkFPWHST24",
+          "title": "Testing Causality in Scientific Modelling Software",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "TOSEM",
+      "year": 2025,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:journals/tosem/Roychoudhury25",
+          "title": "Editorial: TOSEM Journal in 2025 and Beyond",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/RehseLFW25",
+          "title": "On Process Discovery Experimentation: Addressing the Need for Research Methodolo",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/RobillardNS25",
+          "title": "Understanding Test Convention Consistency as a Dimension of Test Quality",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/WangMYAA25",
+          "title": "Test Case Minimization with Quantum Annealers",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/NtentosLSZSSF25",
+          "title": "On the Understandability of Design-Level Security Practices in Infrastructure-as",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/OpenjaKFJAH25",
+          "title": "An Empirical Study of Testing Machine Learning in the Wild",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/WangWZC25",
+          "title": "Context-Aware Fuzzing for Robustness Enhancement of Deep Learning Models",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/ZhaoWZLJ25",
+          "title": "MalSensor: Fast and Robust Windows Malware Classification",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/MazloomzadehUKS25",
+          "title": "Reputation Gaming in Crowd Technical Knowledge Sharing",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/ZhangWLJWT25",
+          "title": "Measuring and Mining Community Evolution in Developer Social Networks with Entro",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "TOSEM",
+      "year": 2026,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:journals/tosem/ZhangXFSXZMSP26",
+          "title": "Failure Diagnosis in Microservice Systems: A Comprehensive Survey and Analysis",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/HuLLLXWL26",
+          "title": "Towards On-the-Fly Code Performance Profiling",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/ZhouLHSWLW26",
+          "title": "NeuSemSlice: Towards Effective DNN Model Maintenance via Neuron-Level Semantic S",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/JoshiK26",
+          "title": "FairGenerate: Enhancing Fairness through Synthetic Data Generation and Two-Fold ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/ChangLWLW26",
+          "title": "VEglue: Testing Visual Entailment Systems via Object-Aligned Joint Erasing",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/WangCWWG26",
+          "title": "Efficient Generation of Test Cases for MPI Program Path Coverage through Elite I",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/GuoFLZFC26",
+          "title": "Characterizing Installation- and Run-time Compatibility Issues in Android Benign",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/ZhangLLDLQ26",
+          "title": "WizardMerge - Save Us from Merging without Any Clues",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/LambiaseCPFR26",
+          "title": "Investigating the Role of Cultural Values in Adopting Large Language Models for ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:journals/tosem/RigbyRSSSRMNM26",
+          "title": "Improving Code Reviewer Recommendation: Accuracy, Latency, Workload, and Bystand",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "UIST",
+      "year": 2023,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/uist/0001G023",
+          "title": "InteractionAdapt: Interaction-driven Workspace Adaptation for Situated Virtual R",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/000200XZLXH023",
+          "title": "WavoID: Robust and Secure Multi-modal User Identification via mmWave-voice Mecha",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0002LBZC23",
+          "title": "Papeos: Augmenting Research Papers with Talk Videos",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0004SLLLM23",
+          "title": "InkBrush: A Flexible and Controllable Authoring Tool for 3D Ink Painting",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0005SLLWRF23",
+          "title": "Towards Real-time Computer Vision and Augmented Reality to Support Low Vision Sp",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0070NHHBW23",
+          "title": "PaperToPlace: Transforming Instruction Documents into Spatialized and Context-Aw",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/AbadianOSMDLMIT23",
+          "title": "Computational Design of Personalized Wearable Robotic Limbs",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/AikawaTXGM23",
+          "title": "Introducing Augmented Post-it: An AR Prototype for Engaging Body Movements in On",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/AndersonOW23",
+          "title": "FlavourFrame: Visualizing Tasting Experiences",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/AveniFH23",
+          "title": "Bringing Context-Aware Completion Suggestions to Arbitrary Text Entry Interfaces",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "UIST",
+      "year": 2024,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/uist/0001CHYS24",
+          "title": "Computational Trichromacy Reconstruction: Empowering the Color-Vision Deficient ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0001IKFBMHO024",
+          "title": "SIM2VR: Towards Automated Biomechanical Testing in VR",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0001LVBF24",
+          "title": "Clarify: Improving Model Robustness With Natural Language Corrections",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0001PLSB024",
+          "title": "UIClip: A Data-driven Model for Assessing User Interface Design",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0001RVOS24",
+          "title": "Natural Expression of a Machine Learning Model&apos;s Uncertainty Through Verbal",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0001SGK24",
+          "title": "Fiery Hands: Designing Thermal Glove through Thermal and Tactile Integration for",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0002GTLO24",
+          "title": "EyeFormer: Predicting Personalized Scanpaths with Transformer-Guided Reinforceme",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0002SWGHKLLBSFB24",
+          "title": "Demonstrating PopCore: Personal Fabrication of 3D Foamcore Models for Profession",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0002YJ24",
+          "title": "Silent Impact: Tracking Tennis Shots from the Passive Arm",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0003LYNP24",
+          "title": "JetUnit: Rendering Diverse Force Feedback in Virtual Reality Using Water Jets",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "UIST",
+      "year": 2025,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/uist/00010025",
+          "title": "Efficient Visual Appearance Optimization by Learning from Prior Preferences",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0001HS25",
+          "title": "Texergy: Textile-based Harvesting, Storing, and Releasing of Mechanical Energy f",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0001HWWLWLYTWLM25",
+          "title": "MorphingSkin: A Skin-like Platform that Integrates Multimodal Hydraulic Actuator",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0001LHY025",
+          "title": "GaussianShopVR: Facilitating Immersive 3D Authoring Using Gaussian Splatting in ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0001MN25",
+          "title": "Caption: Generating Informative Content Labels for Image Buttons Using Next-Scre",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0001PD25",
+          "title": "AcaMate: Supporting Novice A Cappella Singers in Iterative Individual Practice",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0001XWGMMSC0ALC25",
+          "title": "EI-Lite: Electrical Impedance Sensing for Micro-gesture Recognition and Pinch Fo",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0002LH25",
+          "title": "Seeing and Sensing Intention: Resolving Midas Touch with Vision-Motion Fusion in",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0003KLSABSG25",
+          "title": "Demonstration of VisRing: A Display-Extended Smartring for Nano Visualizations",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uist/0003WFWS0PLCJLT25",
+          "title": "Facilitating Longitudinal Interaction Studies of AI Systems",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "ISSTA",
+      "year": 2024,
+      "tested": 10,
+      "ok": 9,
+      "rate_pct": 90.0,
+      "by_source": {
+        "s2": 9
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/issta/000124",
+          "title": "Decomposition of Deep Neural Networks into Modules via Mutation Analysis",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/0001MFSC24",
+          "title": "ESBMC-Python: A Bounded Model Checker for Python Programs",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/0001TPT24",
+          "title": "An Empirical Study of Static Analysis Tools for Secure Code Review",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/0001X0HZZG024",
+          "title": "Your &quot;Notice&quot; Is Missing: Detecting and Fixing Violations of Modificat",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/00020LC24",
+          "title": "AsFuzzer: Differential Testing of Assemblers with Error-Driven Grammar Inference",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/0002LZ0ZH24",
+          "title": "Beyond Pairwise Testing: Advancing 3-wise Combinatorial Interaction Testing for ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/0002Z0LLC24",
+          "title": "PatchFinder: A Two-Phase Approach to Security Patch Tracing for Disclosed Vulner",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/0004P024",
+          "title": "Scalable, Sound, and Accurate Jump Table Analysis",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/0007L0LLJ024",
+          "title": "Testing Graph Database Systems with Graph-State Persistence Oracle",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/0008L0K0024",
+          "title": "Practitioners&apos; Expectations on Automated Test Generation",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue": "no_fetcher"
+          },
+          "best_source": null
+        }
+      ]
+    },
+    {
+      "venue": "ISSTA",
+      "year": 2025,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/issta/0010W0WJ25",
+          "title": "MQueez: Specification-Driven Fuzzing for MQTT Broker (Registered Report)",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/Bai25",
+          "title": "When Performance Failure Occurs in Low-Latency Storage Systems: Observation, Pre",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/ChaliasosAD25",
+          "title": "Towards Fuzzing Zero-Knowledge Proof Circuits (Short Paper)",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/CoppaSS25",
+          "title": "Hybrid Fuzzing of Infrastructure as Code Programs (Short Paper)",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/KalbitzerAZ25",
+          "title": "XAVIER: Grammar-Based Testing for XML Injection Attacks",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/LeeLPC25",
+          "title": "On the Applicability of Benford&apos;s Law to Detect Saturation in Fuzzing (Regi",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/LiN25",
+          "title": "COOLer: A Language Support Extension for COOL in VS Code",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/LiuLL25",
+          "title": "TBFV4J: An Automated Testing-Based Formal Verification Tool for Java",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/MaiG0BCS25",
+          "title": "Code2API: A Tool for Generating Reusable APIs from Stack Overflow Code Snippets",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/issta/NarebskiFSP25",
+          "title": "PatchScope - A Modular Tool for Annotating and Analyzing Contributions",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "CCS",
+      "year": 2025,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 9,
+        "openreview": 1
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/ccs/000125",
+          "title": "Optimal Mechanisms for Quantum Local Differential Privacy",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ccs/000125a",
+          "title": "WPES &apos;25: 24th Workshop on Privacy in the Electronic Society",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ccs/0001B25",
+          "title": "CCSW &apos;25: Cloud Computing Security Workshop",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": true
+          },
+          "best_source": "openreview"
+        },
+        {
+          "paper_id": "dblp:conf/ccs/0001DTP25",
+          "title": "IOValve: Leakage-Free I/O Sandbox for Large-Scale Untrusted Data Processing",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ccs/0001GKP25",
+          "title": "Armadillo: Robust Single-Server Secure Aggregation for Federated Learning with I",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ccs/0001LYD25",
+          "title": "HAIPS &apos;25: First ACM CCS Workshop on Human-Centered AI Privacy and Security",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ccs/0001MBS25",
+          "title": "Finding SSH Strict Key Exchange Violations by State Learning",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ccs/0001P25",
+          "title": "Anonymity Unveiled: A Practical Framework for Auditing Data Use in Deep Learning",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ccs/0001SHC0L0Z25",
+          "title": "Denial of Sequencing Attacks in Ethereum Layer 2 Rollups",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ccs/0001WALR0Z25",
+          "title": "Swallow: A Transfer-Robust Website Fingerprinting Attack via Consistent Feature ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "NDSS",
+      "year": 2025,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 10
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/ndss/0001P25",
+          "title": "A Method to Facilitate Membership Inference Attacks in Deep Learning Models",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/0001PM00HF0A25",
+          "title": "Try to Poison My Deep Learning Data? Nowhere to Hide Your Trajectory Spectrum!",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/0001SMLZY0M025",
+          "title": "The Road to Trust: Building Enclaves within Confidential VMs",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/00020025",
+          "title": "Understanding Data Importance in Machine Learning Attacks: Does Valuable Data Po",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/000200F25",
+          "title": "Revisiting EM-based Estimation for Locally Differentially Private Protocols",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/00020S0AC0L25",
+          "title": "CENSOR: Defense Against Gradient Inversion via Orthogonal Subspace Bayesian Samp",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/00020YHQ025",
+          "title": "Explanation as a Watermark: Towards Harmless and Multi-bit Model Ownership Verif",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/0002CH0H25",
+          "title": "Lend Me Your Beam: Privacy Implications of Plaintext Beamforming Feedback in WiF",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/0002KH25",
+          "title": "RAIFLE: Reconstruction Attacks on Interaction-based Federated Learning with Adve",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/0002MWY25",
+          "title": "On Borrowed Time - Preventing Static Side-Channel Analysis",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "NDSS",
+      "year": 2026,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 9,
+        "venue_ndss": 1
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/ndss/AbloveCQE26",
+          "title": "Characterizing the Implementation of Censorship Policies in Chinese LLM Services",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/AbusabhaUAK26",
+          "title": "A Deep Dive into Function Inlining and its Security Implications for ML-based Bi",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/AdjibiAADBM26",
+          "title": "Repairing Trust in Domain Name Disputes Practices: Insights from a Quarter-Centu",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/AkhtarMIK26",
+          "title": "TBTrackerX: Fantastic Trigger Bots and Where to Find Malicious Campaigns on X",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/AkpakuCO26",
+          "title": "TIPSO-GAN: Malicious Network Traffic Detection Using a Novel Optimized Generativ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/AlbarqawiNKKP26",
+          "title": "ViGText: Deepfake Image Detection with Vision-Language Model Explanations and Gr",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/AlghuriedM26",
+          "title": "Phishing in Wonderland: Evaluating Learning-Based Ethereum Phishing Transaction ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/AliYRSY26",
+          "title": "Beyond RTT: An Adversarially Robust Two-Tiered Approach For Residential Proxy De",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/AndreasSM26",
+          "title": "HyperMirage: Direct State Manipulation in Hybrid Virtual CPU Fuzzing",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue_ndss": true
+          },
+          "best_source": "venue_ndss"
+        },
+        {
+          "paper_id": "dblp:conf/ndss/AnghelGLLZ26",
+          "title": "Aliens Among Us: Observing Private or Reserved IPs on the Public Internet",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    },
+    {
+      "venue": "USS",
+      "year": 2025,
+      "tested": 10,
+      "ok": 10,
+      "rate_pct": 100.0,
+      "by_source": {
+        "s2": 6,
+        "venue_uss": 4
+      },
+      "papers": [
+        {
+          "paper_id": "dblp:conf/uss/GibsonOBCBTRK25",
+          "title": "Analyzing the AI Nudification Application Ecosystem",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uss/YaoMS025",
+          "title": "Easy As Child's Play: An Empirical Study on Age Verification of Adult-Oriented A",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue_uss": true
+          },
+          "best_source": "venue_uss"
+        },
+        {
+          "paper_id": "dblp:conf/uss/0002CVK0F25",
+          "title": "Abusability of Automation Apps in Intimate Partner Violence",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue_uss": true
+          },
+          "best_source": "venue_uss"
+        },
+        {
+          "paper_id": "dblp:conf/uss/KaluSOT025",
+          "title": "An Industry Interview Study of Software Signing for Supply Chain Security",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uss/HastingsS25",
+          "title": "Voluntary Investment, Mandatory Minimums, or Cyber Insurance: What Minimizes Los",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue_uss": true
+          },
+          "best_source": "venue_uss"
+        },
+        {
+          "paper_id": "dblp:conf/uss/RuthOSLGHD25",
+          "title": "A First Look at Governments' Enterprise Security Guidance",
+          "results": {
+            "s2": false,
+            "arxiv": false,
+            "openreview": false,
+            "venue_uss": true
+          },
+          "best_source": "venue_uss"
+        },
+        {
+          "paper_id": "dblp:conf/uss/ChungZMH25",
+          "title": "SoK: Can Synthetic Images Replace Real Data? A Survey of Utility and Privacy of ",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uss/KireevMTO25",
+          "title": "Characterizing and Detecting Propaganda-Spreading Accounts on Telegram",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uss/MengFW0LZ0C25",
+          "title": "GradEscape: A Gradient-Based Evader Against AI-Generated Text Detectors",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        },
+        {
+          "paper_id": "dblp:conf/uss/0001ZTYJTZ0Z25",
+          "title": "Provably Robust Multi-bit Watermarking for AI-generated Text",
+          "results": {
+            "s2": true
+          },
+          "best_source": "s2"
+        }
+      ]
+    }
+  ]
+}

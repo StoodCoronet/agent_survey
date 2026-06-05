@@ -1,0 +1,15 @@
+# Taxonomy stage configuration
+
+limit: 0                    # 0 = no limit
+
+llm:
+  workers: 200                # parallel API calls
+  batch_size: 3            # papers per LLM call
+  # model: "deepseek-v4-pro"
+  model: "deepseek-v4-flash"
+  temperature: 0.0
+  max_tokens_per_paper: 10000
+  timeout: 120.0            # seconds per API call (reasoner may be slower)
+  batch_timeout: 120         # seconds per batch (future.result timeout)
+
+flush_every: 100             # papers to accumulate before DB commit

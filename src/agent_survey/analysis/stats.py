@@ -23,17 +23,33 @@ def write_stage_stats(cfg: Config, stage: str, payload: dict) -> Path:
     return out
 
 
-def db_overview(db: DB) -> dict:
+def db_overview(db: DB, topic_name: str = "") -> dict:
     total = db.count()
     with_abstract = db.count("abstract IS NOT NULL AND abstract != ''")
-    prefilter_hit = db.count("prefilter_hit IS NOT NULL AND prefilter_hit != '[]'")
-    classified = db.count("relevance IS NOT NULL")
+    prefilter_hit = 0
+    for row in db.iter_papers():
+        ph = row.get("prefilter_hit") or "{}"
+        try:
+            phd = json.loads(ph) if isinstance(ph, str) else ph
+        except Exception:
+            phd = {}
+        if not phd or phd in ("[]", "{}"):
+            continue
+        if topic_name:
+            if isinstance(phd, dict) and phd.get(topic_name):
+                prefilter_hit += 1
+        elif isinstance(phd, (dict, list)) and phd:
+            prefilter_hit += 1
+
+    classified = db.count_topic(topic_name, "relevance IS NOT NULL AND relevance != ''") if topic_name else 0
     by_relevance = Counter()
     by_venue_year = Counter()
     for row in db.iter_papers():
-        if row.get("relevance"):
-            by_relevance[row["relevance"]] += 1
         by_venue_year[(row.get("venue"), row.get("year"))] += 1
+    if topic_name:
+        for pt in db.iter_paper_topics(topic_name, "relevance IS NOT NULL AND relevance != ''"):
+            if pt.get("relevance"):
+                by_relevance[pt["relevance"]] += 1
     return {
         "total": total,
         "with_abstract": with_abstract,
@@ -44,8 +60,8 @@ def db_overview(db: DB) -> dict:
     }
 
 
-def print_overview(db: DB, title: str = "DB overview") -> None:
-    ov = db_overview(db)
+def print_overview(db: DB, title: str = "DB overview", topic_name: str = "") -> None:
+    ov = db_overview(db, topic_name)
     console.rule(f"[bold cyan]{title}")
     t = Table(show_header=True)
     t.add_column("metric", style="cyan")

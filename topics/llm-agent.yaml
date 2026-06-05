@@ -1,0 +1,451 @@
+# =============================================================================
+# Topic: GUI Agent Survey
+# Computer-use / GUI agent papers from SE/Security/AI venues
+# =============================================================================
+
+name: "GUI Agent Survey"
+description: >
+  Crawl AI-agent papers (especially computer-use / GUI agent) from SE /
+  Security / AI venues (2023–now), classify them, and produce a survey
+  with Obsidian, Markdown, and JSON outputs.
+
+# ------ Prefilter keywords ------
+# Logic: include if agent_core matches, OR (agent_generic AND (se_context OR sec_context))
+keywords:
+  agent_core:
+    - "agent"
+    - "GUI agent"
+    - "computer use"
+    - "computer-use"
+    - "screen agent"
+    - "web agent"
+    - "browser agent"
+    - "mobile agent"
+    - "android agent"
+    - "ios agent"
+    - "desktop agent"
+    - "os agent"
+    - "visual agent"
+    - "multimodal agent"
+    - "autonomous agent"
+    - "UI agent"
+    - "app agent"
+    - "AI agent"
+    - "multi-agent"
+    - "agent-based"
+    - "LLM-powered agent"
+    - "foundation model agent"
+    - "large language model agent"
+    - "OSWorld"
+    - "WebArena"
+    - "Mind2Web"
+    - "VisualWebArena"
+    - "SWE-bench"
+    - "SWEbench"
+    - "GAIA"
+    - "AgentBench"
+    - "ToolBench"
+    - "ReAct"
+    - "tool learning"
+    - "function calling"
+    - "code agent"
+    - "web navigation"
+    - "GUI automation"
+    - "automated testing"
+  agent_generic:
+    - "LLM agent"
+    - "LLM-based agent"
+    - "language agent"
+    - "agentic"
+    - "language model agent"
+    - "foundation model agent"
+    - "tool-use"
+    - "tool use agent"
+    - "AI agent"
+    - "multi-agent"
+    - "agent-based"
+  se_context:
+    - "test generation"
+    - "fuzzing"
+    - "software testing"
+    - "program repair"
+    - "code generation"
+    - "debugging"
+    - "benchmark"
+    - "regression test"
+    - "GUI testing"
+    - "Android testing"
+    - "app testing"
+    - "static analysis"
+    - "dynamic analysis"
+    - "bug"
+    - "vulnerability detection"
+    - "automated program repair"
+    - "code agent"
+    - "software agent"
+  sec_context:
+    - "prompt injection"
+    - "jailbreak"
+    - "adversarial"
+    - "privacy leak"
+    - "privacy"
+    - "side channel"
+    - "malware"
+    - "vulnerability"
+    - "penetration test"
+    - "red team"
+    - "attack"
+    - "defense"
+    - "exploit"
+    - "LLM security"
+    - "agent security"
+    - "automated exploitation"
+
+# ------ Search recall queries ------
+search_queries:
+  - "GUI agent"
+  - "computer use agent"
+  - "mobile agent LLM"
+  - "web agent large language model"
+  - "screen agent"
+  - "LLM agent testing"
+  - "LLM agent security"
+  - "autonomous coding agent"
+  - "prompt injection agent"
+  - "agent benchmark GUI"
+  - "visual language model agent"
+
+# ------ Classify (Stage 3) ------
+classify:
+  relevance_levels:
+    - core
+    - related
+    - adjacent
+    - irrelevant
+  domain_labels:
+    - "GUI Agent"
+    - "Web Agent"
+    - "Computer-Use Agent"
+    - "SE Agent"
+    - "Security Agent"
+    - "Agent Safety & Privacy"
+    - "General LLM Agent"
+  method_labels:
+    - "Benchmark/Dataset"
+    - "Framework/System"
+    - "Empirical Study"
+    - "Attack"
+    - "Defense/Mitigation"
+    - "Evaluation Method"
+    - "Application"
+  core_venues:
+    - ICSE
+    - FSE
+    - ASE
+    - ISSTA
+    - SP
+    - CCS
+    - USS
+    - NDSS
+
+  system_prompt: |
+    You are a meticulous research assistant helping survey AI agent papers.
+    You must respond with a strict JSON object only.
+
+    Classification criteria (map paper content to these buckets):
+
+    1. RELEVANCE — four levels
+       • core — the paper is about computer-use / GUI / Web / Mobile / OS / Desktop agents, or cites well-known computer-use benchmarks/systems such as OSWorld, WebArena, Mind2Web, VisualWebArena, GAIA, AgentBench, SWE-bench, computer-use, GUI automation, web navigation, screen agent, mobile agent, desktop agent, UI agent, app agent, tool-use/function-calling for UI control, etc.
+       • related — the paper applies LLM agents to software engineering (testing, fuzzing, debugging, code generation, program repair, program analysis, vulnerability discovery, benchmark) OR to security/privacy (prompt injection, jailbreak, adversarial attack/defense, red-teaming, automated exploitation, malware analysis, agent security). This also includes agent-based SE tools such as code agents, test-generation agents, and software agents.
+       • adjacent — general LLM-agent work (multi-agent systems, planning, reasoning, tool-use frameworks, autonomous agents, ReAct) that is NOT directly about computer-use, SE, or security.
+       • irrelevant — not an agent paper, or agent work completely unrelated to the above.
+
+    2. DOMAIN — pick ONE primary
+       • GUI Agent — operates through graphical user interfaces (desktop, mobile, web GUI).
+       • Web Agent — specifically web browsing / web navigation.
+       • Computer-Use Agent — general computer-use agents (OS-level, desktop automation, cross-app).
+       • SE Agent — agent applied to software engineering (code, testing, debugging, repair, analysis).
+       • Security Agent — agent applied to security tasks (attack, defense, red-team, vulnerability).
+       • Agent Safety & Privacy — safety, alignment, privacy risks of agents themselves.
+       • General LLM Agent — multi-agent, planning, reasoning, tool-use frameworks without a specific domain above.
+
+    3. METHOD — pick 1–3 tags
+       • Benchmark/Dataset — introduces or uses a benchmark/dataset.
+       • Framework/System — proposes an architecture, framework, or system.
+       • Empirical Study — measurement, user study, or large-scale analysis.
+       • Attack — adversarial or offensive technique.
+       • Defense/Mitigation — protective technique.
+       • Evaluation Method — new metric or evaluation protocol.
+       • Application — concrete real-world application or case study.
+
+  user_prompt_template: |
+    You are labeling ONE paper for an AI-agent survey focused on computer-use / GUI agents, with a secondary focus on software engineering and security/privacy.
+
+    Paper:
+    - Title: {title}
+    - Venue: {venue} ({year})
+    - Abstract: {abstract}
+
+    Label it with:
+
+    1. `relevance`: one of {relevance_levels}.
+       - core: main topic is computer-use / GUI / Web / Mobile / OS / Desktop agent
+       - related: LLM agent applied to software engineering (testing, debugging, code gen, program analysis, vuln discovery) OR security/privacy attack/defense involving agents
+       - adjacent: general LLM agent work (framework, planning, tool use) not directly computer-use / SE / security
+       - irrelevant: not an agent paper, or agent but unrelated to any of the above
+
+    2. `domain_primary`: pick ONE from {domain_labels}. Required.
+
+    3. `domain_secondary`: zero or more additional labels from {domain_labels}. Omit if none.
+
+    4. `method_tags`: 1-3 labels from {method_labels}.
+
+    5. `tldr`: one sentence (<=30 words), plain English, what the paper does.
+
+    6. `rationale`: one short sentence explaining the relevance choice.
+
+    Return strict JSON:
+    {{"relevance": "...", "domain_primary": "...", "domain_secondary": [...], "method_tags": [...], "tldr": "...", "rationale": "..."}}
+    If abstract is missing, use only title; still return best-effort labels but lower the relevance confidence.
+
+  user_prompt_title_only: |
+    You are labeling ONE paper for an AI-agent survey focused on computer-use / GUI agents, with a secondary focus on software engineering and security/privacy.
+
+    Paper:
+    - Title: {title}
+    - Venue: {venue} ({year})
+
+    Only the title is available (no abstract). Make your best judgment from the title alone. Be slightly more inclusive than strict — if the title hints at agent, computer use, GUI, web/mobile interaction, or SE/security automation, mark it as at least "related".
+
+    Label it with:
+
+    1. `relevance`: one of {relevance_levels}.
+       - core: main topic is computer-use / GUI / Web / Mobile / OS / Desktop agent
+       - related: LLM agent applied to software engineering (testing, debugging, code gen, program analysis, vuln discovery) OR security/privacy attack/defense involving agents
+       - adjacent: general LLM agent work (framework, planning, tool use) not directly computer-use / SE / security
+       - irrelevant: not an agent paper, or agent but unrelated to any of the above
+
+    2. `domain_primary`: pick ONE from {domain_labels}. Required.
+
+    3. `domain_secondary`: zero or more additional labels from {domain_labels}. Omit if none.
+
+    4. `method_tags`: 1-3 labels from {method_labels}.
+
+    5. `tldr`: one sentence (<=30 words), plain English, what the paper does.
+
+    6. `rationale`: one short sentence explaining the relevance choice.
+
+    Return strict JSON:
+    {{"relevance": "...", "domain_primary": "...", "domain_secondary": [...], "method_tags": [...], "tldr": "...", "rationale": "..."}}
+
+  batch_user_prompt_template: |
+    You are labeling {count} papers for an AI-agent survey focused on computer-use / GUI agents, with a secondary focus on software engineering and security/privacy.
+
+    For each paper, output ONE JSON object with these keys:
+    - "relevance": one of {relevance_levels}
+      - core: main topic is computer-use / GUI / Web / Mobile / OS / Desktop agent
+      - related: LLM agent applied to SE (testing, debugging, code gen, program analysis, vuln discovery) OR security/privacy attack/defense involving agents
+      - adjacent: general LLM agent work (framework, planning, tool use) not directly computer-use / SE / security
+      - irrelevant: not an agent paper, or agent but unrelated to any of the above
+    - "domain_primary": one of {domain_labels}
+    - "domain_secondary": list of additional labels from {domain_labels} (omit if none)
+    - "method_tags": 1-3 labels from {method_labels}
+    - "tldr": one sentence (<=30 words) plain English summary
+    - "rationale": one short sentence explaining relevance choice
+
+    Return a JSON array with exactly {count} objects, in the same order as the papers below (index 1..{count}). Do not skip any.
+
+    Papers:
+    ---
+    {paper_blocks}
+    ---
+
+    Return strict JSON array only.
+
+# ------ Deepdive (Stage 5) ------
+deepdive:
+  system_prompt: |
+    You are a careful research assistant extracting structured information from a paper's text.
+    You must respond with a strict JSON object only.
+
+  user_prompt_template: |
+    Analyze the following paper text and extract a structured summary.
+
+    Title: {title}
+    Venue: {venue} ({year})
+
+    Paper text (truncated if long):
+    ---
+    {body}
+    ---
+
+    Extract JSON with these keys:
+    - problem: What problem or gap does this paper address? (1-3 sentences)
+    - approach: Core method / system design. (2-5 sentences, bullet-ish)
+    - novelty: What is genuinely new vs prior work? (1-2 sentences)
+    - evaluation: How is it evaluated — datasets, metrics, benchmarks, baselines. (2-4 sentences)
+    - datasets: list of dataset / benchmark names used or proposed. Empty list if none identified.
+    - key_results: 1-3 bullet strings of the main quantitative/qualitative findings.
+    - code_url: URL if mentioned, else null.
+    - limitations: 1-3 short bullet strings.
+    - computer_use_relevance: short note on how this relates to computer-use / GUI agent / SE / security (<=40 words).
+
+    Return strict JSON only.
+
+# ------ Taxonomy (Stage 7) ------
+taxonomy:
+  system_prompt: |
+    You are an expert research taxonomist classifying AI-agent papers into a multi-dimensional taxonomy.
+
+    Rules:
+    - A paper can belong to MULTIPLE trees and MULTIPLE paths within each tree.
+    - Assign paths at the LEAF level (e.g., "web-agent/web-navigation", not just "web-agent").
+    - If a paper does not fit any existing leaf, propose a new leaf name (kebab-case).
+    - Cross-cutting tags are secondary attributes, not primary tree paths.
+    - Output strict JSON only.
+
+  trees:
+    application-domain:
+      web-agent:
+        - web-navigation
+        - web-shop
+        - web-information-seeking
+        - web-task-automation
+        - web-h5-hybrid
+      mobile-agent:
+        - android-native
+        - ios-native
+        - mobile-cross-platform
+      desktop-agent:
+        - os-level-control
+        - gui-app-control
+        - code-ide-integration
+      code-agent:
+        - code-generation
+        - code-repair
+        - test-generation
+        - repo-level-understanding
+      embodied-agent:
+        - robot-manipulation
+        - vision-language-navigation
+        - game-playing-agent
+      scientific-research-agent:
+        - literature-review
+        - experiment-design
+        - data-analysis
+      creative-agent:
+        - content-generation
+        - design-assistant
+      multi-domain-agent: []
+
+    technical-approach:
+      planning:
+        - llm-planning
+        - symbolic-planning
+        - hierarchical-planning
+      learning:
+        - rl-based
+        - imitation-learning
+        - self-improvement
+      tool-use:
+        - function-calling
+        - tool-learning
+        - retrieval-augmented
+      multi-agent:
+        - collaborative-agent
+        - competitive-agent
+        - role-playing-agent
+      perception:
+        - gui-grounding
+        - vision-language-model
+        - web-page-understanding
+      memory:
+        - episodic-memory
+        - semantic-memory
+        - long-context
+      deep-research:
+        - tool-chain-orchestration
+        - iterative-verification
+        - multi-source-synthesis
+      safety-alignment:
+        - guardrail
+        - human-in-the-loop
+        - constrained-generation
+
+    research-goal:
+      benchmark-evaluation:
+        - new-benchmark
+        - comprehensive-evaluation
+        - ablation-study
+      attack-redteam:
+        - jailbreak-attack
+        - prompt-injection
+        - adversarial-manipulation
+        - automated-redteaming
+      defense-security:
+        - prompt-defense
+        - agent-sandboxing
+        - monitoring-detection
+        - privacy-protection
+      framework-system:
+        - agent-architecture
+        - tool-ecosystem
+        - workflow-orchestration
+      dataset-resource:
+        - training-dataset
+        - synthetic-data
+        - annotation-tool
+      analysis-survey:
+        - taxonomy-survey
+        - failure-analysis
+        - capability-assessment
+
+  cross_cutting_tags:
+    - performance
+    - testing-verification
+    - attack-vulnerability
+    - defense-mitigation
+    - benchmark-evaluation
+
+  user_prompt_template: |
+    Classify the following papers using this taxonomy:
+
+    {tree_description}
+
+    For each paper, assign:
+    1. One or more leaf paths per tree (e.g., "application-domain/web-agent/web-navigation")
+    2. Zero or more cross-cutting tags
+
+    Papers to classify ({count}):
+    ---
+    {paper_blocks}
+    ---
+
+    Return strict JSON:
+    {{
+      "papers": [
+        {{
+          "paper_idx": 1,
+          "application_domain": ["web-agent/web-navigation"],
+          "technical_approach": ["planning/llm-planning"],
+          "research_goal": ["benchmark-evaluation/new-benchmark"],
+          "cross_cutting": ["performance", "benchmark-evaluation"],
+          "new_leaves": []
+        }}
+      ]
+    }}
+
+    Use ONLY existing leaf paths when possible. Propose new leaves only when truly necessary.
+
+  # Flat labels — map taxonomy tree paths to topic IDs (absorbs former seed_topics)
+  flat_labels:
+    "research-goal/attack-redteam": "sec_attack"
+    "research-goal/defense-security": "sec_defense"
+    "research-goal/benchmark-evaluation": "test_benchmark"
+    "research-goal/framework-system": "arch_framework"
+    "application-domain/code-agent/test-generation": "test_generation"
+    "research-goal/dataset-resource": "dataset_generation"
+    "research-goal/attack-redteam/automated-redteaming": "test_redteam"
+
+  auto_create_leaves: true
+  auto_create_threshold: 0.8

@@ -26,21 +26,38 @@ class S2Client:
     def close(self) -> None:
         self.client.close()
 
-    def _get(self, path: str, params: dict | None = None) -> dict:
-        r = self.client.get(f"{S2_API}{path}", params=params)
-        if r.status_code == 429:
-            time.sleep(5)
+    def _request_with_backoff(
+        self,
+        method: str,
+        path: str,
+        params: dict | None = None,
+        json: dict | None = None,
+        max_retries: int = 3,
+    ) -> dict | list:
+        """Send request with 429 backoff and retry."""
+        for attempt in range(max_retries):
+            if method == "GET":
+                r = self.client.get(f"{S2_API}{path}", params=params)
+            else:
+                r = self.client.post(f"{S2_API}{path}", params=params, json=json)
+
+            if r.status_code == 429:
+                wait = 5 * (2 ** attempt)
+                time.sleep(wait)
+                continue
             r.raise_for_status()
-        r.raise_for_status()
-        return r.json()
+            return r.json()
+        raise httpx.HTTPStatusError(
+            f"429 after {max_retries} retries",
+            request=r.request,
+            response=r,
+        )
+
+    def _get(self, path: str, params: dict | None = None) -> dict:
+        return self._request_with_backoff("GET", path, params=params)
 
     def _post(self, path: str, json: dict, params: dict | None = None) -> dict | list:
-        r = self.client.post(f"{S2_API}{path}", params=params, json=json)
-        if r.status_code == 429:
-            time.sleep(5)
-            r.raise_for_status()
-        r.raise_for_status()
-        return r.json()
+        return self._request_with_backoff("POST", path, params=params, json=json)
 
     # --------- abstract lookup ---------
 

@@ -1,4 +1,4 @@
-"""Generate Obsidian notes — one file per paper + MOC + tag notes."""
+"""Generate Obsidian notes — one file per paper + MOC + tag notes (per-topic)."""
 from __future__ import annotations
 
 import json
@@ -7,13 +7,13 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
 
-from ..core.config import Config
+from ..core.config import Config, load_topic_config, resolve_topic
 from ..core.console import console
 from ..core.db import DB
 
 
 def slugify(s: str) -> str:
-    s = re.sub(r"[^A-Za-z0-9\u4e00-\u9fa5]+", "-", s).strip("-").lower()
+    s = re.sub(r"[^A-Za-z0-9一-龥]+", "-", s).strip("-").lower()
     return s[:80]
 
 
@@ -39,6 +39,7 @@ def render_paper_note(row: dict) -> str:
     domain_secondary = _load_json(row.get("domain_secondary_json")) or []
     method_tags = _load_json(row.get("method_tags_json")) or []
     deepdive = _load_json(row.get("deepdive_json")) or {}
+    taxonomy = _load_json(row.get("taxonomy_json")) or {}
     dom = row.get("domain_primary") or "Uncategorized"
     tags = [f"agent/{slugify(dom)}"]
     for d in domain_secondary:
@@ -51,6 +52,14 @@ def render_paper_note(row: dict) -> str:
         tags.append(f"area/{slugify(row['venue_area'])}")
     if row.get("relevance"):
         tags.append(f"relevance/{row['relevance']}")
+    # taxonomy tags
+    for tree_name, paths in (taxonomy or {}).items():
+        if tree_name == "cross_cutting":
+            for tag in (paths or []):
+                tags.append(f"cross/{slugify(tag)}")
+            continue
+        for path in (paths or []):
+            tags.append(f"tax/{slugify(tree_name)}/{slugify(path)}")
 
     frontmatter = [
         "---",
@@ -82,6 +91,15 @@ def render_paper_note(row: dict) -> str:
         body.append("## Abstract")
         body.append(row["abstract"])
         body.append("")
+    summary_en = row.get("summary_en") or ""
+    summary_zh = row.get("summary_zh") or ""
+    if summary_en or summary_zh:
+        body.append("## Summary")
+        if summary_en:
+            body.append(summary_en)
+        if summary_zh:
+            body.append(f"*{summary_zh}*")
+        body.append("")
     if deepdive:
         for key, heading in [
             ("problem", "Problem"),
@@ -91,7 +109,7 @@ def render_paper_note(row: dict) -> str:
             ("key_results", "Key Results"),
             ("datasets", "Datasets"),
             ("limitations", "Limitations"),
-            ("computer_use_relevance", "Relevance to Computer-Use / SE / Security"),
+            ("computer_use_relevance", "Relevance to Topic"),
         ]:
             v = deepdive.get(key)
             if not v:
@@ -103,14 +121,25 @@ def render_paper_note(row: dict) -> str:
             else:
                 body.append(str(v))
             body.append("")
+    # taxonomy section
+    if taxonomy:
+        body.append("## Taxonomy")
+        for tree_name, paths in taxonomy.items():
+            if tree_name == "cross_cutting":
+                body.append(f"- **cross-cutting**: {', '.join(paths)}")
+            else:
+                body.append(f"- **{tree_name}**: {', '.join(paths)}")
+        body.append("")
     body.append("## Notes")
     body.append("")
 
     return "\n".join(frontmatter + body)
 
 
-def write_vault(cfg: Config) -> dict:
-    vault = cfg.abs_dir("obsidian")
+def write_vault(cfg: Config, topic_name: str = "") -> dict:
+    topic_name = resolve_topic(topic_name, cfg)
+    tc = load_topic_config(topic_name)
+    vault = cfg.abs_topic_dir(topic_name, "obsidian")
     papers_dir = vault / "papers"
     tags_dir = vault / "tags"
     papers_dir.mkdir(parents=True, exist_ok=True)
@@ -119,8 +148,8 @@ def write_vault(cfg: Config) -> dict:
     db = DB(cfg.abs_path("db"))
     try:
         rows = list(
-            db.iter_papers(
-                "relevance IS NOT NULL AND relevance != 'irrelevant'"
+            db.iter_paper_topics(
+                topic_name, "relevance IS NOT NULL AND relevance != 'irrelevant'"
             )
         )
         by_domain: dict[str, list[dict]] = defaultdict(list)
@@ -134,7 +163,7 @@ def write_vault(cfg: Config) -> dict:
 
         # index MOC
         moc_lines = [
-            "# AI Agent Survey — Index",
+            f"# {tc.description or topic_name} Survey — Index",
             "",
             f"Total papers: {written}",
             "",

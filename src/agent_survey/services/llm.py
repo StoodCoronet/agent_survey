@@ -3,16 +3,18 @@ from __future__ import annotations
 
 import hashlib
 import json
-from typing import Any
+from typing import Any, Callable
 
-from openai import OpenAI
+from openai import APIConnectionError, OpenAI
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 from ..core.config import Config
 from ..core.db import DB
 
 
-def input_hash(stage: str, model: str, prompt_version: str, messages: list[dict]) -> str:
+def input_hash(
+    stage: str, model: str, prompt_version: str, messages: list[dict], topic_name: str = ""
+) -> str:
     h = hashlib.sha256()
     h.update(stage.encode())
     h.update(b"|")
@@ -20,20 +22,83 @@ def input_hash(stage: str, model: str, prompt_version: str, messages: list[dict]
     h.update(b"|")
     h.update(prompt_version.encode())
     h.update(b"|")
+    if topic_name:
+        h.update(topic_name.encode())
+        h.update(b"|")
     h.update(json.dumps(messages, ensure_ascii=False, sort_keys=True).encode())
     return h.hexdigest()[:32]
 
 
 class DeepSeekClient:
-    def __init__(self, cfg: Config):
+    def __init__(self, cfg: Config, stage_name: str = "llm"):
         if not cfg.deepseek_api_key:
-            raise RuntimeError("DEEPSEEK_API_KEY not set in .env")
+            raise RuntimeError(
+                "deepseek_api_key not configured. "
+                "Set it in config/base.yaml (api_keys.deepseek) or DEEPSEEK_API_KEY in .env"
+            )
+        self.cfg = cfg
+        self.api_key = cfg.deepseek_api_key
+        self.base_url = cfg.deepseek_base_url
+        import httpx as _httpx
+        proxy = cfg.get_proxy(stage_name)
+        http_client = _httpx.Client(proxy=proxy, trust_env=False)
         self.client = OpenAI(
-            api_key=cfg.deepseek_api_key,
-            base_url=cfg.deepseek_base_url,
+            api_key=self.api_key,
+            base_url=self.base_url,
+            http_client=http_client,
+            default_headers={"User-Agent": "Mozilla/5.0 (compatible; survey-agent/1.0)"},
         )
 
-    @retry(stop=stop_after_attempt(4), wait=wait_exponential(min=2, max=30))
+    def _chat_json_requests(
+        self,
+        *,
+        model: str,
+        messages: list[dict],
+        temperature: float = 0.0,
+        max_tokens: int = 1024,
+        timeout: float = 120.0,
+    ) -> dict[str, Any]:
+        """Fallback using requests when httpx fails (DNS/cache issues)."""
+        import requests
+
+        url = f"{self.base_url}/v1/chat/completions"
+        payload = {
+            "model": model,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+            "response_format": {"type": "json_object"},
+        }
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0 (compatible; survey-agent/1.0)",
+        }
+        resp = requests.post(
+            url,
+            json=payload,
+            headers=headers,
+            timeout=timeout,
+            proxies={},  # bypass HTTP_PROXY from .env
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        choice = data["choices"][0]
+        message = choice["message"]
+        content = message.get("content") or "{}"
+        usage = data.get("usage")
+        return {
+            "content": json.loads(content),
+            "raw": content,
+            "usage": {
+                "prompt_tokens": usage.get("prompt_tokens") if usage else None,
+                "completion_tokens": usage.get("completion_tokens") if usage else None,
+                "total_tokens": usage.get("total_tokens") if usage else None,
+            },
+            "model": data.get("model", model),
+        }
+
+    @retry(stop=stop_after_attempt(2), wait=wait_exponential(min=1, max=10))
     def chat_json(
         self,
         *,
@@ -41,36 +106,47 @@ class DeepSeekClient:
         messages: list[dict],
         temperature: float = 0.0,
         max_tokens: int = 1024,
+        timeout: float = 120.0,
     ) -> dict[str, Any]:
-        resp = self.client.chat.completions.create(
-            model=model,
-            messages=messages,
-            temperature=temperature,
-            max_tokens=max_tokens,
-            response_format={"type": "json_object"},
-        )
-        content = resp.choices[0].message.content or "{}"
         try:
-            data = json.loads(content)
-        except json.JSONDecodeError:
-            # best-effort cleanup
-            start = content.find("{")
-            end = content.rfind("}")
-            if start >= 0 and end > start:
-                data = json.loads(content[start : end + 1])
-            else:
-                raise
-        usage = getattr(resp, "usage", None)
-        return {
-            "content": data,
-            "raw": content,
-            "usage": {
-                "prompt_tokens": getattr(usage, "prompt_tokens", None),
-                "completion_tokens": getattr(usage, "completion_tokens", None),
-                "total_tokens": getattr(usage, "total_tokens", None),
-            } if usage else None,
-            "model": model,
-        }
+            resp = self.client.chat.completions.create(
+                model=model,
+                messages=messages,
+                temperature=temperature,
+                max_tokens=max_tokens,
+                response_format={"type": "json_object"},
+                timeout=timeout,
+            )
+            content = resp.choices[0].message.content or "{}"
+            try:
+                data = json.loads(content)
+            except json.JSONDecodeError:
+                start = content.find("{")
+                end = content.rfind("}")
+                if start >= 0 and end > start:
+                    data = json.loads(content[start : end + 1])
+                else:
+                    raise
+            usage = getattr(resp, "usage", None)
+            return {
+                "content": data,
+                "raw": content,
+                "usage": {
+                    "prompt_tokens": getattr(usage, "prompt_tokens", None),
+                    "completion_tokens": getattr(usage, "completion_tokens", None),
+                    "total_tokens": getattr(usage, "total_tokens", None),
+                } if usage else None,
+                "model": model,
+            }
+        except APIConnectionError:
+            # httpx/DNS issue → fallback to requests
+            return self._chat_json_requests(
+                model=model,
+                messages=messages,
+                temperature=temperature,
+                max_tokens=max_tokens,
+                timeout=timeout,
+            )
 
 
 def cached_chat_json(
@@ -84,20 +160,37 @@ def cached_chat_json(
     messages: list[dict],
     temperature: float = 0.0,
     max_tokens: int = 1024,
+    topic_name: str = "",
+    timeout: float = 120.0,
+    validate: Callable[[dict], bool] | None = None,
 ) -> dict[str, Any]:
-    ih = input_hash(stage, model, prompt_version, messages)
+    ih = input_hash(stage, model, prompt_version, messages, topic_name)
     hit = db.get_llm_cached(ih)
+
+    # --- cache read validation ---
     if hit and hit.get("response"):
         resp = dict(hit["response"])
-        resp["cached"] = True
-        return resp
+        if validate is None or validate(resp):
+            resp["cached"] = True
+            return resp
+        # polluted cache: delete and fall through to API call
+        db._conn.execute("DELETE FROM llm_calls WHERE input_hash=?", (ih,))
+        db._conn.commit()
+
+    # --- API call ---
     result = client.chat_json(
         model=model,
         messages=messages,
         temperature=temperature,
         max_tokens=max_tokens,
+        timeout=timeout,
     )
     result["cached"] = False
+
+    # --- cache write validation ---
+    if validate is not None and not validate(result):
+        raise ValueError(f"LLM response failed validation for {paper_id} (stage={stage})")
+
     db.save_llm_call(
         paper_id=paper_id,
         stage=stage,
@@ -109,174 +202,5 @@ def cached_chat_json(
     return result
 
 
-# ------------------------------------------------------------------
-# Prompt templates for the LLM stages
-# ------------------------------------------------------------------
-
-DOMAIN_LABELS = [
-    "GUI Agent",
-    "Web Agent",
-    "Computer-Use Agent",
-    "SE Agent",
-    "Security Agent",
-    "Agent Safety & Privacy",
-    "General LLM Agent",
-]
-
-METHOD_LABELS = [
-    "Benchmark/Dataset",
-    "Framework/System",
-    "Empirical Study",
-    "Attack",
-    "Defense/Mitigation",
-    "Evaluation Method",
-    "Application",
-]
-
-RELEVANCE_LEVELS = ["core", "related", "adjacent", "irrelevant"]
-
-
-STAGE3_SYSTEM = """You are a meticulous research assistant helping survey AI agent papers.
-You must respond with a strict JSON object only.
-
-Classification criteria (map paper content to these buckets):
-
-1. RELEVANCE — four levels
-   • core — the paper is about computer-use / GUI / Web / Mobile / OS / Desktop agents, or cites well-known computer-use benchmarks/systems such as OSWorld, WebArena, Mind2Web, VisualWebArena, GAIA, AgentBench, SWE-bench, computer-use, GUI automation, web navigation, screen agent, mobile agent, desktop agent, UI agent, app agent, tool-use/function-calling for UI control, etc.
-   • related — the paper applies LLM agents to software engineering (testing, fuzzing, debugging, code generation, program repair, program analysis, vulnerability discovery, benchmark) OR to security/privacy (prompt injection, jailbreak, adversarial attack/defense, red-teaming, automated exploitation, malware analysis, agent security). This also includes agent-based SE tools such as code agents, test-generation agents, and software agents.
-   • adjacent — general LLM-agent work (multi-agent systems, planning, reasoning, tool-use frameworks, autonomous agents, ReAct) that is NOT directly about computer-use, SE, or security.
-   • irrelevant — not an agent paper, or agent work completely unrelated to the above.
-
-2. DOMAIN — pick ONE primary
-   • GUI Agent — operates through graphical user interfaces (desktop, mobile, web GUI).
-   • Web Agent — specifically web browsing / web navigation.
-   • Computer-Use Agent — general computer-use agents (OS-level, desktop automation, cross-app).
-   • SE Agent — agent applied to software engineering (code, testing, debugging, repair, analysis).
-   • Security Agent — agent applied to security tasks (attack, defense, red-team, vulnerability).
-   • Agent Safety & Privacy — safety, alignment, privacy risks of agents themselves.
-   • General LLM Agent — multi-agent, planning, reasoning, tool-use frameworks without a specific domain above.
-
-3. METHOD — pick 1–3 tags
-   • Benchmark/Dataset — introduces or uses a benchmark/dataset.
-   • Framework/System — proposes an architecture, framework, or system.
-   • Empirical Study — measurement, user study, or large-scale analysis.
-   • Attack — adversarial or offensive technique.
-   • Defense/Mitigation — protective technique.
-   • Evaluation Method — new metric or evaluation protocol.
-   • Application — concrete real-world application or case study.
-"""
-
-
-STAGE3_USER_TEMPLATE = """You are labeling ONE paper for an AI-agent survey focused on computer-use / GUI agents, with a secondary focus on software engineering and security/privacy.
-
-Paper:
-- Title: {title}
-- Venue: {venue} ({year})
-- Abstract: {abstract}
-
-Label it with:
-
-1. `relevance`: one of {relevance_levels}.
-   - core: main topic is computer-use / GUI / Web / Mobile / OS / Desktop agent
-   - related: LLM agent applied to software engineering (testing, debugging, code gen, program analysis, vuln discovery) OR security/privacy attack/defense involving agents
-   - adjacent: general LLM agent work (framework, planning, tool use) not directly computer-use / SE / security
-   - irrelevant: not an agent paper, or agent but unrelated to any of the above
-
-2. `domain_primary`: pick ONE from {domain_labels}. Required.
-
-3. `domain_secondary`: zero or more additional labels from {domain_labels}. Omit if none.
-
-4. `method_tags`: 1-3 labels from {method_labels}.
-
-5. `tldr`: one sentence (<=30 words), plain English, what the paper does.
-
-6. `rationale`: one short sentence explaining the relevance choice.
-
-Return strict JSON:
-{{"relevance": "...", "domain_primary": "...", "domain_secondary": [...], "method_tags": [...], "tldr": "...", "rationale": "..."}}
-If abstract is missing, use only title; still return best-effort labels but lower the relevance confidence.
-"""
-
-STAGE3_USER_TITLE_ONLY = """You are labeling ONE paper for an AI-agent survey focused on computer-use / GUI agents, with a secondary focus on software engineering and security/privacy.
-
-Paper:
-- Title: {title}
-- Venue: {venue} ({year})
-
-⚠️ Only the title is available (no abstract). Make your best judgment from the title alone. Be slightly more inclusive than strict — if the title hints at agent, computer use, GUI, web/mobile interaction, or SE/security automation, mark it as at least "related".
-
-Label it with:
-
-1. `relevance`: one of {relevance_levels}.
-   - core: main topic is computer-use / GUI / Web / Mobile / OS / Desktop agent
-   - related: LLM agent applied to software engineering (testing, debugging, code gen, program analysis, vuln discovery) OR security/privacy attack/defense involving agents
-   - adjacent: general LLM agent work (framework, planning, tool use) not directly computer-use / SE / security
-   - irrelevant: not an agent paper, or agent but unrelated to any of the above
-
-2. `domain_primary`: pick ONE from {domain_labels}. Required.
-
-3. `domain_secondary`: zero or more additional labels from {domain_labels}. Omit if none.
-
-4. `method_tags`: 1-3 labels from {method_labels}.
-
-5. `tldr`: one sentence (<=30 words), plain English, what the paper does.
-
-6. `rationale`: one short sentence explaining the relevance choice.
-
-Return strict JSON:
-{{"relevance": "...", "domain_primary": "...", "domain_secondary": [...], "method_tags": [...], "tldr": "...", "rationale": "..."}}
-"""
-
-
-def build_classify_messages(title: str, abstract: str, venue: str, year: int | None) -> list[dict]:
-    user = STAGE3_USER_TEMPLATE.format(
-        title=title,
-        abstract=abstract or "(not available)",
-        venue=venue or "",
-        year=year or "",
-        relevance_levels=RELEVANCE_LEVELS,
-        domain_labels=DOMAIN_LABELS,
-        method_labels=METHOD_LABELS,
-    )
-    return [
-        {"role": "system", "content": STAGE3_SYSTEM},
-        {"role": "user", "content": user},
-    ]
-
-
-STAGE5_SYSTEM = """You are a careful research assistant extracting structured information from a paper's text.
-You must respond with a strict JSON object only."""
-
-
-STAGE5_USER_TEMPLATE = """Analyze the following paper text and extract a structured summary.
-
-Title: {title}
-Venue: {venue} ({year})
-
-Paper text (truncated if long):
----
-{body}
----
-
-Extract JSON with these keys:
-- problem: What problem or gap does this paper address? (1-3 sentences)
-- approach: Core method / system design. (2-5 sentences, bullet-ish)
-- novelty: What is genuinely new vs prior work? (1-2 sentences)
-- evaluation: How is it evaluated — datasets, metrics, benchmarks, baselines. (2-4 sentences)
-- datasets: list of dataset / benchmark names used or proposed. Empty list if none identified.
-- key_results: 1-3 bullet strings of the main quantitative/qualitative findings.
-- code_url: URL if mentioned, else null.
-- limitations: 1-3 short bullet strings.
-- computer_use_relevance: short note on how this relates to computer-use / GUI agent / SE / security (<=40 words).
-
-Return strict JSON only."""
-
-
-def build_deepdive_messages(title: str, venue: str, year: int | None, body: str) -> list[dict]:
-    user = STAGE5_USER_TEMPLATE.format(
-        title=title, venue=venue or "", year=year or "", body=body
-    )
-    return [
-        {"role": "system", "content": STAGE5_SYSTEM},
-        {"role": "user", "content": user},
-    ]
+# Prompts are now loaded from topics/<name>.yaml per-topic configuration.
+# See TopicConfig.classify and TopicConfig.deepdive in core/config.py.

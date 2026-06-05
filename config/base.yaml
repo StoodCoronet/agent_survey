@@ -1,0 +1,30 @@
+# ---------------------------------------------------------------
+# Base configuration
+# ---------------------------------------------------------------
+
+api_keys:
+  deepseek: ""               # DeepSeek API key (or set DEEPSEEK_API_KEY in .env as fallback)
+  semantic_scholar: ""       # Semantic Scholar API key (optional)
+
+deepseek_base_url: "https://api.deepseek.com"
+
+years:
+  start: 2023
+  end: 2026   # inclusive; use current year
+
+paths:
+  db: output/db/papers.sqlite
+  json: output/json
+  markdown: output/markdown
+  obsidian: output/obsidian
+  pdfs: output/pdfs
+  llm_cache: cache/llm
+
+# Currently active survey topic (must match a file in topics/<name>.yaml)
+active_topic: llm-context-management
+
+# ---------------------------------------------------------------
+# Docs site
+# ---------------------------------------------------------------
+docs:
+  server_port: 48000

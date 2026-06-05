@@ -1,0 +1,66 @@
+categories:
+  - name: Context Compression & Summarization
+    keywords:
+      - context compression
+      - prompt compression
+      - memory compression
+      - hierarchical summarization
+      - incremental summarization
+      - selective context retention
+
+  - name: Memory Architecture
+    keywords:
+      - long-term memory
+      - working memory
+      - short-term memory
+      - episodic memory
+      - semantic memory
+      - external memory retrieval
+      - memory consolidation
+      - memory augmentation
+
+  - name: Retrieval & Knowledge Augmentation
+    keywords:
+      - retrieval-augmented generation (RAG)
+      - retrieval augmentation
+      - external knowledge integration
+      - knowledge retrieval
+      - multi-document context
+      - knowledge graph augmentation
+
+  - name: Dialogue & Session Management
+    keywords:
+      - multi-turn dialogue management
+      - conversation history management
+      - session management
+      - context window management
+      - dialogue state tracking
+      - cross-turn context retention
+      - lost-in-the-middle problem
+
+  - name: Context-Aware Reasoning & Agents
+    keywords:
+      - context-aware reasoning
+      - context-aware agent
+      - agent state management
+      - agent memory architecture
+      - contextual reasoning chain
+      - stateful agent
+
+  - name: Tool-Use & Skill Context
+    keywords:
+      - tool-use context
+      - skill context
+      - function calling context
+      - API context management
+      - tool execution history
+      - skill composition
+
+  - name: Context Security & Defense
+    keywords:
+      - prompt injection defense
+      - context defense
+      - adversarial context attacks
+      - context isolation
+      - sensitive information filtering
+      - context privacy protection
