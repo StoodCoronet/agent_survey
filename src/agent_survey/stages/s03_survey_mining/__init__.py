@@ -71,147 +71,124 @@ def run(
                     papers = papers[:limit]
                 console.print(f"Scanning {len(papers):,} papers for surveys about [cyan]{topic_name}[/cyan]")
 
-            batches = [papers[i:i + batch_size] for i in range(0, len(papers), batch_size)]
-            surveys_found: list[dict] = []
+                batches = [papers[i:i + batch_size] for i in range(0, len(papers), batch_size)]
+                surveys_found: list[dict] = []
 
-            progress = Progress(
-                TextColumn("[bold blue]{task.description}"),
-                BarColumn(), TextColumn("[{task.completed}/{task.total}]"),
-                TimeElapsedColumn(), TimeRemainingColumn(), console=console,
-            )
-            task = progress.add_task("survey discovery", total=len(batches))
+                progress = Progress(
+                    TextColumn("[bold blue]{task.description}"),
+                    BarColumn(), TextColumn("[{task.completed}/{task.total}]"),
+                    TimeElapsedColumn(), TimeRemainingColumn(), console=console,
+                )
+                task = progress.add_task("survey discovery", total=len(batches))
 
-            with progress:
-                with ThreadPoolExecutor(max_workers=workers) as pool:
-                    futures = {}
-                    for b in batches:
-                        messages = build_discovery_prompt(topic_cfg, b)
-                        def _call_and_log(messages, model, temp, max_tok):
-                            """Call DeepSeek, log raw response on JSON error."""
-                            import openai as _openai
-                            client = _openai.OpenAI(
-                                api_key=cfg.deepseek_api_key,
-                                base_url=cfg.deepseek_base_url,
+                # Reuse shared LLM client (respects per-stage proxy + caching)
+                llm_client = DeepSeekClient(cfg, stage_name="survey_mining")
+
+                with progress:
+                    with ThreadPoolExecutor(max_workers=workers) as pool:
+                        futures = {}
+                        for b in batches:
+                            messages = build_discovery_prompt(topic_cfg, b)
+                            f = pool.submit(
+                                llm_client.chat_json,
+                                model=sconf["llm"]["model"],
+                                messages=messages,
+                                temperature=sconf["llm"]["temperature"],
+                                max_tokens=sconf["llm"]["max_tokens"],
                             )
-                            resp = client.chat.completions.create(
-                                model=model, messages=messages,
-                                temperature=temp, max_tokens=max_tok,
-                                response_format={"type": "json_object"},
-                            )
-                            raw = resp.choices[0].message.content or "{}"
+                            futures[f] = b
+
+                        for f in as_completed(futures):
+                            batch = futures[f]
                             try:
-                                data = _json.loads(raw)
-                            except _json.JSONDecodeError:
-                                start = raw.find("{")
-                                end = raw.rfind("}")
-                                if start >= 0 and end > start:
-                                    data = _json.loads(raw[start:end + 1])
-                                else:
-                                    console.log(f"[red]JSON parse failed, raw: {raw[:300]}...[/red]")
-                                    raise
-                            return {"content": data, "raw": raw}
+                                result = f.result()
+                                data = result.get("content", result)
+                                # Support formats:
+                                # New: {"surveys": [{"idx": 0, "title": "..."}, ...]}
+                                # Old int: {"surveys": [3, 7, 15]}
+                                # Legacy: {"papers": [{"index": 0, "is_survey": true, ...}]}
+                                surveys_list = data.get("surveys", [])
+                                indices: list[int] = []
+                                for s in surveys_list:
+                                    if isinstance(s, dict):
+                                        idx = s.get("idx", -1)
+                                        title = s.get("title", "")
+                                        # Validate: idx must match title
+                                        if 0 <= idx < len(batch):
+                                            batch_title = (batch[idx].get("title") or "").strip()
+                                            if _norm(batch_title) == _norm(title):
+                                                indices.append(idx)
+                                            else:
+                                                # Mismatch: try to find by title
+                                                for j, bp in enumerate(batch):
+                                                    if _norm(bp.get("title") or "") == _norm(title):
+                                                        indices.append(j)
+                                                        break
+                                    elif isinstance(s, int):
+                                        indices.append(s)
+                                    elif isinstance(s, str):
+                                        # title-only fallback
+                                        for j, bp in enumerate(batch):
+                                            if _norm(bp.get("title") or "") == _norm(s):
+                                                indices.append(j)
+                                                break
+                                if not indices:
+                                    papers_list = data.get("papers", [])
+                                    if isinstance(papers_list, list):
+                                        for r in papers_list:
+                                            if r.get("is_survey"):
+                                                indices.append(r.get("index", -1))
+                                for i in indices:
+                                    if isinstance(i, int) and 0 <= i < len(batch):
+                                        p = dict(batch[i])
+                                        p["survey_relevance"] = 1.0
+                                        surveys_found.append(p)
+                            except Exception as e:
+                                # Log raw response for debugging JSONDecodeError
+                                detail = str(e)
+                                if hasattr(e, '__cause__'):
+                                    detail += f"  cause: {e.__cause__}"
+                                raw_debug = ""
+                                if isinstance(result, dict):
+                                    raw_debug = result.get("raw", "")[:500]
+                                console.print(f"[red]batch error: {detail[:200]}[/red]")
+                                if raw_debug:
+                                    console.print(f"[dim]raw response: {raw_debug}[/dim]")
+                            progress.advance(task)
 
-                        f = pool.submit(
-                            _call_and_log,
-                            messages,
-                            sconf["llm"]["model"],
-                            sconf["llm"]["temperature"],
-                            sconf["llm"]["max_tokens"],
-                        )
-                        futures[f] = b
+                stats["surveys_found"] = len(surveys_found)
+                console.print(f"\n[green]Found {len(surveys_found)} survey candidates[/green]")
 
-                    for f in as_completed(futures):
-                        batch = futures[f]
-                        try:
-                            results = f.result()
-                            # chat_json wraps output in {"content": ..., "usage": ...}
-                            data = results.get("content", results)
-                            # Support formats:
-                            # New: {"surveys": [{"idx": 0, "title": "..."}, ...]}
-                            # Old int: {"surveys": [3, 7, 15]}
-                            # Legacy: {"papers": [{"index": 0, "is_survey": true, ...}]}
-                            surveys_list = data.get("surveys", [])
-                            indices: list[int] = []
-                            for s in surveys_list:
-                                if isinstance(s, dict):
-                                    idx = s.get("idx", -1)
-                                    title = s.get("title", "")
-                                    # Validate: idx must match title
-                                    if 0 <= idx < len(batch):
-                                        batch_title = (batch[idx].get("title") or "").strip()
-                                        if _norm(batch_title) == _norm(title):
-                                            indices.append(idx)
-                                        else:
-                                            # Mismatch: try to find by title
-                                            for j, bp in enumerate(batch):
-                                                if _norm(bp.get("title") or "") == _norm(title):
-                                                    indices.append(j)
-                                                    break
-                                elif isinstance(s, int):
-                                    indices.append(s)
-                                elif isinstance(s, str):
-                                    # title-only fallback
-                                    for j, bp in enumerate(batch):
-                                        if _norm(bp.get("title") or "") == _norm(s):
-                                            indices.append(j)
-                                            break
-                            if not indices:
-                                papers_list = data.get("papers", [])
-                                if isinstance(papers_list, list):
-                                    for r in papers_list:
-                                        if r.get("is_survey"):
-                                            indices.append(r.get("index", -1))
-                            for i in indices:
-                                if isinstance(i, int) and 0 <= i < len(batch):
-                                    p = dict(batch[i])
-                                    p["survey_relevance"] = 1.0
-                                    surveys_found.append(p)
-                        except Exception as e:
-                            # Log raw response for debugging JSONDecodeError
-                            detail = str(e)
-                            if hasattr(e, '__cause__'):
-                                detail += f"  cause: {e.__cause__}"
-                            raw_debug = ""
-                            if isinstance(results, dict):
-                                raw_debug = results.get("raw", "")[:500]
-                            console.print(f"[red]batch error: {detail[:200]}[/red]")
-                            if raw_debug:
-                                console.print(f"[dim]raw response: {raw_debug}[/dim]")
-                        progress.advance(task)
+                # Save to DB: paper_topics.survey_score
+                if surveys_found:
+                    ts = __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat()
+                    for s in surveys_found:
+                        title = s.get("title", "")
+                        row = db._conn.execute(
+                            "SELECT paper_id FROM papers WHERE title = ?", (title,)
+                        ).fetchone()
+                        if row:
+                            db._conn.execute(
+                                "INSERT INTO paper_topics (paper_id, topic_name, survey_score, updated_at) "
+                                "VALUES (?, ?, ?, ?) "
+                                "ON CONFLICT(paper_id, topic_name) DO UPDATE SET "
+                                "survey_score=excluded.survey_score, updated_at=excluded.updated_at",
+                                (row["paper_id"], topic_name, s.get("survey_relevance", 1.0), ts),
+                            )
+                    db._conn.commit()
 
-            stats["surveys_found"] = len(surveys_found)
-            console.print(f"\n[green]Found {len(surveys_found)} survey candidates[/green]")
-
-            # Save to DB: paper_topics.survey_score
-            if surveys_found:
-                ts = __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat()
-                for s in surveys_found:
-                    title = s.get("title", "")
-                    row = db._conn.execute(
-                        "SELECT paper_id FROM papers WHERE title = ?", (title,)
-                    ).fetchone()
-                    if row:
-                        db._conn.execute(
-                            "INSERT INTO paper_topics (paper_id, topic_name, survey_score, updated_at) "
-                            "VALUES (?, ?, ?, ?) "
-                            "ON CONFLICT(paper_id, topic_name) DO UPDATE SET "
-                            "survey_score=excluded.survey_score, updated_at=excluded.updated_at",
-                            (row["paper_id"], topic_name, s.get("survey_relevance", 1.0), ts),
-                        )
-                db._conn.commit()
-
-            if surveys_found:
-                surveys_found.sort(key=lambda x: x.get("survey_relevance", 0), reverse=True)
-                tbl = Table(title=f"Top surveys for {topic_name}", show_header=True, box=None)
-                tbl.add_column("Rel", justify="right", style="green", width=5)
-                tbl.add_column("Title", style="cyan")
-                for s in surveys_found[:20]:
-                    tbl.add_row(f"{s.get('survey_relevance', 0):.2f}", (s.get("title") or "")[:100])
-                console.print(tbl)
-                out = cfg.abs_topic_dir(topic_name, "json") / "survey_candidates.json"
-                out.parent.mkdir(parents=True, exist_ok=True)
-                out.write_text(json.dumps(surveys_found, indent=2, ensure_ascii=False))
-                console.print(f"[dim]Saved to {out}[/dim]")
+                if surveys_found:
+                    surveys_found.sort(key=lambda x: x.get("survey_relevance", 0), reverse=True)
+                    tbl = Table(title=f"Top surveys for {topic_name}", show_header=True, box=None)
+                    tbl.add_column("Rel", justify="right", style="green", width=5)
+                    tbl.add_column("Title", style="cyan")
+                    for s in surveys_found[:20]:
+                        tbl.add_row(f"{s.get('survey_relevance', 0):.2f}", (s.get("title") or "")[:100])
+                    console.print(tbl)
+                    out = cfg.abs_topic_dir(topic_name, "json") / "survey_candidates.json"
+                    out.parent.mkdir(parents=True, exist_ok=True)
+                    out.write_text(json.dumps(surveys_found, indent=2, ensure_ascii=False))
+                    console.print(f"[dim]Saved to {out}[/dim]")
 
         if phase in ("download", "keywords", "all"):
             console.rule("[bold cyan]Phase 2: Build Download Manifest")

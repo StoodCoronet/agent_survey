@@ -1,8 +1,8 @@
 """Stage 3: venue-aware batch classification with DeepSeek (concurrent).
 
-Two strategies:
-- default (full): classify EVERY paper (slower, ~$6-7, but most thorough)
-- --prefilter-only: only classify keyword hits (faster, ~$0.2)
+Classifies EVERY paper (full pass).  Previously supported a keywords-filter-only
+mode; that logic has been removed — use keywords-filter (Stage 4) for pre-filtering
+and run classify separately when ready.
 
 Venue-aware prompts:
 - Core venues (SE/Security Big-4): title + abstract (arXiv-enriched)
@@ -64,7 +64,6 @@ def _load_stage_config():
 def run(
     cfg: Config,
     *,
-    only_prefilter_hits: bool = True,
     force: bool = False,
     limit: int | None = None,
     batch_size: int | None = None,
@@ -88,39 +87,13 @@ def run(
 
     db = DB(cfg.abs_path("db"))
     try:
-        # Checkpoint: count using paper_topics, prefilter is topic-scoped
-        # Total papers in scope = papers with prefilter_hit for this topic
         total_in_scope = db.count()
-        if only_prefilter_hits:
-            # Count papers with non-empty prefilter_hit for this topic
-            total_in_scope = 0
-            for r in db.iter_papers():
-                ph = r.get("prefilter_hit") or "{}"
-                try:
-                    phd = json.loads(ph) if isinstance(ph, str) else ph
-                except Exception:
-                    phd = {}
-                if phd.get(topic_name):
-                    total_in_scope += 1
-
         already_done = db.count_topic(topic_name, "relevance IS NOT NULL AND relevance != ''")
 
-        where_parts: list[str] = []
-        if not force:
-            # Need to check per-paper: not done yet for this topic
-            pass  # handled below
         rows = list(db.iter_papers())
         # Filter: papers that need classification for this topic
         todo = []
         for r in rows:
-            if only_prefilter_hits:
-                ph = r.get("prefilter_hit") or "{}"
-                try:
-                    phd = json.loads(ph) if isinstance(ph, str) else ph
-                except Exception:
-                    phd = {}
-                if not phd.get(topic_name):
-                    continue
             if not force:
                 pt = db.get_paper_topic(r["paper_id"], topic_name)
                 if pt and pt.get("relevance"):

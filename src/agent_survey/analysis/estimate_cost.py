@@ -103,13 +103,6 @@ def run(cfg: Config, topic_name: str = "") -> dict:
     console.print(f"  Total:                           ${total_cost:>10.2f}")
     console.print(f"\nPer-paper avg:                     ${total_cost / (core_count + noncore_count):.4f}")
 
-    HIT_RATE = 0.02
-    hit_papers = int((core_count + noncore_count) * HIT_RATE)
-    hit_input = int(total_input * HIT_RATE)
-    hit_output = int(total_output * HIT_RATE)
-    hit_cost = hit_input / 1_000_000 * INPUT_PRICE + hit_output / 1_000_000 * OUTPUT_PRICE
-    console.print(f"\nIf only prefilter hits ({HIT_RATE:.0%}):   {hit_papers:,} papers, ${hit_cost:.2f}")
-
     return {
         "topic": topic_name,
         "total_papers": core_count + noncore_count,

@@ -33,6 +33,37 @@ description: >
   pure model training, empirical studies without tool contribution, and
   theoretical work without an artifact.
 
+# ------ Survey Mining (Stage 3) ------
+survey_mining:
+  discovery_topic_desc: |
+    Tool, demo, and system papers that use LLMs to build practical systems
+    for software engineering and related tasks: code generation, testing,
+    debugging, repair, review, vulnerability detection, documentation,
+    data processing, and domain-specific applications.
+  discovery_system: |
+    You are a research librarian identifying survey/review/benchmark papers about LLM-based tools and systems for software engineering.
+    A "survey" must be one of: systematic review, literature review, survey, taxonomy,
+    OR a benchmark study that covers MULTIPLE works and evaluates LLM tools for SE tasks.
+    Include ONLY if the paper is about:
+    - Code generation, completion, or synthesis tools using LLMs
+    - Automated testing or test generation with LLMs
+    - Debugging, fault localization, or program repair using LLMs
+    - Code review, quality analysis, or vulnerability detection tools
+    - Documentation generation or program comprehension tools
+    - Data processing, analysis, or transformation tools (e.g., spreadsheet cleaning)
+    - Research assistance or deep research tools for literature investigation
+    - Domain-specific LLM tools with concrete system contributions
+    EXCLUDE if about:
+    - Pure model training or fine-tuning without a concrete tool/system
+    - Empirical studies that do not propose a new tool
+    - Theoretical algorithms without a deployed artifact
+    - General NLP/AI work without SE or tool focus
+    Return JSON: {"surveys": [{"idx": 0, "title": "Exact Title"}, ...]}
+    Use the EXACT index and title from the list below. If idx and title mismatch, trust the title. NOTHING else.
+  keyword_system: |
+    Extract technical keywords about LLM-based SE tools from these survey papers.
+    Return JSON: {"keywords": ["term1", "term2", ...]}
+
 # ------ Prefilter keywords ------
 keywords:
   agent_core:

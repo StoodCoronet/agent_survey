@@ -31,6 +31,37 @@ description: >
   Excludes generic RAG, code tools, and domain-specific ML without
   literature focus.
 
+# ------ Survey Mining (Stage 3) ------
+survey_mining:
+  discovery_topic_desc: |
+    Systems that use AI, LLMs, or agents to automate academic literature
+    investigation: deep research, paper QA, systematic literature review
+    automation, citation analysis, knowledge base construction from papers,
+    claim extraction, evidence synthesis, and research-assistant tools.
+  discovery_system: |
+    You are a research librarian identifying survey/review/benchmark papers about automated research and deep research systems.
+    A "survey" must be one of: systematic review, literature review, survey, taxonomy,
+    OR a benchmark study that covers MULTIPLE works and evaluates systems for automated literature investigation.
+    Include ONLY if the paper is about:
+    - End-to-end automated deep research (multi-source search → synthesis)
+    - Academic paper QA or chat systems over scholarly documents
+    - Systematic literature review (SLR) automation tools
+    - Citation network or scholarly graph analysis with LLM
+    - Knowledge base construction from academic text
+    - Claim extraction, fact verification, or evidence synthesis from papers
+    - Research assistant or copilot tools for scientists
+    EXCLUDE if about:
+    - Generic RAG systems not targeting academic papers
+    - Pure NLP methods without a research-assistant system
+    - Traditional bibliometrics without LLM/agent component
+    - LLM tools for code/testing/debugging
+    - Domain-specific ML models without literature focus
+    Return JSON: {"surveys": [{"idx": 0, "title": "Exact Title"}, ...]}
+    Use the EXACT index and title from the list below. If idx and title mismatch, trust the title. NOTHING else.
+  keyword_system: |
+    Extract technical keywords about automated research systems from these survey papers.
+    Return JSON: {"keywords": ["term1", "term2", ...]}
+
 # ------ Prefilter keywords ------
 keywords:
   agent_core:

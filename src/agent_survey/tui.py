@@ -497,7 +497,7 @@ def _step_status(st: dict) -> list[dict]:
         {"idx": 1,  "name": "harvest",         "state": "done" if st["total"] > 0 else "pending", "data": f"{st['total']:,}" if st["total"] > 0 else "--", "note": "已爬" if st["total"] > 0 else "未开始", "desc": "DBLP 爬取论文列表（venue × year），全局共享"},
         {"idx": 2,  "name": "enrich",          "state": enrich_state, "data": f"{enriched:,}" if enriched > 0 else "--", "note": enrich_note, "desc": "S2/arXiv/ACL/Crossref/Playwright 批量获取 abstract"},
         {"idx": 3,  "name": "survey-mining",   "state": "done" if st["survey_count"] > 0 else "pending", "data": f"{st['survey_count']:,}" if st["survey_count"] > 0 else "--", "note": f"发现 {st['survey_count']:,} 篇" if st["survey_count"] > 0 else "未开始", "desc": "DeepSeek-Flash 扫描全库 → 找 topic 相关 survey → 生成下载清单 → 提取关键词组"},
-        {"idx": 4,  "name": "keywords-filter", "state": "done" if st["prefilter_hit"] > 0 else "pending", "data": f"{st['prefilter_hit']:,}" if st["prefilter_hit"] > 0 else "--", "note": "已命中" if st["prefilter_hit"] > 0 else "未开始", "desc": "关键词正则匹配 title+abstract，标记 prefilter_hit"},
+        {"idx": 4,  "name": "keywords-filter", "state": "done" if st["prefilter_hit"] > 0 else "pending", "data": f"{st['prefilter_hit']:,}" if st["prefilter_hit"] > 0 else "--", "note": "已命中" if st["prefilter_hit"] > 0 else "未开始", "desc": "关键词正则匹配 title+abstract，标记命中状态"},
         {"idx": 5,  "name": "classify",        "state": "done" if st["classified"] > 0 else "pending", "data": f"{st['core']:,}/{st['related']:,}" if st["classified"] > 0 else "--", "note": "已分类" if st["classified"] > 0 else "未开始", "desc": "DeepSeek-Flash 相关性分类 → core / related / adjacent"},
         {"idx": 6,  "name": "taxonomy",        "state": tax_state, "data": tax_data, "note": tax_note, "desc": "按 taxonomy 树给论文打标签"},
         {"idx": 7,  "name": "dedup",           "state": dedup_state, "data": f"c:{dedup_core},r:{dedup_related},a:{dedup_adjacent}" if dedup_core > 0 or dedup_related > 0 or dedup_adjacent > 0 else "--", "note": dedup_note, "desc": "scope 内去重，标记 dedup_keep_json"},
@@ -553,7 +553,7 @@ def _build_stats_table(st: dict) -> Table:
     coverage = round(st["with_abstract"] / st["total"] * 100, 1) if st["total"] else 0
     t.add_row("Total", f"{st['total']:,}")
     t.add_row("Abstract", f"{st['with_abstract']:,}  ({coverage}%)")
-    t.add_row("Prefilter", f"{st['prefilter_hit']:,}")
+    t.add_row("Keywords Filter", f"{st['prefilter_hit']:,}")
     t.add_row("Core", Text(f"{st['core']:,}", style=C_GREEN))
     t.add_row("Related", Text(f"{st['related']:,}", style=C_YELLOW))
     t.add_row("Adjacent", Text(f"{st['adjacent']:,}", style=C_DIM))
@@ -625,13 +625,23 @@ def run():
     topic_name = chosen
     # Persist chosen topic so next TUI session starts here
     if cfg.active_topic != topic_name:
-        config_path = cfg.project_root / "config.yaml"
         import re
-        content = config_path.read_text()
-        content = re.sub(
-            r"^active_topic:.*$", f"active_topic: {topic_name}", content, flags=re.MULTILINE
-        )
-        config_path.write_text(content)
+        base_config = cfg.project_root / "config" / "base.yaml"
+        if base_config.exists():
+            content = base_config.read_text()
+            content = re.sub(
+                r"^active_topic:.*$", f"active_topic: {topic_name}", content, flags=re.MULTILINE
+            )
+            base_config.write_text(content)
+        else:
+            # Fallback to legacy single config.yaml
+            config_path = cfg.project_root / "config.yaml"
+            if config_path.exists():
+                content = config_path.read_text()
+                content = re.sub(
+                    r"^active_topic:.*$", f"active_topic: {topic_name}", content, flags=re.MULTILINE
+                )
+                config_path.write_text(content)
     cfg = load_config()  # reload after potential topic new/use
 
     while True:  # reload after potential topic new

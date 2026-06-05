@@ -329,7 +329,7 @@ def resolve_topic(topic_name: str | None = None, config: Config | None = None) -
     if len(available) == 1:
         return available[0]
     raise RuntimeError(
-        "No topic specified. Use --topic <name> or set active_topic in config.yaml. "
+        "No topic specified. Use --topic <name> or set active_topic in config/base.yaml. "
         f"Available topics: {', '.join(available) if available else '(none)'}"
     )
 

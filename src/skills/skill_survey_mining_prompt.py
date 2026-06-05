@@ -122,4 +122,52 @@ SKILL = {
         "add_negative_examples_to_prompt",
         "manual_review_of_candidates",
     ],
+    # ── Reference Template (validated on llm-context-management) ──
+    # Copy this structure into topics/<name>.yaml under the `survey_mining:` key.
+    # Replace ALL {PLACEHOLDER} sections with your topic's specifics.
+    "reference_template": {
+        "topic_desc": """
+{TOPIC_NAME}: {one-sentence definition of the topic}.
+Core directions:
+1. {SUB_DIRECTION_1}: {brief description with key techniques or concepts}.
+2. {SUB_DIRECTION_2}: {brief description}.
+3. {SUB_DIRECTION_3}: {brief description}.
+   - {Sub-aspect A}: {description}.
+   - {Sub-aspect B}: {description}.
+4. {SUB_DIRECTION_4}: {brief description}.
+5. {SUB_DIRECTION_5 (if detection/inference scope applies)}:
+   - {Method type}: {description}.
+   - {Another method}: {description}.
+6. {OPTIONAL_ATTACK_DEFENSE}: {description if applicable}.
+NOT included:
+- {EXCLUSION_1}: {why it is out of scope}.
+- {EXCLUSION_2}: {why it is out of scope}.
+- {EXCLUSION_3}: {why it is out of scope}.
+- {EXCLUSION_4 — unrelated domains}: {list domains}.
+""",
+        "discovery_system": """
+You are a research librarian identifying survey/review/benchmark papers about {TOPIC_NAME}.
+A "survey" must be one of: systematic review, literature review, survey, taxonomy,
+OR a benchmark study that covers MULTIPLE works and evaluates {MEASURABLE_BEHAVIOR}.
+Include ONLY if the paper is about:
+- {SUB_DIRECTION_1}
+- {SUB_DIRECTION_2}
+- {SUB_DIRECTION_3}
+- {SUB_DIRECTION_4}
+- {SUB_DIRECTION_5 (optional)}
+- {SUB_DIRECTION_6 (optional)}
+EXCLUDE if about:
+- {EXCLUSION_1}
+- {EXCLUSION_2}
+- {EXCLUSION_3}
+- {EXCLUSION_4 — unrelated domains}
+- {EXCLUSION_5 — unrelated domains}
+Return JSON: {"surveys": [{"idx": 0, "title": "Exact Title"}, ...]}
+Use the EXACT index and title from the list below. If idx and title mismatch, trust the title. NOTHING else.
+""",
+        "keyword_system": """
+Extract technical keywords about {TOPIC_NAME} from these survey papers.
+Return JSON: {"keywords": ["term1", "term2", ...]}
+""",
+    },
 }

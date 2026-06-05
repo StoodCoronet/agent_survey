@@ -58,7 +58,7 @@ def run(cfg: Config, *, topic_name: str = "") -> dict:
             TimeRemainingColumn(),
             console=console,
         ) as prog:
-            task = prog.add_task("prefilter", total=len(rows), hits=0)
+            task = prog.add_task("keywords-filter", total=len(rows), hits=0)
             for row in rows:
                 text = f"{row.get('title') or ''} {row.get('abstract') or ''}"
                 hit_cats: dict[str, list[str]] = {}
@@ -117,9 +117,9 @@ def run(cfg: Config, *, topic_name: str = "") -> dict:
                 f"{v}/{y}": c for (v, y), c in sorted(hit_by_venue_year.items(), key=lambda x: x[0])
             },
         }
-        out = write_stage_stats(cfg, "prefilter", stats)
-        print_overview(db, "after prefilter")
-        console.print(f"[green]prefilter hits: {hits_total}/{processed}[/green]")
+        out = write_stage_stats(cfg, "keywords_filter", stats)
+        print_overview(db, "after keywords-filter")
+        console.print(f"[green]keywords-filter hits: {hits_total}/{processed}[/green]")
         console.print(f"[green]wrote stats to {out}[/green]")
         return stats
     finally:

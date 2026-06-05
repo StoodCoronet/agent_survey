@@ -27,7 +27,7 @@ from .stages import s01_harvest as s_harvest
 from .stages import s02_enrich as s_enrich
 from .stages.s02_enrich import run_web as s_enrich_web
 from .stages import s03_survey_mining as s_survey_mining
-from .stages import s04_keywords_filter as s_prefilter
+from .stages import s04_keywords_filter as s_keywords_filter
 from .stages import s05_classify as s_classify
 from .stages import s06_taxonomy as s_taxonomy
 from .stages import s07_dedup as s_dedup
@@ -102,12 +102,20 @@ def topic_use(
     except FileNotFoundError:
         console.print(f"[red]Topic '{name}' not found in topics/.[/red]")
         raise typer.Exit(1)
-    # Update config.yaml
+    # Update config/base.yaml (config dir merge mode)
     import re
-    config_path = cfg.project_root / "config.yaml"
-    content = config_path.read_text()
-    content = re.sub(r"^active_topic:.*$", f"active_topic: {name}", content, flags=re.MULTILINE)
-    config_path.write_text(content)
+    base_config = cfg.project_root / "config" / "base.yaml"
+    if base_config.exists():
+        content = base_config.read_text()
+        content = re.sub(r"^active_topic:.*$", f"active_topic: {name}", content, flags=re.MULTILINE)
+        base_config.write_text(content)
+    else:
+        # Fallback to legacy single config.yaml
+        config_path = cfg.project_root / "config.yaml"
+        if config_path.exists():
+            content = config_path.read_text()
+            content = re.sub(r"^active_topic:.*$", f"active_topic: {name}", content, flags=re.MULTILINE)
+            config_path.write_text(content)
     # Also update DB
     db = DB(cfg.abs_path("db"))
     try:
@@ -366,17 +374,7 @@ def keywords_filter(
 ):
     """Stage 4: keyword regex filter over title+abstract."""
     cfg = load_config()
-    s_prefilter.run(cfg, topic_name=topic)
-
-
-@app.command("prefilter")
-@_with_logfile("prefilter")
-def prefilter_legacy(
-    topic: str = _topic_option(),
-):
-    """Stage 4 (legacy name): keyword regex filter."""
-    cfg = load_config()
-    s_prefilter.run(cfg, topic_name=topic)
+    s_keywords_filter.run(cfg, topic_name=topic)
 
 
 @app.command()
@@ -384,17 +382,11 @@ def prefilter_legacy(
 def classify(
     force: bool = False,
     limit: int = typer.Option(0, help="0 = no limit"),
-    prefilter_only: bool = typer.Option(False, "--prefilter-only", help="only classify prefilter hits (cheaper, ~$0.2)"),
     batch_size: int | None = typer.Option(None, "--batch-size", help="papers per LLM call (default from classify_config.yaml)"),
     workers: int | None = typer.Option(None, "--workers", "-w", help="parallel API workers (default from classify_config.yaml)"),
     topic: str = _topic_option(),
 ):
-    """Stage 3: LLM (Flash) venue-aware batch classify.
-
-    Two strategies:
-    - default (full): classify EVERY paper (slower, ~$6-7, but most thorough)
-    - --prefilter-only: only classify keyword hits (faster, ~$0.2)
-    """
+    """Stage 3: LLM (Flash) venue-aware batch classify."""
     cfg = load_config()
     topic_name = resolve_topic(topic, cfg)
 
@@ -427,7 +419,6 @@ def classify(
 
     s_classify.run(
         cfg,
-        only_prefilter_hits=prefilter_only,
         force=force,
         limit=limit or None,
         batch_size=batch_size,
