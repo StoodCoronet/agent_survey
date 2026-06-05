@@ -1,6 +1,6 @@
 # Overall Plan — Multi-Topic Survey Agent
 
-**Last updated**: 2026-06-05
+**Last updated**: 2026-06-06
 
 ## Topic Status Overview
 
@@ -60,6 +60,16 @@ Legend: ✅ done · not started 🔄 in progress
 
 ---
 
+## External APIs & Keys
+
+See [`external-apis.md`](external-apis.md) for full reference.
+
+**Status**: DeepSeek ✅, S2 ✅, others ❌
+
+**Tomorrow's action**: Apply for OpenReview API token + CORE API key.
+
+---
+
 ## Medium-Term (Next 2 Weeks)
 
 1. **llm-agent topic** — full pipeline run from harvest to report
@@ -80,7 +90,8 @@ Legend: ✅ done · not started 🔄 in progress
 | `.claude/settings.local.json` changes | Low | IDE settings leaking into git diff |
 | `test-topic` in DB | Low | Empty test topic; harmless |
 | ~~Dead proxy `192.168.1.106:7890`~~ | **Fixed** | Replaced with `socks5://10.20.197.128:7890`; `socksio` added for httpx SOCKS5 support |
-| arXiv 429 rate limit | Low | Occasional; add backoff / sleep between downloads |
+| ~~Dead proxy `192.168.1.106:7890`~~ | **Fixed** | Replaced with `socks5://10.20.197.128:7890`; `socksio` added |
+| Proxy IP blacklisted | **Blocked** | `10.20.197.128:7890` banned by arXiv & S2 (429 even after 240s backoff). Test recovery tomorrow. |
 
 ---
 
