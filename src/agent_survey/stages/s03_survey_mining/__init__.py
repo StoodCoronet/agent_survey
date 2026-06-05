@@ -13,11 +13,13 @@ from ...core.console import console
 from ...core.db import DB
 from ...services import arxiv as arxiv_src
 from ...services.llm import DeepSeekClient
-from .core import _load_stage_config, build_discovery_prompt
+from ...services import pdf_extract
+from .core import _load_stage_config, build_discovery_prompt, build_keyword_extraction_prompt
 
 import json as _json
 import httpx as _httpx
 import re as _re
+from collections import Counter
 
 
 def _norm(s: str) -> str:
@@ -413,7 +415,126 @@ def run(
                     }, indent=2, ensure_ascii=False))
 
         if phase in ("keywords", "all"):
-            console.print("[yellow]Phase 3 (keyword extraction) — coming next[/yellow]")
+            console.rule("[bold cyan]Phase 3: Keyword Extraction")
+            candidates_path = cfg.abs_topic_dir(topic_name, "json") / "survey_candidates.json"
+            manifest_path = cfg.abs_topic_dir(topic_name, "json") / "download_manifest.json"
+
+            if not candidates_path.exists():
+                console.print("[yellow]No survey_candidates.json found. Run Phase 1 first.[/yellow]")
+            else:
+                candidates = _json.loads(candidates_path.read_text())
+                manifest_by_title: dict[str, dict] = {}
+                if manifest_path.exists():
+                    manifest_data = _json.loads(manifest_path.read_text())
+                    for m in manifest_data.get("candidates", []):
+                        manifest_by_title[m.get("title", "")] = m
+
+                surveys_to_process: list[dict] = []
+                for c in candidates:
+                    title = c.get("title", "")
+                    m = manifest_by_title.get(title, {})
+                    local_path = m.get("local_path")
+                    if local_path:
+                        abs_path = cfg.project_root / local_path
+                        if abs_path.exists() and abs_path.stat().st_size > 1024:
+                            c["local_pdf"] = str(abs_path)
+                            surveys_to_process.append(c)
+
+                max_surveys = sconf["keywords"]["max_surveys"]
+                if max_surveys:
+                    surveys_to_process = surveys_to_process[:max_surveys]
+
+                if not surveys_to_process:
+                    console.print("[yellow]No downloaded survey PDFs found. Run Phase 2 (download) first.[/yellow]")
+                else:
+                    console.print(f"Extracting keywords from {len(surveys_to_process)} survey PDFs...")
+                    per_survey = sconf["keywords"]["per_survey"]
+                    min_freq = sconf["keywords"]["min_frequency"]
+
+                    all_keywords: list[dict] = []  # {"term": ..., "source": title}
+
+                    progress = Progress(
+                        TextColumn("[bold blue]{task.description}"),
+                        BarColumn(), TextColumn("[{task.completed}/{task.total}]"),
+                        TimeElapsedColumn(), TimeRemainingColumn(), console=console,
+                    )
+                    task = progress.add_task("keyword extraction (surveys)", total=len(surveys_to_process))
+
+                    llm_client = DeepSeekClient(cfg, stage_name="survey_mining")
+
+                    with progress:
+                        with ThreadPoolExecutor(max_workers=workers) as pool:
+                            futures: dict = {}
+                            for s in surveys_to_process:
+                                pdf_path = Path(s["local_pdf"])
+                                text = pdf_extract.extract_text(pdf_path, max_pages=20)
+                                body = pdf_extract.build_prompt_body(text, max_chars=30000)
+                                if not body or len(body) < 200:
+                                    progress.advance(task)
+                                    continue
+                                messages = build_keyword_extraction_prompt(topic_cfg, body, per_survey=per_survey)
+                                f = pool.submit(
+                                    llm_client.chat_json,
+                                    model=sconf["llm"]["model"],
+                                    messages=messages,
+                                    temperature=0.0,
+                                    max_tokens=2048,
+                                )
+                                futures[f] = s
+
+                            for f in as_completed(futures):
+                                s = futures[f]
+                                try:
+                                    result = f.result()
+                                    data = result.get("content", result)
+                                    keywords_list = data.get("keywords", [])
+                                    if isinstance(keywords_list, list):
+                                        for kw in keywords_list:
+                                            if isinstance(kw, str):
+                                                term = kw.strip().lower()
+                                                if term:
+                                                    all_keywords.append({"term": term, "source": s.get("title", "")})
+                                            elif isinstance(kw, dict):
+                                                term = kw.get("term", kw.get("keyword", ""))
+                                                if term:
+                                                    all_keywords.append({"term": str(term).strip().lower(), "source": s.get("title", "")})
+                                except Exception as e:
+                                    console.print(f"[red]keyword extraction failed for {s.get('title', '')[:50]}...: {e}[/red]")
+                                progress.advance(task)
+
+                    # Aggregate by frequency
+                    term_counts = Counter(k["term"] for k in all_keywords)
+                    term_sources: dict[str, set[str]] = {}
+                    for k in all_keywords:
+                        term_sources.setdefault(k["term"], set()).add(k["source"])
+
+                    aggregated: list[dict] = []
+                    for term, count in term_counts.most_common():
+                        if count >= min_freq:
+                            aggregated.append({
+                                "term": term,
+                                "frequency": count,
+                                "sources": sorted(term_sources[term]),
+                            })
+
+                    out_keywords = cfg.abs_topic_dir(topic_name, "json") / "survey_keywords.json"
+                    out_keywords.write_text(_json.dumps({
+                        "total_surveys_processed": len(surveys_to_process),
+                        "total_keywords_extracted": len(all_keywords),
+                        "unique_keywords": len(term_counts),
+                        "min_frequency": min_freq,
+                        "keywords": aggregated,
+                    }, indent=2, ensure_ascii=False))
+                    console.print(f"\n[green]Saved {len(aggregated)} keywords (freq≥{min_freq}) to {out_keywords}[/green]")
+
+                    # Also save flat list for easy copy-paste
+                    flat_path = cfg.abs_topic_dir(topic_name, "json") / "survey_keywords_flat.txt"
+                    flat_path.write_text("\n".join(k["term"] for k in aggregated), encoding="utf-8")
+                    console.print(f"[dim]Flat list saved to {flat_path}[/dim]")
+
+                    stats["keywords_extracted"] = len(all_keywords)
+                    stats["keywords_unique"] = len(term_counts)
+                    stats["keywords_filtered"] = len(aggregated)
 
         return stats
     finally:

@@ -35,6 +35,19 @@ Return JSON: {"surveys": [{"idx": 0, "title": "Exact Title"}, {"idx": 3, "title"
 Use the EXACT index and title from the list below. If idx and title mismatch, trust the title. NOTHING else."""
 
 
+_DEFAULT_KEYWORD_SYSTEM = """You are an expert at extracting technical terminology from academic survey papers.
+Extract ALL relevant technical keywords, method names, benchmark names, and framework names.
+
+Rules:
+- Include specific techniques, benchmarks, framework names, key concepts
+- Exclude generic words, author names, institution names
+- Each keyword 1-5 words, lowercase preferred
+- Include abbreviations AND expanded forms as separate entries
+- Only include keywords that are DIRECTLY relevant to the survey topic
+
+Return JSON: {"keywords": ["term1", "term2", ...]}"""
+
+
 def build_discovery_prompt(topic_cfg, batch: list[dict]) -> list[dict]:
     """Build messages for survey discovery (Phase 1).  Reads prompt from topic config."""
     sm = getattr(topic_cfg, "survey_mining", None)
@@ -52,27 +65,28 @@ def build_discovery_prompt(topic_cfg, batch: list[dict]) -> list[dict]:
     ]
 
 
-def build_keyword_extraction_prompt(topic_name: str, topic_desc: str, paper_bodies: list[dict]) -> list[dict]:
-    """Build prompt for keyword extraction from survey PDFs (Phase 3)."""
-    system = f"""You are an expert at extracting technical terminology from academic papers.
-Read survey papers about "{topic_name}" and extract ALL relevant
-technical keywords, method names, benchmark names, and framework names.
+def build_keyword_extraction_prompt(topic_cfg, body: str, per_survey: int = 50) -> list[dict]:
+    """Build prompt for keyword extraction from a single survey PDF (Phase 3).
 
-Rules:
-- Include specific techniques, benchmarks, framework names, key concepts
+    Reads topic-specific keyword_system from topic config if available.
+    """
+    sm = getattr(topic_cfg, "survey_mining", None)
+    system = (sm.keyword_system if sm and getattr(sm, "keyword_system", None) else _DEFAULT_KEYWORD_SYSTEM)
+
+    user = f"""Read the following survey paper and extract up to {per_survey} technical keywords relevant to the topic.
+
+Requirements:
+- Focus on specific techniques, methods, frameworks, benchmarks, and domain concepts
+- Include abbreviations AND their expanded forms as separate entries
 - Exclude generic words, author names, institution names
-- Each keyword 1-5 words, lowercase preferred
-- Include abbreviations AND expanded forms as separate entries
+- Each keyword should be 1-5 words, lowercase preferred
+- Only include keywords that are DIRECTLY relevant to the survey topic
 
 Return JSON: {{"keywords": ["term1", "term2", ...]}}
-"""
 
-    items = []
-    for i, p in enumerate(paper_bodies):
-        title = p.get("title", "")[:200]
-        body = p.get("body", "")[:8000]
-        items.append(f"--- Survey {i+1}: {title} ---\n{body}")
-    user = f"Extract keywords from these surveys about {topic_name}:\n\n" + "\n\n".join(items)
+Paper content:
+{body}
+"""
     return [
         {"role": "system", "content": system},
         {"role": "user", "content": user},

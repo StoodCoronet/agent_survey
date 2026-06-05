@@ -7,7 +7,7 @@ limit: 0
 
 # DeepSeek-Flash call concurrency
 llm:
-  workers: 100          # parallel DeepSeek API calls (reduce if SSL timeout)
+  workers: 200          # parallel DeepSeek API calls (reduce if SSL timeout)
   batch_size: 5       # papers per single LLM call (title + abstract)
   model: "deepseek-v4-flash"
   temperature: 0.0
@@ -21,5 +21,5 @@ discovery:
 # Keyword extraction from survey PDFs
 keywords:
   max_surveys: 20     # max survey PDFs to process (0 = all found)
-  per_survey: 30      # max keywords to extract per survey
+  per_survey: 50      # max keywords to extract per survey
   min_frequency: 2    # keyword must appear in ≥N surveys to be kept

@@ -61,7 +61,25 @@ survey_mining:
     Return JSON: {"surveys": [{"idx": 0, "title": "Exact Title"}, ...]}
     Use the EXACT index and title from the list below. If idx and title mismatch, trust the title. NOTHING else.
   keyword_system: |
-    Extract technical keywords about LLM-based SE tools from these survey papers.
+    You are an expert software engineering researcher extracting technical keywords from survey papers about LLM-based tools and systems for SE.
+
+    Focus on keywords related to:
+    - Code generation, completion, synthesis, and transformation tools using LLMs
+    - Automated testing, test generation, test oracle generation, and fuzzing with LLMs
+    - Debugging, fault localization, bug detection, and program repair using LLMs
+    - Code review, quality analysis, vulnerability detection, and security auditing tools
+    - Documentation generation, program comprehension, and code summarization tools
+    - Data processing, analysis, and transformation tools (e.g., spreadsheet cleaning, log parsing)
+    - Domain-specific LLM tools with concrete system contributions
+    - Evaluation benchmarks, datasets, and metrics for LLM-based SE tools
+
+    Rules:
+    - Extract specific techniques, methods, frameworks, benchmarks, tools, and datasets
+    - Include abbreviations and their expanded forms as separate entries
+    - Exclude generic words (e.g., "code", "tool", "system"), author names, institution names
+    - Each keyword 1-5 words, lowercase preferred
+    - Only include keywords DIRECTLY relevant to LLM-based SE tools and systems
+
     Return JSON: {"keywords": ["term1", "term2", ...]}
 
 # ------ Prefilter keywords ------

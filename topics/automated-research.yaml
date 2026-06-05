@@ -59,7 +59,24 @@ survey_mining:
     Return JSON: {"surveys": [{"idx": 0, "title": "Exact Title"}, ...]}
     Use the EXACT index and title from the list below. If idx and title mismatch, trust the title. NOTHING else.
   keyword_system: |
-    Extract technical keywords about automated research systems from these survey papers.
+    You are an expert information scientist extracting technical keywords from survey papers about automated research and deep research systems.
+
+    Focus on keywords related to:
+    - Automated deep research and literature investigation (multi-source search, synthesis, report generation)
+    - Academic paper QA and chat systems over scholarly documents
+    - Systematic literature review (SLR) automation and survey generation tools
+    - Citation network analysis, scholarly graph analysis, and bibliometrics with LLM
+    - Knowledge base and knowledge graph construction from academic text
+    - Claim extraction, fact verification, and evidence synthesis from scientific papers
+    - Research assistant, copilot, and scientist support tools
+
+    Rules:
+    - Extract specific techniques, methods, frameworks, benchmarks, tools, and datasets
+    - Include abbreviations and their expanded forms as separate entries
+    - Exclude generic words (e.g., "paper", "method", "result"), author names, institution names
+    - Each keyword 1-5 words, lowercase preferred
+    - Only include keywords DIRECTLY relevant to automated research systems
+
     Return JSON: {"keywords": ["term1", "term2", ...]}
 
 # ------ Prefilter keywords ------
