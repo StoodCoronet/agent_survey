@@ -21,3 +21,7 @@ TODO_*.md
 
 # Claude settings
 .claude/
+
+# Reference projects (only README is tracked)
+reference/*
+!reference/README.md
