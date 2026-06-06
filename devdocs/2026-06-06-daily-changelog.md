@@ -32,6 +32,15 @@ Created [`external-apis.md`](external-apis.md) documenting:
 - APIs that don't need keys but have best practices (arXiv, CrossRef, Unpaywall)
 - Application links and rate limits
 
+### 3. Agent Markdown Skills (New)
+
+Created two agent-playbook skills under `src/skills/`:
+
+- [`skill_core_download.md`](../src/skills/skill_core_download.md) — CORE API v3 workflow for discovering and downloading OA PDFs when arXiv/S2 fail.
+- [`skill_crossref_resolve.md`](../src/skills/skill_crossref_resolve.md) — CrossRef REST API workflow for canonical DOI/metadata resolution and publisher link discovery.
+
+Both include trigger conditions, input/output schemas, step-by-step procedures, rate-limit handling, fallback chains, and integration points.
+
 **Tomorrow's task**: Apply for OpenReview API token + CORE API key.
 
 ---

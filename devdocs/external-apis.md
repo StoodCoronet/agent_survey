@@ -10,7 +10,8 @@ Last updated: 2026-06-06
 | **Semantic Scholar** | ✅ | `SEMANTIC_SCHOLAR_API_KEY` | ~1 req/s | ~100 req/s | Already configured |
 | **arXiv** | ❌ | — | ~3s between requests | Same | Open API, no key |
 | **OpenReview** | ❌ | — | Low (unauthenticated) | Higher with login | Can generate API token after login |
-| **CrossRef** | ❌ | — | "Polite" pool | Higher with registered email | Recommend adding `mailto=` param |
+| **CORE** | ❌ | `CORE_API_KEY` | 100/day (no full-text) | 1000–5000/day | Apply at https://core.ac.uk/services/api |
+| **CrossRef** | ❌ | — | "Polite" pool | Higher with registered email | Recommend adding `mailto=` param; great for DOI + journal metadata |
 | **Unpaywall** | ❌ | — | 100k requests/day | Same | Requires email in request |
 | **DBLP** | ❌ | — | Unknown | — | No key needed |
 | **ACL Anthology** | ❌ | — | Unknown | — | No key needed |
@@ -66,3 +67,5 @@ Last updated: 2026-06-06
 - [ ] Add `CORE_API_KEY` to `config.py` / `.env` loader
 - [ ] Update `s02_enrich` to use OpenReview token when available
 - [ ] Update `s03_survey_mining` download to try CORE API as fallback
+- [x] Document CORE API v3 usage as agent skill: `src/skills/skill_core_download.md`
+- [x] Document CrossRef REST API usage as agent skill: `src/skills/skill_crossref_resolve.md`

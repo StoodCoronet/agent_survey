@@ -66,6 +66,10 @@ See [`external-apis.md`](external-apis.md) for full reference.
 
 **Status**: DeepSeek ✅, S2 ✅, others ❌
 
+**Agent skills created**:
+- `src/skills/skill_core_download.md` — CORE API v3 PDF discovery/download playbook
+- `src/skills/skill_crossref_resolve.md` — CrossRef metadata/DOI resolution playbook
+
 **Tomorrow's action**: Apply for OpenReview API token + CORE API key.
 
 ---

@@ -22,6 +22,8 @@
 
 ## 已实现的 Skills
 
+### Python skill modules（运行时 playbook dict）
+
 | Skill | 类别 | 触发条件 |
 |-------|------|---------|
 | `harvest_strategy` | harvest | venue-year 返回 0 篇或 harvest 报错 |
@@ -29,6 +31,15 @@
 | `source_probe` | adapt | 数据源返回错误或新 venue 需要选源 |
 | `playwright_scrape` | adapt | 静态 HTTP 失败，页面是 JS 渲染的 |
 | `consistency_check` | validate | 报表生成前或任何 pipeline stage 之后 |
+
+### Markdown agent skills（给 Claude / AI agent 阅读的执行手册）
+
+| Skill | 触发条件 |
+|-------|---------|
+| [`skill_core_download.md`](skill_core_download.md) | arXiv/S2/OpenReview 拿不到 PDF 时，用 CORE API v3 发现和下载 |
+| [`skill_crossref_resolve.md`](skill_crossref_resolve.md) | 需要权威 DOI、元数据或出版商链接；尤其适合非 CS 期刊 |
+
+Python skills 通过 `from skills import get_skill` 加载；Markdown skills 直接供 agent 在阅读后按步骤执行。
 
 ## 使用方式
 
