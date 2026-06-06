@@ -32,14 +32,24 @@
 | `playwright_scrape` | adapt | 静态 HTTP 失败，页面是 JS 渲染的 |
 | `consistency_check` | validate | 报表生成前或任何 pipeline stage 之后 |
 
-### Markdown agent skills（给 Claude / AI agent 阅读的执行手册）
+### Anthropic-style agent skills（folder-based SKILL.md）
 
-| Skill | 触发条件 |
-|-------|---------|
-| [`skill_core_download.md`](skill_core_download.md) | arXiv/S2/OpenReview 拿不到 PDF 时，用 CORE API v3 发现和下载 |
-| [`skill_crossref_resolve.md`](skill_crossref_resolve.md) | 需要权威 DOI、元数据或出版商链接；尤其适合非 CS 期刊 |
+这些 skill 采用 [Anthropic skills](https://github.com/anthropics/skills) 的目录结构：每个 skill 是一个文件夹，入口为 `SKILL.md`，可选 `scripts/`、`references/`、`assets/` 等 bundled resources。
 
-Python skills 通过 `from skills import get_skill` 加载；Markdown skills 直接供 agent 在阅读后按步骤执行。
+```
+skill-name/
+├── SKILL.md          # YAML frontmatter + Markdown instructions
+├── scripts/          # (optional) 可执行脚本
+├── references/       # (optional) 参考资料
+└── assets/           # (optional) 模板、图标等
+```
+
+| Skill | 路径 | 触发条件 |
+|-------|------|---------|
+| `core-download` | [`core-download/SKILL.md`](core-download/SKILL.md) | arXiv/S2/OpenReview 拿不到 PDF 时，用 CORE API v3 发现和下载 |
+| `crossref-resolve` | [`crossref-resolve/SKILL.md`](crossref-resolve/SKILL.md) | 需要权威 DOI、元数据或出版商链接；尤其适合非 CS 期刊 |
+
+Python skills 通过 `from skills import get_skill` 加载；Markdown agent skills 直接供 Claude / 其他 AI agent 在阅读 `SKILL.md` 后按步骤执行。
 
 ## 使用方式
 
