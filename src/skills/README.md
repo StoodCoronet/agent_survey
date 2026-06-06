@@ -48,6 +48,7 @@ skill-name/
 |-------|------|---------|
 | `core-download` | [`core-download/SKILL.md`](core-download/SKILL.md) | arXiv/S2/OpenReview 拿不到 PDF 时，用 CORE API v3 发现和下载 |
 | `crossref-resolve` | [`crossref-resolve/SKILL.md`](crossref-resolve/SKILL.md) | 需要权威 DOI、元数据或出版商链接；尤其适合非 CS 期刊 |
+| `skill-creator` | [`skill-creator/SKILL.md`](skill-creator/SKILL.md) | 把 markdown 执行手册转成 Anthropic-format folder skill，含验证和打包 |
 
 Python skills 通过 `from skills import get_skill` 加载；Markdown agent skills 直接供 Claude / 其他 AI agent 在阅读 `SKILL.md` 后按步骤执行。
 

@@ -1,0 +1,41 @@
+{
+  "skill_name": "skill-creator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Convert docs/core-api-download-guide.md into a skill named core-download under src/skills/",
+      "expected_output": "A valid Anthropic-format skill folder at src/skills/core-download/ and a packaged core-download.skill file.",
+      "files": [],
+      "expectations": [
+        "Generated SKILL.md has YAML frontmatter with name and description",
+        "Skill name is kebab-case",
+        "quick_validate.py reports Skill is valid",
+        "package_skill.py produces a .skill file",
+        "evals/evals.json contains at least 2 eval cases"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Convert a markdown CrossRef resolver guide into a skill named crossref-resolve.",
+      "expected_output": "A valid skill folder at src/skills/crossref-resolve/ with inputs, outputs, procedure, and fallback chain.",
+      "files": [],
+      "expectations": [
+        "SKILL.md includes Inputs and Outputs tables",
+        "Procedure steps are numbered and imperative",
+        "Error catalog is preserved or noted as absent",
+        "Validation passes"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Run validation on the skill-creator skill itself.",
+      "expected_output": "skill-creator passes quick_validate.py.",
+      "files": [],
+      "expectations": [
+        "SKILL.md starts with '---' frontmatter",
+        "Frontmatter contains name: skill-creator",
+        "Description is under 1024 characters and contains no angle brackets"
+      ]
+    }
+  ]
+}
