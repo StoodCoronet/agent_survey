@@ -36,6 +36,10 @@ Last updated: 2026-06-06
 - **Coverage**: 200M+ research papers
 - **Apply**: https://core.ac.uk/services/api (free tier: 10k requests/month)
 - **Config**: Add `CORE_API_KEY` to `.env`
+- **Use case description** (copy/paste for application form, 98 chars):
+  ```
+  Using CORE to discover open-access research papers and enrich metadata for a literature survey tool.
+  ```
 
 ### 4. CrossRef "Polite" Registration
 - **Why**: Higher priority pool, faster responses
