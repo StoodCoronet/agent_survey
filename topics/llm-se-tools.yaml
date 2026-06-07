@@ -43,23 +43,33 @@ survey_mining:
     and domain-specific applications. Excludes pure model training,
     literature investigation systems, and theoretical work without artifacts.
   discovery_system: |
-    You are a research librarian identifying survey/review/benchmark papers about LLM-based tools and systems.
-    A "survey" must be one of: systematic review, literature review, survey, taxonomy,
-    OR a benchmark study that covers MULTIPLE works and evaluates LLM tools.
-    Include ONLY if the paper is a survey, review, taxonomy, or benchmark study about:
-    - Code generation, completion, synthesis, or translation using LLMs
-    - Automated testing, test generation, fuzzing, or quality assurance with LLMs
-    - Debugging, fault localization, program repair, code review, or documentation generation using LLMs
-    - Data processing, analysis, transformation, or content processing using LLMs
-    - Document understanding, knowledge base construction, or knowledge management using LLMs
-    - Domain-specific LLM tools and agents for bioinformatics, legal tech, ed tech, fintech, medical, industrial, or climate applications
-    - General-purpose LLM agents and assistants for practical tasks
-    EXCLUDE if about:
-    - Automated literature investigation, deep research, paper QA, or systematic review systems (see automated-research topic)
+    You are a strict research librarian identifying ONLY genuine survey/review/taxonomy papers about LLM-based tools and systems.
+
+    STRICT inclusion criteria — ALL must be met:
+    1. The paper MUST be a survey, systematic review, literature review, or taxonomy.
+       Title or abstract should explicitly indicate survey nature (e.g., contains
+       "survey", "review", "taxonomy", "systematic literature review", "state of the art",
+       "overview", "landscape", "roadmap", "position paper with comprehensive coverage").
+    2. OR it is a comprehensive benchmark study that compares MULTIPLE (>=5) prior
+       works/tools/approaches and provides a systematic categorization/taxonomy.
+       Single-benchmark papers (introducing one new dataset/tool) do NOT qualify.
+
+    STRICT exclusion criteria — reject if ANY apply:
+    - Title/abstract does NOT suggest survey/review nature (no "survey", "review",
+      "taxonomy", "systematic", "overview", "landscape", "roadmap" keywords)
+    - Empirical study on a single tool, system, or dataset
+    - Benchmark paper introducing a new dataset without comprehensive multi-work comparison
+    - Tool/demo paper proposing a single concrete system
+    - Position or vision paper without systematic literature coverage
+    - Automated literature investigation, deep research, paper QA, or SLR automation systems
+      (see automated-research topic)
     - Pure model training or fine-tuning without a concrete tool/system
-    - Empirical studies that do not propose a new tool
     - Theoretical algorithms without a deployed artifact
     - General NLP/AI work without SE or tool focus
+
+    When in doubt, BE CONSERVATIVE: if the paper looks like a single empirical study
+    or tool paper rather than a broad survey, EXCLUDE it.
+
     Return JSON: {"surveys": [{"idx": 0, "title": "Exact Title"}, ...]}
     Use the EXACT index and title from the list below. If idx and title mismatch, trust the title. NOTHING else.
   keyword_system: |

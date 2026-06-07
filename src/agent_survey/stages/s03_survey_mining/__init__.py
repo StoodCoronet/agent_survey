@@ -227,13 +227,17 @@ def run(
                         "arxiv_id": aid,
                         "pdf_url": purl,
                         "source": "db",
+                        "resolutions": [],
                     }
                     if aid:
                         entry["pdf_url"] = f"https://arxiv.org/pdf/{aid}.pdf"
+                        entry["resolutions"].append({"stage": "db", "found": True, "arxiv_id": aid, "pdf_url": entry["pdf_url"]})
                     elif purl:
                         entry["pdf_url"] = purl
+                        entry["resolutions"].append({"stage": "db", "found": True, "pdf_url": purl})
                     else:
                         entry["source"] = "missing"
+                        entry["resolutions"].append({"stage": "db", "found": False})
                         to_resolve.append((idx, title, venue))
                     manifest.append(entry)
 
@@ -256,10 +260,20 @@ def run(
                                 manifest[idx]["arxiv_id"] = result["arxiv_id"]
                                 manifest[idx]["pdf_url"] = result.get("pdf_url") or f"https://arxiv.org/pdf/{result['arxiv_id']}.pdf"
                                 manifest[idx]["source"] = "arxiv_search"
+                                manifest[idx]["resolutions"].append({
+                                    "stage": "arxiv_api",
+                                    "found": True,
+                                    "arxiv_id": result["arxiv_id"],
+                                    "pdf_url": manifest[idx]["pdf_url"],
+                                })
                                 arxiv_ok += 1
                                 console.print(f"[green]✓ arxiv:{result['arxiv_id']}[/green]")
                             else:
                                 arxiv_fail += 1
+                                manifest[idx]["resolutions"].append({
+                                    "stage": "arxiv_api",
+                                    "found": False,
+                                })
                                 console.print(f"[yellow]✗ not on arXiv[/yellow]")
                     finally:
                         http.close()
@@ -284,10 +298,26 @@ def run(
                                 manifest[idx]["arxiv_id"] = web_res.arxiv_id
                                 manifest[idx]["pdf_url"] = web_res.pdf_url or f"https://arxiv.org/pdf/{web_res.arxiv_id}.pdf"
                                 manifest[idx]["source"] = "arxiv_web"
+                                manifest[idx]["resolutions"].append({
+                                    "stage": "arxiv_web",
+                                    "found": True,
+                                    "arxiv_id": web_res.arxiv_id,
+                                    "pdf_url": manifest[idx]["pdf_url"],
+                                    "title_score": web_res.title_score,
+                                    "title_matched": web_res.title_matched,
+                                    "confidence": web_res.confidence,
+                                })
                                 web_ok += 1
                                 console.print(f"[green]✓ arxiv_web:{web_res.arxiv_id} ({web_res.title_matched} {web_res.title_score:.2f})[/green]")
                             else:
                                 web_fail += 1
+                                manifest[idx]["resolutions"].append({
+                                    "stage": "arxiv_web",
+                                    "found": False,
+                                    "error": web_res.error or "no match",
+                                    "title_score": web_res.title_score,
+                                    "title_matched": web_res.title_matched,
+                                })
                                 console.print(f"[yellow]✗ {web_res.error or 'no match'}[/yellow]")
                             # Polite delay: 5–10s random interval between web searches
                             if n < len(web_missing):
@@ -315,10 +345,20 @@ def run(
                                 if res and res.get("pdf_url"):
                                     manifest[idx]["pdf_url"] = res["pdf_url"]
                                     manifest[idx]["source"] = "openreview"
+                                    manifest[idx]["resolutions"].append({
+                                        "stage": "openreview",
+                                        "found": True,
+                                        "forum_id": res.get("forum_id"),
+                                        "pdf_url": res["pdf_url"],
+                                    })
                                     or_ok += 1
                                     console.print(f"[green]✓ OR:{res['forum_id']}[/green]")
                                 else:
                                     or_fail += 1
+                                    manifest[idx]["resolutions"].append({
+                                        "stage": "openreview",
+                                        "found": False,
+                                    })
                                     console.print(f"[yellow]✗ not on OpenReview[/yellow]")
                                 time.sleep(1)
                         finally:
@@ -332,14 +372,22 @@ def run(
                 stats["manifest_with_source"] = with_source
                 stats["manifest_missing"] = still_missing
 
+                # Build by-source summary for debugging
+                by_source: dict[str, int] = {}
+                for m in manifest:
+                    src = m.get("source") or "missing"
+                    by_source[src] = by_source.get(src, 0) + 1
+
                 out_manifest = cfg.abs_topic_dir(topic_name, "json") / "download_manifest.json"
                 out_manifest.write_text(_json.dumps({
                     "total": len(candidates),
                     "with_source": with_source,
                     "missing": still_missing,
+                    "by_source": by_source,
                     "candidates": manifest,
                 }, indent=2, ensure_ascii=False))
                 console.print(f"[dim]Manifest saved to {out_manifest}[/dim]")
+                console.print(f"[dim]By source: {by_source}[/dim]")
 
                 if still_missing > 0:
                     console.print(f"[yellow]{still_missing} surveys still missing PDF source.[/yellow]")
