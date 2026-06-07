@@ -2,9 +2,12 @@
 # Base configuration
 # ---------------------------------------------------------------
 
+# NOTE: API keys should be placed in config/secrets.yaml (gitignored).
+# The file below is tracked; keep placeholder values here.
 api_keys:
-  deepseek: ""               # DeepSeek API key (or set DEEPSEEK_API_KEY in .env as fallback)
-  semantic_scholar: ""       # Semantic Scholar API key (optional)
+  deepseek: ""
+  semantic_scholar: ""
+  core: ""
 
 deepseek_base_url: "https://api.deepseek.com"
 

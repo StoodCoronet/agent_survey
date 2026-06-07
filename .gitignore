@@ -3,6 +3,7 @@ __pycache__/
 *.pyo
 .venv/
 .env
+config/secrets.yaml
 .DS_Store
 *.egg-info/
 dist/
