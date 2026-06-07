@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import random
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -264,6 +265,35 @@ def run(
                         http.close()
 
                     console.print(f"\n[green]ArXiv resolve: {arxiv_ok} success, {arxiv_fail} failed[/green]")
+
+                    # ── arXiv Web fallback (Playwright) ────────────────────────
+                    web_missing = [
+                        (idx, title, venue)
+                        for idx, title, venue in to_resolve
+                        if not manifest[idx].get("pdf_url")
+                    ]
+                    if web_missing:
+                        console.print(f"\n[bold cyan]Trying arXiv web search for {len(web_missing)} papers...[/bold cyan]")
+                        from ...services import arxiv_web_search as arxiv_web
+                        web_ok = 0
+                        web_fail = 0
+                        for n, (idx, title, venue) in enumerate(web_missing, 1):
+                            console.print(f"  [{n}/{len(web_missing)}] {title[:70]}...", end=" ")
+                            web_res = arxiv_web.search_arxiv_web(title, headless=True)
+                            if web_res.success and web_res.arxiv_id:
+                                manifest[idx]["arxiv_id"] = web_res.arxiv_id
+                                manifest[idx]["pdf_url"] = web_res.pdf_url or f"https://arxiv.org/pdf/{web_res.arxiv_id}.pdf"
+                                manifest[idx]["source"] = "arxiv_web"
+                                web_ok += 1
+                                console.print(f"[green]✓ arxiv_web:{web_res.arxiv_id} ({web_res.title_matched} {web_res.title_score:.2f})[/green]")
+                            else:
+                                web_fail += 1
+                                console.print(f"[yellow]✗ {web_res.error or 'no match'}[/yellow]")
+                            # Polite delay: 5–10s random interval between web searches
+                            if n < len(web_missing):
+                                delay = random.uniform(5, 10)
+                                time.sleep(delay)
+                        console.print(f"\n[green]arXiv web resolve: {web_ok} success, {web_fail} failed[/green]")
 
                     # ── OpenReview fallback for AI venues ─────────────────────
                     or_venues = {"ICLR", "ICML", "NeurIPS", "COLM"}

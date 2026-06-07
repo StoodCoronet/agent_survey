@@ -24,7 +24,7 @@ paths:
   llm_cache: cache/llm
 
 # Currently active survey topic (must match a file in topics/<name>.yaml)
-active_topic: automated-research
+active_topic: llm-se-tools
 
 # ---------------------------------------------------------------
 # Docs site

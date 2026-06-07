@@ -27,7 +27,9 @@
       "Bash(python:*)",
       "Bash(sqlite3:*)",
       "Bash(pip show:*)",
-      "Bash(conda run:*)"
+      "Bash(conda run:*)",
+      "Bash(git add *)",
+      "Bash(git *)"
     ]
   }
 }

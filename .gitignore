@@ -15,6 +15,9 @@ cache/
 .pytest_cache/
 docs/*/
 !docs/.gitkeep
+docs/*.html
+docs/*.json
+docs/*.md
 docs/pdfs/
 
 # Debug & temp scripts
