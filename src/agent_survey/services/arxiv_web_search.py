@@ -1,12 +1,14 @@
 """arXiv web search fallback using Playwright + rapidfuzz title matching.
 
-This module is a port of reference/arxiv_search_crawler tailored for the
+This module is a port of reference/arxiv_api_crawler tailored for the
 survey-mining download phase.  It is invoked ONLY when the arXiv API search
 fails to find a paper by title.
 
 Environment:
-- Strips proxy env vars before starting Playwright (arXiv should be direct).
+- Strips proxy env vars via launch(env=...) so Playwright connects directly
+  to arXiv without polluting global os.environ.
 - Uses headless Chromium with anti-detection measures.
+- Persists cookies/storage_state across sessions to reduce detection risk.
 """
 
 from __future__ import annotations
@@ -14,16 +16,51 @@ from __future__ import annotations
 import os
 import re
 import urllib.parse
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from pathlib import Path
 
-# Strip proxy env vars so Playwright connects directly to arXiv.
-for _proxy_var in (
-    "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY",
-    "http_proxy", "https_proxy", "all_proxy",
-):
-    os.environ.pop(_proxy_var, None)
+TITLE_MATCH_THRESHOLD = 0.85
+
+# ---------------------------------------------------------------------------
+# Config
+# ---------------------------------------------------------------------------
+_COOKIES_DIR = Path(__file__).parent.parent.parent.parent / "cache" / "playwright"
+_COOKIES_DIR.mkdir(parents=True, exist_ok=True)
+_COOKIES_PATH = _COOKIES_DIR / "arxiv.json"
+
+_VIEWPORT = {"width": 1440, "height": 900}
+_USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+)
+
+# Strip proxy env vars inside launch() via env= rather than global mutation.
+_ALLOWED_ENV_KEYS = {
+    k for k in os.environ.keys()
+    if k.upper() not in ("HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "NO_PROXY")
+}
 
 
+# ---------------------------------------------------------------------------
+# Data models
+# ---------------------------------------------------------------------------
+@dataclass
+class ArxivWebResult:
+    success: bool = False
+    arxiv_id: str | None = None
+    pdf_url: str | None = None
+    landing_url: str | None = None
+    title_matched: str = "none"  # exact | fuzzy | none
+    title_score: float = 0.0
+    confidence: str = "low"  # high | medium | low
+    authors: list[str] = field(default_factory=list)
+    error: str | None = None
+    debug_log: list[str] = field(default_factory=list)
+
+
+# ---------------------------------------------------------------------------
+# Title utilities
+# ---------------------------------------------------------------------------
 def _clean_title_for_search(title: str) -> str:
     """Replace all non-alphabetic chars with spaces so arXiv search doesn't choke."""
     cleaned = re.sub(r"[^a-zA-Z]", " ", title)
@@ -46,26 +83,9 @@ def _generate_search_variants(title: str) -> list[str]:
     return unique
 
 
-@dataclass
-class ArxivWebResult:
-    success: bool = False
-    arxiv_id: str | None = None
-    pdf_url: str | None = None
-    landing_url: str | None = None
-    title_matched: str = "none"  # exact | fuzzy | none
-    title_score: float = 0.0
-    confidence: str = "low"  # high | medium | low
-    error: str | None = None
-    debug_log: list[str] = None  # diagnostic trace of queries & candidates
-
-    def __post_init__(self):
-        if self.debug_log is None:
-            self.debug_log = []
-
-
-TITLE_MATCH_THRESHOLD = 0.85
-
-
+# ---------------------------------------------------------------------------
+# Matching
+# ---------------------------------------------------------------------------
 def _match_title(query_title: str, extracted_title: str) -> tuple[float, str]:
     """Return (score, confidence)."""
     from rapidfuzz import fuzz
@@ -79,6 +99,53 @@ def _match_title(query_title: str, extracted_title: str) -> tuple[float, str]:
         return score, "low"
 
 
+# ---------------------------------------------------------------------------
+# Browser helpers (with cookie persistence and isolated env)
+# ---------------------------------------------------------------------------
+def _launch_browser(headless: bool = True):
+    """Launch Chromium with anti-detection, cookie restore, and isolated env."""
+    from playwright.sync_api import sync_playwright
+
+    pw = sync_playwright().start()
+    browser = pw.chromium.launch(
+        headless=headless,
+        args=[
+            "--no-first-run",
+            "--no-default-browser-check",
+            "--disable-session-crashed-bubble",
+            "--disable-infobars",
+        ],
+        env={k: os.environ[k] for k in _ALLOWED_ENV_KEYS},
+    )
+    context_kwargs: dict = {"viewport": _VIEWPORT, "user_agent": _USER_AGENT}
+    if _COOKIES_PATH.exists():
+        context_kwargs["storage_state"] = str(_COOKIES_PATH)
+    context = browser.new_context(**context_kwargs)
+    page = context.new_page()
+    page.add_init_script(
+        "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
+    )
+    return pw, browser, context, page
+
+
+def _close_browser(pw, browser, context):
+    """Close browser and persist cookies for next session."""
+    if context is not None:
+        try:
+            _COOKIES_PATH.parent.mkdir(parents=True, exist_ok=True)
+            context.storage_state(path=str(_COOKIES_PATH))
+        except Exception:
+            pass
+        context.close()
+    if browser is not None:
+        browser.close()
+    if pw is not None:
+        pw.stop()
+
+
+# ---------------------------------------------------------------------------
+# Core search
+# ---------------------------------------------------------------------------
 def search_arxiv_web(
     title: str,
     headless: bool = True,
@@ -90,35 +157,15 @@ def search_arxiv_web(
     """
     try:
         from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
-        from playwright.sync_api import sync_playwright
     except ImportError as exc:
         return ArxivWebResult(error=f"Playwright not installed: {exc}")
 
     result = ArxivWebResult()
     variants = _generate_search_variants(title)
+    pw = browser = context = page = None
 
     try:
-        pw = sync_playwright().start()
-        browser = pw.chromium.launch(
-            headless=headless,
-            args=[
-                "--no-first-run",
-                "--no-default-browser-check",
-                "--disable-session-crashed-bubble",
-                "--disable-infobars",
-            ],
-        )
-        context = browser.new_context(
-            viewport={"width": 1440, "height": 900},
-            user_agent=(
-                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
-            ),
-        )
-        page = context.new_page()
-        page.add_init_script(
-            "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
-        )
+        pw, browser, context, page = _launch_browser(headless=headless)
 
         for variant_idx, search_title in enumerate(variants, 1):
             q = urllib.parse.quote(search_title)
@@ -130,23 +177,22 @@ def search_arxiv_web(
             try:
                 page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
             except PlaywrightTimeoutError:
-                result.debug_log.append(f"  → timeout loading page")
+                result.debug_log.append("  → timeout loading page")
                 continue
 
             try:
                 page.wait_for_selector(".arxiv-result, .no-results", timeout=15000)
             except PlaywrightTimeoutError:
-                result.debug_log.append(f"  → timeout waiting for results")
+                result.debug_log.append("  → timeout waiting for results")
                 continue
 
-            no_results = page.query_selector(".no-results")
-            if no_results:
-                result.debug_log.append(f"  → no-results banner found")
+            if page.query_selector(".no-results"):
+                result.debug_log.append("  → no-results banner found")
                 continue
 
             result_elems = page.query_selector_all(".arxiv-result")
             if not result_elems:
-                result.debug_log.append(f"  → 0 result elements found")
+                result.debug_log.append("  → 0 result elements found")
                 continue
 
             result.debug_log.append(f"  → {len(result_elems)} result element(s) found")
@@ -167,7 +213,7 @@ def search_arxiv_web(
                 result.debug_log.append(f"      candidate: score={sc:.2f} | {ext[:120]}")
 
             if best_elem is None:
-                result.debug_log.append(f"  → no best element selected")
+                result.debug_log.append("  → no best element selected")
                 continue
 
             extracted_title = best_elem.query_selector("p.title").inner_text().strip()
@@ -182,7 +228,7 @@ def search_arxiv_web(
             )
 
             if confidence == "low":
-                result.debug_log.append(f"  → rejected: confidence too low")
+                result.debug_log.append("  → rejected: confidence too low")
                 continue
 
             # Extract landing URL
@@ -193,10 +239,9 @@ def search_arxiv_web(
                     result.landing_url = (
                         "https://arxiv.org" + href if href.startswith("/abs/") else href
                     )
-                    # Derive arxiv_id from landing URL
                     result.arxiv_id = href.split("/abs/")[-1].split("v")[0]
 
-            # Extract PDF URL
+            # Extract PDF URL (prefer link; fall back to inference from landing_url)
             pdf_link = best_elem.query_selector('a[href*="/pdf/"]')
             if pdf_link:
                 href = pdf_link.get_attribute("href")
@@ -204,8 +249,20 @@ def search_arxiv_web(
                     result.pdf_url = (
                         "https://arxiv.org" + href if href.startswith("/pdf/") else href
                     )
-            elif result.arxiv_id:
-                result.pdf_url = f"https://arxiv.org/pdf/{result.arxiv_id}.pdf"
+            if not result.pdf_url and result.landing_url:
+                abs_id = result.landing_url.split("/abs/")[-1].split("v")[0]
+                result.pdf_url = f"https://arxiv.org/pdf/{abs_id}.pdf"
+                result.debug_log.append(f"  → inferred PDF URL from landing page")
+
+            # Extract authors (best-effort)
+            authors_elem = best_elem.query_selector(".authors")
+            if authors_elem:
+                authors_text = authors_elem.inner_text()
+                result.authors = [
+                    a.strip()
+                    for a in authors_text.replace("Authors:", "").split(",")
+                    if a.strip()
+                ]
 
             result.success = True
             break
@@ -216,17 +273,6 @@ def search_arxiv_web(
     except Exception as exc:
         result.error = str(exc)
     finally:
-        try:
-            context.close()
-        except Exception:
-            pass
-        try:
-            browser.close()
-        except Exception:
-            pass
-        try:
-            pw.stop()
-        except Exception:
-            pass
+        _close_browser(pw, browser, context)
 
     return result
