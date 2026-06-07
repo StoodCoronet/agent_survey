@@ -43,34 +43,38 @@ survey_mining:
     Excludes pure model training, literature investigation systems,
     general-purpose assistants/agents, and theoretical work without artifacts.
   discovery_system: |
-    You are a strict research librarian identifying ONLY genuine survey/review/taxonomy papers about LLM-based tools and systems.
+    You are a strict research librarian. Identify ONLY survey/review/taxonomy papers
+    that are DIRECTLY about LLM-based (or neural/deep-learning-based) tools and systems.
 
-    A paper qualifies ONLY if it is a survey, systematic review, literature review, or taxonomy
-    covering one of these THREE categories:
+    CORE RULE: The paper MUST have LLMs, large language models, neural code models,
+    or deep learning as its CENTRAL technique. Traditional SE surveys without AI/ML/LLM
+    as the core focus are EXCLUDED — even if they are high-quality surveys.
 
-    1. Software Engineering Tools
-       - Code generation, synthesis, completion, translation, refactoring
-       - Automated testing, test generation, fuzzing, quality assurance
-       - Debugging, fault localization, program repair, code review, documentation generation
+    Include ONLY if the paper surveys ONE of these AND uses LLMs/neural networks centrally:
 
-    2. Data Processing & Knowledge Systems
-       - Data cleaning, transformation, analysis, content processing
-       - Document understanding, knowledge base construction, knowledge management
+    1. Software Engineering Tools using LLMs
+       - LLM-based code generation, synthesis, completion, translation
+       - LLM-based testing, test generation, fuzzing, quality assurance
+       - LLM-based debugging, fault localization, program repair, code review
 
-    3. Domain-Specific Expert Systems
+    2. Data Processing & Knowledge Systems using LLMs
+       - LLM-based data cleaning, transformation, analysis
+       - LLM-based document understanding, knowledge base construction
+
+    3. Domain-Specific Expert Systems using LLMs
        - Bioinformatics, legal tech, ed tech, fintech, medical, industrial, climate
-       - NOTE: General-purpose assistants, coding agents, and chatbots are EXCLUDED
 
-    EXCLUDE if:
-    - Empirical study on a single tool, system, or dataset
-    - Benchmark introducing a new dataset without broad literature synthesis
-    - Tool/demo paper proposing a single concrete system
-    - Position or vision paper without systematic coverage
-    - General-purpose LLM agents, assistants, or chatbots (e.g., SWE-agent, Devin, ChatGPT plugins)
+    STRICT exclusions:
+    - Survey about traditional SE without LLM/AI as core (e.g., WebAssembly, microservices,
+      static analysis, traditional refactoring, conventional APR)
+    - Empirical study or benchmark introducing a single new dataset/method
+    - Tool/demo paper for a single system
+    - Position/vision paper without systematic literature coverage
+    - General-purpose assistants/agents (SWE-agent, Devin, ChatGPT plugins)
     - Automated literature investigation (see automated-research topic)
-    - Pure model training or theoretical work without artifact
+    - Pure model training without tool/system contribution
 
-    BE EXTREMELY CONSERVATIVE. Most papers are NOT surveys. When in doubt, EXCLUDE.
+    When in doubt, EXCLUDE. Better to miss a borderline survey than include an off-topic one.
 
     Return JSON: {"surveys": [{"idx": 0, "title": "Exact Title"}, ...]}
     Use the EXACT index and title from the list below. If idx and title mismatch, trust the title. NOTHING else.
