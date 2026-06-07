@@ -795,7 +795,20 @@ def run():
                             if sm_statuses.get(key, "pending") != "done":
                                 next_phase = key
                                 break
-                        if next_phase:
+                        if next_phase == "download" and sm_statuses.get("discover") == "done":
+                            # Discover is done but user may want to append more
+                            _clear_screen()
+                            console.print(f"[yellow]Survey discovery done ({survey_count} surveys in DB).[/yellow]")
+                            console.print("[dim]Options: (d)ownload manifest | (a)ppend more discover | (s)kip[/dim]")
+                            choice = _read_line("Choice [d/a/s]: ").strip().lower()
+                            if choice in ("a", "append"):
+                                sm_phase = "discover"
+                                action_args.append("--append")
+                            elif choice in ("d", "download"):
+                                sm_phase = "download"
+                            else:
+                                sm_phase = None
+                        elif next_phase:
                             sm_phase = next_phase
                             console.print(f"[dim]Continue → {sm_phase}[/dim]")
                         else:
@@ -812,7 +825,9 @@ def run():
                         action_args = []
                         _draw()
                         continue
-                    action_args = ["--phase", sm_phase]
+                    # Preserve --force / --append from continue handling
+                    extra = [a for a in action_args if a in ("--force", "--append")]
+                    action_args = ["--phase", sm_phase, *extra]
                     # Check for existing survey records when re-running discover
                     if sm_phase == "discover":
                         existing = db._conn.execute(
@@ -822,9 +837,18 @@ def run():
                         if existing > 0 and "--force" not in action_args:
                             _clear_screen()
                             console.print(f"[yellow]Phase 1 already done ({existing} surveys in DB).[/yellow]")
-                            force = _read_line("Force re-run and clear prior records? (y/N): ").strip().lower()
-                            if force in ("y", "yes"):
+                            console.print("[dim]Options: (f)orce re-run | (a)ppend scan remaining | (s)kip[/dim]")
+                            choice = _read_line("Choice [f/a/s]: ").strip().lower()
+                            if choice in ("f", "force"):
                                 action_args.append("--force")
+                            elif choice in ("a", "append"):
+                                action_args.append("--append")
+                            else:
+                                # Skip: cancel this action
+                                action = None
+                                action_args = []
+                                _draw()
+                                continue
                     running = False
                     continue
                 if action == "harvest":

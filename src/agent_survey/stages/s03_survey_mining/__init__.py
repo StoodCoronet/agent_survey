@@ -37,6 +37,7 @@ def run(
     workers: int | None = None,
     phase: str = "discover",
     force: bool = False,
+    append: bool = False,
     skip_resolve: bool = False,
 ) -> dict:
     """Run survey-mining pipeline."""
@@ -58,7 +59,7 @@ def run(
                 "SELECT COUNT(*) FROM paper_topics WHERE topic_name=? AND survey_score IS NOT NULL",
                 (topic_name,),
             ).fetchone()[0]
-            if existing > 0 and not force:
+            if existing > 0 and not force and not append:
                 console.print(f"[green]Phase 1 already done ({existing} surveys in DB).[/green]")
                 stats["surveys_found"] = existing
             else:
@@ -70,9 +71,23 @@ def run(
                     )
                     db._conn.commit()
                 console.rule("[bold cyan]Phase 1: Survey Discovery")
-                papers = list(db.iter_papers("abstract IS NOT NULL AND abstract != ''"))
-                if limit:
-                    papers = papers[:limit]
+                if append and existing > 0 and not force:
+                    # Append mode: only scan papers not yet processed
+                    all_papers = list(db.iter_papers("abstract IS NOT NULL AND abstract != ''"))
+                    processed_ids = set(
+                        r[0] for r in db._conn.execute(
+                            "SELECT paper_id FROM paper_topics WHERE topic_name=? AND survey_score IS NOT NULL",
+                            (topic_name,),
+                        )
+                    )
+                    papers = [p for p in all_papers if p.get("paper_id") not in processed_ids]
+                    if limit:
+                        papers = papers[:limit]
+                    console.print(f"[dim]Append mode: {len(papers):,} unprocessed papers remaining[/dim]")
+                else:
+                    papers = list(db.iter_papers("abstract IS NOT NULL AND abstract != ''"))
+                    if limit:
+                        papers = papers[:limit]
                 console.print(f"Scanning {len(papers):,} papers for surveys about [cyan]{topic_name}[/cyan]")
 
                 batches = [papers[i:i + batch_size] for i in range(0, len(papers), batch_size)]
@@ -190,16 +205,34 @@ def run(
                     db._conn.commit()
 
                 if surveys_found:
-                    surveys_found.sort(key=lambda x: x.get("survey_relevance", 0), reverse=True)
+                    out = cfg.abs_topic_dir(topic_name, "json") / "survey_candidates.json"
+                    out.parent.mkdir(parents=True, exist_ok=True)
+                    existing_candidates = []
+                    if append and out.exists():
+                        try:
+                            existing_candidates = _json.loads(out.read_text())
+                        except Exception:
+                            existing_candidates = []
+                    if append and existing_candidates:
+                        seen_titles = {s.get("title", "") for s in existing_candidates}
+                        new_candidates = [s for s in surveys_found if s.get("title", "") not in seen_titles]
+                        all_candidates = existing_candidates + new_candidates
+                        all_candidates.sort(key=lambda x: x.get("survey_relevance", 0), reverse=True)
+                        out.write_text(json.dumps(all_candidates, indent=2, ensure_ascii=False))
+                        console.print(f"[green]Found {len(new_candidates)} new surveys (total {len(all_candidates)})[/green]")
+                        display_list = all_candidates
+                    else:
+                        surveys_found.sort(key=lambda x: x.get("survey_relevance", 0), reverse=True)
+                        out.write_text(json.dumps(surveys_found, indent=2, ensure_ascii=False))
+                        console.print(f"[green]Found {len(surveys_found)} survey candidates[/green]")
+                        display_list = surveys_found
+
                     tbl = Table(title=f"Top surveys for {topic_name}", show_header=True, box=None)
                     tbl.add_column("Rel", justify="right", style="green", width=5)
                     tbl.add_column("Title", style="cyan")
-                    for s in surveys_found[:20]:
+                    for s in display_list[:20]:
                         tbl.add_row(f"{s.get('survey_relevance', 0):.2f}", (s.get("title") or "")[:100])
                     console.print(tbl)
-                    out = cfg.abs_topic_dir(topic_name, "json") / "survey_candidates.json"
-                    out.parent.mkdir(parents=True, exist_ok=True)
-                    out.write_text(json.dumps(surveys_found, indent=2, ensure_ascii=False))
                     console.print(f"[dim]Saved to {out}[/dim]")
 
         if phase in ("download", "keywords", "all"):
@@ -268,6 +301,11 @@ def run(
                                 })
                                 arxiv_ok += 1
                                 console.print(f"[green]✓ arxiv:{result['arxiv_id']}[/green]")
+                                # Persist resolved arxiv_id back to papers table
+                                db._conn.execute(
+                                    "UPDATE papers SET arxiv_id = ?, pdf_url = ? WHERE title = ?",
+                                    (result["arxiv_id"], manifest[idx]["pdf_url"], title),
+                                )
                             else:
                                 arxiv_fail += 1
                                 manifest[idx]["resolutions"].append({
@@ -310,6 +348,11 @@ def run(
                                 })
                                 web_ok += 1
                                 console.print(f"[green]✓ arxiv_web:{web_res.arxiv_id} ({web_res.title_matched} {web_res.title_score:.2f})[/green]")
+                                # Persist resolved arxiv_id back to papers table
+                                db._conn.execute(
+                                    "UPDATE papers SET arxiv_id = ?, pdf_url = ? WHERE title = ?",
+                                    (web_res.arxiv_id, manifest[idx]["pdf_url"], title),
+                                )
                             else:
                                 web_fail += 1
                                 manifest[idx]["resolutions"].append({
@@ -355,6 +398,11 @@ def run(
                                     })
                                     or_ok += 1
                                     console.print(f"[green]✓ OR:{res['forum_id']}[/green]")
+                                    # Persist resolved pdf_url back to papers table
+                                    db._conn.execute(
+                                        "UPDATE papers SET pdf_url = ? WHERE title = ?",
+                                        (manifest[idx]["pdf_url"], title),
+                                    )
                                 else:
                                     or_fail += 1
                                     manifest[idx]["resolutions"].append({
@@ -366,6 +414,9 @@ def run(
                         finally:
                             or_http.close()
                         console.print(f"\n[green]OpenReview resolve: {or_ok} success, {or_fail} failed[/green]")
+
+                # Persist any resolved IDs back to DB
+                db._conn.commit()
 
                 # Summary
                 with_source = sum(1 for m in manifest if m.get("pdf_url"))

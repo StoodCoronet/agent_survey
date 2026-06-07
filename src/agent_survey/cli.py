@@ -354,6 +354,7 @@ def survey_mining(
     batch_size: int = typer.Option(0, "--batch", "-b", help="papers per call (0 = from config)"),
     phase: str = typer.Option("discover", "--phase", help="discover | download | keywords | all"),
     force: bool = typer.Option(False, "--force", "-f", help="force re-run: clear prior DB records before executing"),
+    append: bool = typer.Option(False, "--append", "-a", help="append mode: only scan unprocessed papers, keep existing results"),
     skip_resolve: bool = typer.Option(False, "--skip-resolve", help="skip arxiv/openreview search for missing PDFs (download ready ones only)"),
 ):
     """Stage 3: DeepSeek-Flash scans all papers → find topic-related surveys →
@@ -362,7 +363,7 @@ def survey_mining(
     topic = resolve_topic(topic, cfg)
     s_survey_mining.run(
         cfg, topic_name=topic, limit=limit, workers=workers,
-        batch_size=batch_size, phase=phase, force=force,
+        batch_size=batch_size, phase=phase, force=force, append=append,
         skip_resolve=skip_resolve,
     )
 
