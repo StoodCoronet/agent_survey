@@ -279,6 +279,23 @@ def run(
                     f"{len(to_resolve)} missing — resolving via arxiv search...[/dim]"
                 )
 
+                # Helper: save manifest incrementally so interrupts don't lose progress
+                def _save_manifest():
+                    _with_source = sum(1 for m in manifest if m.get("pdf_url"))
+                    _still_missing = sum(1 for m in manifest if not m.get("pdf_url"))
+                    _by_source: dict[str, int] = {}
+                    for m in manifest:
+                        src = m.get("source") or "missing"
+                        _by_source[src] = _by_source.get(src, 0) + 1
+                    out_manifest = cfg.abs_topic_dir(topic_name, "json") / "download_manifest.json"
+                    out_manifest.write_text(_json.dumps({
+                        "total": len(candidates),
+                        "with_source": _with_source,
+                        "missing": _still_missing,
+                        "by_source": _by_source,
+                        "candidates": manifest,
+                    }, indent=2, ensure_ascii=False))
+
                 # Resolve missing via arxiv title search
                 if to_resolve and not skip_resolve:
                     console.print(f"\n[bold cyan]Resolving {len(to_resolve)} missing surveys via arXiv...[/bold cyan]")
@@ -306,6 +323,8 @@ def run(
                                     "UPDATE papers SET arxiv_id = ?, pdf_url = ? WHERE title = ?",
                                     (result["arxiv_id"], manifest[idx]["pdf_url"], title),
                                 )
+                                db._conn.commit()
+                                _save_manifest()
                             else:
                                 arxiv_fail += 1
                                 manifest[idx]["resolutions"].append({
@@ -353,6 +372,8 @@ def run(
                                     "UPDATE papers SET arxiv_id = ?, pdf_url = ? WHERE title = ?",
                                     (web_res.arxiv_id, manifest[idx]["pdf_url"], title),
                                 )
+                                db._conn.commit()
+                                _save_manifest()
                             else:
                                 web_fail += 1
                                 manifest[idx]["resolutions"].append({
@@ -403,6 +424,8 @@ def run(
                                         "UPDATE papers SET pdf_url = ? WHERE title = ?",
                                         (manifest[idx]["pdf_url"], title),
                                     )
+                                    db._conn.commit()
+                                    _save_manifest()
                                 else:
                                     or_fail += 1
                                     manifest[idx]["resolutions"].append({
@@ -414,9 +437,6 @@ def run(
                         finally:
                             or_http.close()
                         console.print(f"\n[green]OpenReview resolve: {or_ok} success, {or_fail} failed[/green]")
-
-                # Persist any resolved IDs back to DB
-                db._conn.commit()
 
                 # Summary
                 with_source = sum(1 for m in manifest if m.get("pdf_url"))
