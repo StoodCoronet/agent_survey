@@ -56,6 +56,11 @@ class ArxivWebResult:
     title_score: float = 0.0
     confidence: str = "low"  # high | medium | low
     error: str | None = None
+    debug_log: list[str] = None  # diagnostic trace of queries & candidates
+
+    def __post_init__(self):
+        if self.debug_log is None:
+            self.debug_log = []
 
 
 TITLE_MATCH_THRESHOLD = 0.85
@@ -121,35 +126,48 @@ def search_arxiv_web(
                 f"https://arxiv.org/search/?query={q}"
                 "&searchtype=title&source=header&order=-announced_date_first"
             )
+            result.debug_log.append(f"[variant {variant_idx}/{len(variants)}] URL: {url}")
             try:
                 page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
             except PlaywrightTimeoutError:
+                result.debug_log.append(f"  → timeout loading page")
                 continue
 
             try:
                 page.wait_for_selector(".arxiv-result, .no-results", timeout=15000)
             except PlaywrightTimeoutError:
+                result.debug_log.append(f"  → timeout waiting for results")
                 continue
 
             no_results = page.query_selector(".no-results")
             if no_results:
+                result.debug_log.append(f"  → no-results banner found")
                 continue
 
             result_elems = page.query_selector_all(".arxiv-result")
             if not result_elems:
+                result.debug_log.append(f"  → 0 result elements found")
                 continue
+
+            result.debug_log.append(f"  → {len(result_elems)} result element(s) found")
 
             best_elem = None
             best_score = 0.0
+            candidates: list[tuple[str, float]] = []
             for elem in result_elems:
                 title_elem = elem.query_selector("p.title")
                 extracted = title_elem.inner_text().strip() if title_elem else ""
                 score, _ = _match_title(title, extracted)
+                candidates.append((extracted, score))
                 if score > best_score:
                     best_score = score
                     best_elem = elem
 
+            for ext, sc in candidates:
+                result.debug_log.append(f"      candidate: score={sc:.2f} | {ext[:120]}")
+
             if best_elem is None:
+                result.debug_log.append(f"  → no best element selected")
                 continue
 
             extracted_title = best_elem.query_selector("p.title").inner_text().strip()
@@ -159,8 +177,12 @@ def search_arxiv_web(
             result.title_matched = (
                 "exact" if score >= 0.95 else ("fuzzy" if score >= TITLE_MATCH_THRESHOLD else "none")
             )
+            result.debug_log.append(
+                f"  → best match: score={score:.2f} confidence={confidence} | {extracted_title[:120]}"
+            )
 
             if confidence == "low":
+                result.debug_log.append(f"  → rejected: confidence too low")
                 continue
 
             # Extract landing URL

@@ -44,41 +44,49 @@ survey_mining:
     general-purpose assistants/agents, and theoretical work without artifacts.
   discovery_system: |
     You are a strict research librarian for the topic "LLM-based Tools & Systems".
-    Your task has TWO levels. Apply them IN ORDER:
+    A paper MUST pass ALL three checks below to be selected. If ANY check fails, EXCLUDE it.
 
-    LEVEL 1 — Is this paper ABOUT LLM-based tools/systems?
-    The paper MUST be about tools or systems that use LLMs, large language models,
-    neural code models, or deep learning as their CORE technique.
-    Papers about traditional SE/CS topics WITHOUT AI/ML/LLM as the central focus
-    are EXCLUDED — even if they are excellent surveys.
+    ───────────────────────────────────────
+    CHECK 1 — Topic fit: Is this paper ABOUT LLM-based tools or systems?
+    ───────────────────────────────────────
+    The paper must use LLMs, large language models, neural code models, or deep learning
+    as its CORE technique to build tools or systems. Papers about traditional SE/CS topics
+    WITHOUT AI/ML/LLM as the central focus are EXCLUDED — even if they are excellent surveys.
 
-    Examples of EXCLUDED (off-topic):
+    Off-topic examples (EXCLUDE):
     - WebAssembly runtimes, microservices decomposition, traditional static analysis
     - Conventional automatic program repair without LLM components
     - Traditional refactoring, technical debt, software architecture
 
-    LEVEL 2 — Does this paper provide BROAD COVERAGE of the topic?
-    Accepted forms:
-    - Survey, review, taxonomy, systematic literature review
-    - Comprehensive comparison of MULTIPLE tools/approaches
-    - Open problems / state-of-the-art papers covering many works
-    - Benchmark study comparing multiple prior works with systematic categorization
+    ───────────────────────────────────────
+    CHECK 2 — Form fit: Is this a survey, review, taxonomy, SoK, or comprehensive comparison?
+    ───────────────────────────────────────
+    Accepted forms ONLY:
+    - Survey, review, taxonomy, or systematic literature review
+    - State-of-knowledge (SoK) paper
+    - Comprehensive comparison covering MULTIPLE (≥3) tools/approaches
 
-    REJECT these forms (even if on-topic):
-    - Single empirical study on one tool or dataset
+    REJECTED forms (EXCLUDE even if on-topic):
+    - Open-problems / state-of-the-art overview without systematic coverage
+    - Benchmark study (even with categorization of prior works)
+    - Single empirical study on one or few tools/datasets
     - Single benchmark introducing one new dataset
     - Tool/demo paper proposing one concrete system
-    - Position/vision paper without systematic literature coverage
+    - Position/vision/opinion paper without systematic literature coverage
+    - Research agenda / roadmap / future-directions paper
+
+    ───────────────────────────────────────
+    CHECK 3 — Explicit exclusions
+    ───────────────────────────────────────
+    REJECT regardless of topic or form:
+    - Pure model training without a concrete tool/system contribution
+    - Automated literature investigation (belongs to automated-research topic)
+    - General-purpose assistants/agents (SWE-agent, Devin, ChatGPT plugins)
 
     Application areas within topic:
     1. Software Engineering Tools (code generation, testing, debugging, repair, review)
     2. Data Processing & Knowledge Systems (data cleaning, document understanding, KB construction)
     3. Domain-Specific Expert Systems (bio, legal, ed, fintech, medical, industrial, climate)
-    NOTE: General-purpose assistants/agents (SWE-agent, Devin, ChatGPT plugins) are EXCLUDED.
-
-    Also exclude:
-    - Automated literature investigation (see automated-research topic)
-    - Pure model training without tool/system contribution
 
     When in doubt, EXCLUDE. Better to miss a borderline paper than include an off-topic one.
 

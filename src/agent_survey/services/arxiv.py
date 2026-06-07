@@ -152,24 +152,49 @@ def _search_exact(client: httpx.Client, title: str, delay: float) -> dict | None
     return None
 
 
-def search_title(client: httpx.Client, title: str, delay: float = REQ_DELAY) -> dict | None:
-    """Search arXiv by title (multiple variants). Tries exact title,
-    CamelCase-split, and ampersand-normalized forms.
-    """
-    variants = [title]
-    # CamelCase split: RingAttention -> Ring Attention
+def _clean_title_for_search(title: str) -> str:
+    """Replace non-alphabetic chars with spaces for arXiv search."""
+    cleaned = re.sub(r"[^a-zA-Z]", " ", title)
+    return re.sub(r"\s+", " ", cleaned).strip()
+
+
+def _generate_search_variants(title: str) -> list[str]:
+    """Generate multiple title variants for arXiv search."""
+    variants: list[str] = [title]
+    # 1. Cleaned version (non-alpha -> spaces)
+    cleaned = _clean_title_for_search(title)
+    if cleaned and cleaned != title:
+        variants.append(cleaned)
+    # 2. Colon split: "Title: Subtitle" -> try both parts
+    if ":" in title:
+        parts = title.split(":", 1)
+        for p in parts:
+            p = p.strip()
+            if p and p not in variants:
+                variants.append(p)
+            p_clean = _clean_title_for_search(p)
+            if p_clean and p_clean not in variants:
+                variants.append(p_clean)
+    # 3. CamelCase split
     camel = re.sub(r"([a-z])([A-Z])", r"\1 \2", title)
-    if camel != title:
+    if camel != title and camel not in variants:
         variants.append(camel)
-    # Remove & and normalize spaces
+    # 4. Remove & and normalize
     no_amp = title.replace("&", " ")
-    if no_amp != title:
+    if no_amp != title and no_amp not in variants:
         variants.append(no_amp)
-    # Keywords fallback: first 5 words
+    # 5. First 5 words fallback
     words = title.split()[:5]
     if len(words) >= 3:
-        variants.append(" ".join(words))
+        short = " ".join(words)
+        if short not in variants:
+            variants.append(short)
+    return variants
 
+
+def search_title(client: httpx.Client, title: str, delay: float = REQ_DELAY) -> dict | None:
+    """Search arXiv by title with multi-variant matching."""
+    variants = _generate_search_variants(title)
     for v in variants:
         result = _search_exact(client, v, delay)
         if result:

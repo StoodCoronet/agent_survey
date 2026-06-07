@@ -306,6 +306,7 @@ def run(
                                     "title_score": web_res.title_score,
                                     "title_matched": web_res.title_matched,
                                     "confidence": web_res.confidence,
+                                    "debug_log": web_res.debug_log,
                                 })
                                 web_ok += 1
                                 console.print(f"[green]✓ arxiv_web:{web_res.arxiv_id} ({web_res.title_matched} {web_res.title_score:.2f})[/green]")
@@ -317,6 +318,7 @@ def run(
                                     "error": web_res.error or "no match",
                                     "title_score": web_res.title_score,
                                     "title_matched": web_res.title_matched,
+                                    "debug_log": web_res.debug_log,
                                 })
                                 console.print(f"[yellow]✗ {web_res.error or 'no match'}[/yellow]")
                             # Polite delay: 5–10s random interval between web searches
