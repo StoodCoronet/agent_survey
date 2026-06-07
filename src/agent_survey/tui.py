@@ -49,6 +49,7 @@ _GLOBAL_STEPS = {"harvest", "enrich", "keywords-filter"}
 
 # Survey-mining sub-phases
 _SURVEY_MINING_PHASES = [
+    ("continue", "▶️  Continue", "自动继续下一个未完成的 phase"),
     ("discover", "🔍 Survey Discovery", "LLM 扫描全库 → 发现 topic 相关 survey"),
     ("download", "📥 Build Download Manifest", "汇总 arxiv_id / PDF URL → 对缺失的用 arxiv/ OpenReview 搜索补全 → 生成 manifest"),
     ("keywords", "🗝️  Keyword Extraction", "从 survey PDF（或 title+abstract）提取关键词组"),
@@ -785,6 +786,27 @@ def run():
                         else:
                             continue
                         _draw_sm()
+                    # Handle "continue" — auto-pick next pending phase
+                    if sm_phase == "continue":
+                        next_phase = None
+                        for key, _, _ in _SURVEY_MINING_PHASES:
+                            if key == "continue":
+                                continue
+                            if sm_statuses.get(key, "pending") != "done":
+                                next_phase = key
+                                break
+                        if next_phase:
+                            sm_phase = next_phase
+                            console.print(f"[dim]Continue → {sm_phase}[/dim]")
+                        else:
+                            _clear_screen()
+                            console.print("[yellow]All survey-mining phases are done.[/yellow]")
+                            force = _read_line("Force re-run discover from scratch? (y/N): ").strip().lower()
+                            if force in ("y", "yes"):
+                                sm_phase = "discover"
+                                action_args.append("--force")
+                            else:
+                                sm_phase = None
                     if not sm_phase:
                         action = None
                         action_args = []
@@ -797,7 +819,7 @@ def run():
                             "SELECT COUNT(*) FROM paper_topics WHERE topic_name=? AND survey_score IS NOT NULL",
                             (topic_name,),
                         ).fetchone()[0]
-                        if existing > 0:
+                        if existing > 0 and "--force" not in action_args:
                             _clear_screen()
                             console.print(f"[yellow]Phase 1 already done ({existing} surveys in DB).[/yellow]")
                             force = _read_line("Force re-run and clear prior records? (y/N): ").strip().lower()
