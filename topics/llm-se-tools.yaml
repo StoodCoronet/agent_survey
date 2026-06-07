@@ -36,24 +36,26 @@ description: >
 # ------ Survey Mining (Stage 3) ------
 survey_mining:
   discovery_topic_desc: |
-    Tool, demo, and system papers that use LLMs to build practical systems
-    for software engineering and related tasks: code generation, testing,
-    debugging, repair, review, vulnerability detection, documentation,
-    data processing, and domain-specific applications.
+    Survey, review, and benchmark papers about LLM-based tools and systems
+    for software engineering and related tasks: code generation and synthesis,
+    testing and quality assurance, debugging and maintenance,
+    data processing and content processing, document and knowledge management,
+    and domain-specific applications. Excludes pure model training,
+    literature investigation systems, and theoretical work without artifacts.
   discovery_system: |
-    You are a research librarian identifying survey/review/benchmark papers about LLM-based tools and systems for software engineering.
+    You are a research librarian identifying survey/review/benchmark papers about LLM-based tools and systems.
     A "survey" must be one of: systematic review, literature review, survey, taxonomy,
-    OR a benchmark study that covers MULTIPLE works and evaluates LLM tools for SE tasks.
-    Include ONLY if the paper is about:
-    - Code generation, completion, or synthesis tools using LLMs
-    - Automated testing or test generation with LLMs
-    - Debugging, fault localization, or program repair using LLMs
-    - Code review, quality analysis, or vulnerability detection tools
-    - Documentation generation or program comprehension tools
-    - Data processing, analysis, or transformation tools (e.g., spreadsheet cleaning)
-    - Research assistance or deep research tools for literature investigation
-    - Domain-specific LLM tools with concrete system contributions
+    OR a benchmark study that covers MULTIPLE works and evaluates LLM tools.
+    Include ONLY if the paper is a survey, review, taxonomy, or benchmark study about:
+    - Code generation, completion, synthesis, or translation using LLMs
+    - Automated testing, test generation, fuzzing, or quality assurance with LLMs
+    - Debugging, fault localization, program repair, code review, or documentation generation using LLMs
+    - Data processing, analysis, transformation, or content processing using LLMs
+    - Document understanding, knowledge base construction, or knowledge management using LLMs
+    - Domain-specific LLM tools and agents for bioinformatics, legal tech, ed tech, fintech, medical, industrial, or climate applications
+    - General-purpose LLM agents and assistants for practical tasks
     EXCLUDE if about:
+    - Automated literature investigation, deep research, paper QA, or systematic review systems (see automated-research topic)
     - Pure model training or fine-tuning without a concrete tool/system
     - Empirical studies that do not propose a new tool
     - Theoretical algorithms without a deployed artifact
@@ -61,24 +63,26 @@ survey_mining:
     Return JSON: {"surveys": [{"idx": 0, "title": "Exact Title"}, ...]}
     Use the EXACT index and title from the list below. If idx and title mismatch, trust the title. NOTHING else.
   keyword_system: |
-    You are an expert software engineering researcher extracting technical keywords from survey papers about LLM-based tools and systems for SE.
+    You are an expert software engineering researcher extracting technical keywords from survey papers about LLM-based tools and systems.
 
     Focus on keywords related to:
-    - Code generation, completion, synthesis, and transformation tools using LLMs
-    - Automated testing, test generation, test oracle generation, and fuzzing with LLMs
-    - Debugging, fault localization, bug detection, and program repair using LLMs
-    - Code review, quality analysis, vulnerability detection, and security auditing tools
-    - Documentation generation, program comprehension, and code summarization tools
-    - Data processing, analysis, and transformation tools (e.g., spreadsheet cleaning, log parsing)
-    - Domain-specific LLM tools with concrete system contributions
-    - Evaluation benchmarks, datasets, and metrics for LLM-based SE tools
+    - Survey, review, and taxonomy papers about LLM-based tools and systems
+    - Benchmark studies comparing multiple LLM-based tools
+    - Code generation, completion, synthesis, and translation using LLMs
+    - Automated testing, test generation, fuzzing, and quality assurance with LLMs
+    - Debugging, fault localization, program repair, and code maintenance using LLMs
+    - Data processing, analysis, transformation, and content processing using LLMs
+    - Document understanding, knowledge base construction, and knowledge management using LLMs
+    - Domain-specific LLM tools and agents for bioinformatics, legal tech, ed tech, fintech, medical, industrial, and climate applications
+    - General-purpose LLM agents and assistants for practical tasks
+    - Evaluation benchmarks, datasets, and metrics for LLM-based tools
 
     Rules:
     - Extract specific techniques, methods, frameworks, benchmarks, tools, and datasets
     - Include abbreviations and their expanded forms as separate entries
     - Exclude generic words (e.g., "code", "tool", "system"), author names, institution names
     - Each keyword 1-5 words, lowercase preferred
-    - Only include keywords DIRECTLY relevant to LLM-based SE tools and systems
+    - Only include keywords DIRECTLY relevant to LLM-based tools and systems
 
     Return JSON: {"keywords": ["term1", "term2", ...]}
 

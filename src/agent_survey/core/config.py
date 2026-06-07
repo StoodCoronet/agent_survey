@@ -113,6 +113,7 @@ class DocsCfg(BaseModel):
 class ApiKeysCfg(BaseModel):
     deepseek: str = ""
     semantic_scholar: str = ""
+    core: str = ""
 
 
 class Config(BaseModel):
@@ -134,6 +135,7 @@ class Config(BaseModel):
     # Back-compat shortcuts (populated by load_config)
     deepseek_api_key: str = ""
     semantic_scholar_api_key: str = ""
+    core_api_key: str = ""
     http_proxy: str = ""
 
     def get_proxy(self, stage_name: str = "") -> str | None:
@@ -179,12 +181,28 @@ class Config(BaseModel):
 
 
 def make_http_client(cfg: Config | None = None, stage_name: str = "", **kwargs) -> httpx.Client:
-    """Create an httpx.Client, automatically applying per-stage proxy if configured."""
+    """Create an httpx.Client, automatically applying per-stage proxy if configured.
+
+    When a stage has an explicit empty proxy override ("" or null), the client
+    is created with proxy=None and trust_env=False so that environment proxies
+    (HTTP_PROXY, ALL_PROXY, etc.) are ignored. This ensures services like arXiv
+    and Semantic Scholar that should connect directly do not pick up a proxy.
+    """
     import httpx
 
     proxy = None
+    has_explicit_override = False
     if cfg:
         proxy = cfg.get_proxy(stage_name)
+        if stage_name:
+            override = cfg.network.stage_proxies.get(stage_name)
+            if override is None:
+                for key in cfg.network.stage_proxies:
+                    if key.endswith(f"_{stage_name}"):
+                        override = cfg.network.stage_proxies[key]
+                        break
+            if override is not None and not override:
+                has_explicit_override = True
 
     client_kwargs: dict[str, Any] = {
         "timeout": 30,
@@ -194,6 +212,10 @@ def make_http_client(cfg: Config | None = None, stage_name: str = "", **kwargs) 
 
     if proxy:
         client_kwargs["proxy"] = proxy
+    elif has_explicit_override:
+        # Explicitly bypass proxy (including env vars) for this stage
+        client_kwargs["proxy"] = None
+        client_kwargs.setdefault("trust_env", False)
 
     return httpx.Client(**client_kwargs)
 
@@ -369,6 +391,7 @@ def load_config(config_path: Path | None = None, env_path: Path | None = None) -
     # API keys: YAML > .env fallback
     cfg.deepseek_api_key = cfg.api_keys.deepseek or os.getenv("DEEPSEEK_API_KEY", "")
     cfg.semantic_scholar_api_key = cfg.api_keys.semantic_scholar or os.getenv("SEMANTIC_SCHOLAR_API_KEY", "")
+    cfg.core_api_key = cfg.api_keys.core or os.getenv("CORE_API_KEY", "")
     cfg.deepseek_base_url = os.getenv("DEEPSEEK_BASE_URL", cfg.deepseek_base_url)
 
     # Proxy: network.http_proxy from YAML > .env fallback

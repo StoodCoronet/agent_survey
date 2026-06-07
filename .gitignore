@@ -12,6 +12,8 @@ build/
 output/
 cache/
 .pytest_cache/
+docs/*/
+!docs/.gitkeep
 docs/pdfs/
 
 # Debug & temp scripts
