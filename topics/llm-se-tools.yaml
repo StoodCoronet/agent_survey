@@ -36,39 +36,41 @@ description: >
 # ------ Survey Mining (Stage 3) ------
 survey_mining:
   discovery_topic_desc: |
-    Survey, review, and benchmark papers about LLM-based tools and systems
-    for software engineering and related tasks: code generation and synthesis,
-    testing and quality assurance, debugging and maintenance,
-    data processing and content processing, document and knowledge management,
-    and domain-specific applications. Excludes pure model training,
-    literature investigation systems, and theoretical work without artifacts.
+    Survey, review, and taxonomy papers about LLM-based tools and systems
+    for software engineering and related tasks: software engineering tools
+    (code generation, testing, debugging, and maintenance),
+    data processing and knowledge systems, and domain-specific expert systems.
+    Excludes pure model training, literature investigation systems,
+    general-purpose assistants/agents, and theoretical work without artifacts.
   discovery_system: |
     You are a strict research librarian identifying ONLY genuine survey/review/taxonomy papers about LLM-based tools and systems.
 
-    STRICT inclusion criteria — ALL must be met:
-    1. The paper MUST be a survey, systematic review, literature review, or taxonomy.
-       Title or abstract should explicitly indicate survey nature (e.g., contains
-       "survey", "review", "taxonomy", "systematic literature review", "state of the art",
-       "overview", "landscape", "roadmap", "position paper with comprehensive coverage").
-    2. OR it is a comprehensive benchmark study that compares MULTIPLE (>=5) prior
-       works/tools/approaches and provides a systematic categorization/taxonomy.
-       Single-benchmark papers (introducing one new dataset/tool) do NOT qualify.
+    A paper qualifies ONLY if it is a survey, systematic review, literature review, or taxonomy
+    covering one of these THREE categories:
 
-    STRICT exclusion criteria — reject if ANY apply:
-    - Title/abstract does NOT suggest survey/review nature (no "survey", "review",
-      "taxonomy", "systematic", "overview", "landscape", "roadmap" keywords)
+    1. Software Engineering Tools
+       - Code generation, synthesis, completion, translation, refactoring
+       - Automated testing, test generation, fuzzing, quality assurance
+       - Debugging, fault localization, program repair, code review, documentation generation
+
+    2. Data Processing & Knowledge Systems
+       - Data cleaning, transformation, analysis, content processing
+       - Document understanding, knowledge base construction, knowledge management
+
+    3. Domain-Specific Expert Systems
+       - Bioinformatics, legal tech, ed tech, fintech, medical, industrial, climate
+       - NOTE: General-purpose assistants, coding agents, and chatbots are EXCLUDED
+
+    EXCLUDE if:
     - Empirical study on a single tool, system, or dataset
-    - Benchmark paper introducing a new dataset without comprehensive multi-work comparison
+    - Benchmark introducing a new dataset without broad literature synthesis
     - Tool/demo paper proposing a single concrete system
-    - Position or vision paper without systematic literature coverage
-    - Automated literature investigation, deep research, paper QA, or SLR automation systems
-      (see automated-research topic)
-    - Pure model training or fine-tuning without a concrete tool/system
-    - Theoretical algorithms without a deployed artifact
-    - General NLP/AI work without SE or tool focus
+    - Position or vision paper without systematic coverage
+    - General-purpose LLM agents, assistants, or chatbots (e.g., SWE-agent, Devin, ChatGPT plugins)
+    - Automated literature investigation (see automated-research topic)
+    - Pure model training or theoretical work without artifact
 
-    When in doubt, BE CONSERVATIVE: if the paper looks like a single empirical study
-    or tool paper rather than a broad survey, EXCLUDE it.
+    BE EXTREMELY CONSERVATIVE. Most papers are NOT surveys. When in doubt, EXCLUDE.
 
     Return JSON: {"surveys": [{"idx": 0, "title": "Exact Title"}, ...]}
     Use the EXACT index and title from the list below. If idx and title mismatch, trust the title. NOTHING else.
@@ -77,14 +79,9 @@ survey_mining:
 
     Focus on keywords related to:
     - Survey, review, and taxonomy papers about LLM-based tools and systems
-    - Benchmark studies comparing multiple LLM-based tools
-    - Code generation, completion, synthesis, and translation using LLMs
-    - Automated testing, test generation, fuzzing, and quality assurance with LLMs
-    - Debugging, fault localization, program repair, and code maintenance using LLMs
-    - Data processing, analysis, transformation, and content processing using LLMs
-    - Document understanding, knowledge base construction, and knowledge management using LLMs
-    - Domain-specific LLM tools and agents for bioinformatics, legal tech, ed tech, fintech, medical, industrial, and climate applications
-    - General-purpose LLM agents and assistants for practical tasks
+    - Software engineering tools: code generation, synthesis, testing, fuzzing, debugging, program repair, code review, documentation generation
+    - Data processing and knowledge systems: data cleaning, transformation, analysis, document understanding, knowledge base construction, knowledge management
+    - Domain-specific expert systems: bioinformatics, legal tech, ed tech, fintech, medical, industrial, climate
     - Evaluation benchmarks, datasets, and metrics for LLM-based tools
 
     Rules:
