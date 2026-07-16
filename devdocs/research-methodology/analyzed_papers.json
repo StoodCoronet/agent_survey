@@ -1,0 +1,823 @@
+{
+  "meta": {
+    "date": "2026-07-16",
+    "total_rounds": 5,
+    "total_papers_analyzed": 96
+  },
+  "rounds": {
+    "R1": [
+      {
+        "label": "Compositional Preference Models",
+        "paper_id": "dblp:conf/iclr/GoKKRD24",
+        "title": "Compositional Preference Models for Aligning LMs",
+        "venue": "ICLR",
+        "year": 2024,
+        "has_pdf": true,
+        "abstract_snippet": "As language models (LMs) become more capable, it is increasingly important to align them with human preferences. However, the dominant paradigm for training Preference Models (PMs) for that purpose su"
+      },
+      {
+        "label": "reWordBench",
+        "paper_id": "dblp:conf/emnlp/WuYCKCG25",
+        "title": "reWordBench: Benchmarking and Improving the Robustness of Reward Models with Transformed Inputs",
+        "venue": "EMNLP",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "Reward models have become a staple in modern NLP, serving as not only a scalable text evaluator, but also an indispensable component in many alignment recipes and inference-time algorithms. However, w"
+      },
+      {
+        "label": "Adversarial Reasoning Jailbreak",
+        "paper_id": "dblp:conf/icml/SabbaghiKPKH25",
+        "title": "Adversarial Reasoning at Jailbreaking Time",
+        "venue": "ICML",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "As large language models (LLMs) are becoming more capable and widespread, the study of their failure cases is becoming increasingly important. Recent advances in standardizing, measuring, and scaling "
+      },
+      {
+        "label": "SPIRIT",
+        "paper_id": "dblp:conf/emnlp/DjanibekovMIAL25",
+        "title": "SPIRIT: Patching Speech Language Models against Jailbreak Attacks",
+        "venue": "EMNLP",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "Speech Language Models (SLMs) enable natural interactions via spoken instructions, which more effectively capture user intent by detecting nuances in speech. The richer speech signal introduces new se"
+      },
+      {
+        "label": "EigenShield",
+        "paper_id": "dblp:conf/aaai/DarabiNTJKT26",
+        "title": "EigenShield: Inference-Time, Model-Agnostic Jailbreaking Defense via Causal Subspace Filtering",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large Language Models (LLMs) and Vision-Language Models (VLMs) remain highly vulnerable to adversarial attacks despite widespread adoption. Existing defenses typically require retraining, rely on heur"
+      },
+      {
+        "label": "SaLoRA",
+        "paper_id": "dblp:conf/iclr/LiS00025",
+        "title": "SaLoRA: Safety-Alignment Preserved Low-Rank Adaptation",
+        "venue": "ICLR",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "As advancements in large language models (LLMs) continue and the demand for personalized models increases, parameter-efficient fine-tuning (PEFT) methods (e.g., LoRA) will become essential due to thei"
+      },
+      {
+        "label": "Unlocking Spell",
+        "paper_id": "dblp:conf/iclr/LinRLDSCB024",
+        "title": "The Unlocking Spell on Base LLMs: Rethinking Alignment via In-Context Learning",
+        "venue": "ICLR",
+        "year": 2024,
+        "has_pdf": true,
+        "abstract_snippet": "The alignment tuning process of large language models (LLMs) typically involves instruction learning through supervised fine-tuning (SFT) and preference tuning via reinforcement learning from human fe"
+      },
+      {
+        "label": "Self-Correction Theory",
+        "paper_id": "dblp:conf/nips/0001WWJ024",
+        "title": "A Theoretical Understanding of Self-Correction through In-context Alignment",
+        "venue": "NeurIPS",
+        "year": 2024,
+        "has_pdf": true,
+        "abstract_snippet": "Going beyond mimicking limited human experiences, recent studies show initial evidence that, like humans, large language models (LLMs) are capable of improving their abilities purely by self-correctio"
+      }
+    ],
+    "R2": [
+      {
+        "label": "DPO (Rafailov)",
+        "paper_id": "dblp:conf/nips/RafailovSMMEF23",
+        "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+        "venue": "NeurIPS",
+        "year": 2023,
+        "has_pdf": true,
+        "abstract_snippet": "While large-scale unsupervised language models (LMs) learn broad world knowledge and some reasoning skills, achieving precise control of their behavior is difficult due to the completely unsupervised "
+      },
+      {
+        "label": "RAIN",
+        "paper_id": "dblp:conf/iclr/LiWZ0024",
+        "title": "RAIN: Your Language Models Can Align Themselves without Finetuning",
+        "venue": "ICLR",
+        "year": 2024,
+        "has_pdf": true,
+        "abstract_snippet": "Large language models (LLMs) often demonstrate inconsistencies with human preferences. Previous research typically gathered human preference data and then aligned the pre-trained models using reinforc"
+      },
+      {
+        "label": "MAP",
+        "paper_id": "dblp:conf/iclr/WangLAD0B0025",
+        "title": "MAP: Multi-Human-Value Alignment Palette",
+        "venue": "ICLR",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "Ensuring that generative AI systems align with human values is essential but challenging, especially when considering multiple human values and their potential trade-offs. Since human values can be pe"
+      },
+      {
+        "label": "AutoDAN",
+        "paper_id": "dblp:conf/iclr/LiuXCX24",
+        "title": "AutoDAN: Generating Stealthy Jailbreak Prompts on Aligned Large Language Models",
+        "venue": "ICLR",
+        "year": 2024,
+        "has_pdf": true,
+        "abstract_snippet": "The aligned Large Language Models (LLMs) are powerful language understanding and decision-making tools that are created through extensive alignment with human feedback. However, these large models rem"
+      },
+      {
+        "label": "Many-shot Jailbreaking",
+        "paper_id": "dblp:conf/nips/AnilDPSBKBTMFMA24",
+        "title": "Many-shot Jailbreaking",
+        "venue": "NeurIPS",
+        "year": 2024,
+        "has_pdf": true,
+        "abstract_snippet": "We investigate a family of simple long-context attacks on large language models: prompting with hundreds of demonstrations of undesirable behavior. This attack is newly feasible with the larger contex"
+      },
+      {
+        "label": "CHASE",
+        "paper_id": "dblp:conf/aaai/HaoLFCFWSYGLN26",
+        "title": "CHASE: Contextual History for Adaptive and Simple Exploitation in Large Language Model Jailbreaking",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "We propose Contextual History for Adaptive and Simple Exploitation (CHASE), a novel multi-turn method for Large Language Model (LLM) jailbreaking. Rather than directly attack an LLM that may be diffic"
+      },
+      {
+        "label": "TAR",
+        "paper_id": "dblp:conf/iclr/TamirisaBPZGSLW25",
+        "title": "Tamper-Resistant Safeguards for Open-Weight LLMs",
+        "venue": "ICLR",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "Rapid advances in the capabilities of large language models (LLMs) have raised widespread concerns regarding their potential for malicious use. Open-weight LLMs present unique challenges, as existing "
+      },
+      {
+        "label": "GradSafe",
+        "paper_id": "dblp:conf/acl/XieFP024",
+        "title": "GradSafe: Detecting Jailbreak Prompts for LLMs via Safety-Critical Gradient Analysis",
+        "venue": "ACL",
+        "year": 2024,
+        "has_pdf": true,
+        "abstract_snippet": "Large Language Models (LLMs) face threats from jailbreak prompts. Existing methods for detecting jailbreak prompts are primarily online moderation APIs or finetuned LLMs. These strategies, however, of"
+      },
+      {
+        "label": "HarmBench",
+        "paper_id": "dblp:conf/icml/MazeikaPYZ0MSLB24",
+        "title": "HarmBench: A Standardized Evaluation Framework for Automated Red Teaming and Robust Refusal",
+        "venue": "ICML",
+        "year": 2024,
+        "has_pdf": true,
+        "abstract_snippet": "Automated red teaming holds substantial promise for uncovering and mitigating the risks associated with the malicious use of large language models (LLMs), yet the field lacks a standardized evaluation"
+      },
+      {
+        "label": "JailbreakBench",
+        "paper_id": "dblp:conf/nips/ChaoDRACSDFPTH024",
+        "title": "JailbreakBench: An Open Robustness Benchmark for Jailbreaking Large Language Models",
+        "venue": "NeurIPS",
+        "year": 2024,
+        "has_pdf": true,
+        "abstract_snippet": "Jailbreak attacks cause large language models (LLMs) to generate harmful, unethical, or otherwise objectionable content. Evaluating these attacks presents a number of challenges, which the current col"
+      },
+      {
+        "label": "Beyond I'm Sorry",
+        "paper_id": "dblp:conf/aaai/PrakashYASCL26",
+        "title": "Beyond I'm Sorry, I Can't: Dissecting Large-Language-Model Refusal",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Refusal on harmful prompts is a key safety behaviour in instruction‑tuned large language models (LLMs), yet the internal causes of this behaviour remain poorly understood. We study two public instruct"
+      },
+      {
+        "label": "NeuroStrike",
+        "paper_id": "dblp:conf/ndss/WuBRTPS26",
+        "title": "NeuroStrike: Neuron-Level Attacks on Aligned LLMs",
+        "venue": "NDSS",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Safety alignment is critical for the ethical deployment of large language models (LLMs), guiding them to avoid generating harmful or unethical content. Current alignment techniques, such as supervised"
+      }
+    ],
+    "R3": [
+      {
+        "label": "GCG (Zou et al.)",
+        "paper_id": "arxiv:2307.15043",
+        "title": "Universal and Transferable Adversarial Attacks on Aligned Language Models",
+        "venue": "arXiv",
+        "year": 2023,
+        "has_pdf": true,
+        "abstract_snippet": ""
+      },
+      {
+        "label": "PAIR (Chao et al.)",
+        "paper_id": "arxiv:2310.08419",
+        "title": "Jailbreaking Black Box Large Language Models in Twenty Queries",
+        "venue": "arXiv",
+        "year": 2023,
+        "has_pdf": true,
+        "abstract_snippet": ""
+      }
+    ],
+    "R4": [
+      {
+        "label": "MoralReason",
+        "paper_id": "dblp:conf/aaai/AnD26",
+        "title": "MoralReason: Generalizable Moral Decision Alignment for LLM Agents Using Reasoning-Level Reinforcement Learning",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large language models are increasingly influencing human moral decisions, yet current approaches focus primarily on evaluating rather than actively steering their moral decisions. \nWe formulate this a"
+      },
+      {
+        "label": "Pluralistic Values",
+        "paper_id": "dblp:conf/aaai/AliZKP26",
+        "title": "Operationalizing Pluralistic Values in Large Language Model Alignment Reveals Trade-offs in Safety, Inclusivity, and Model Behavior",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Although large language models (LLMs) are increasingly trained using human feedback for safety and alignment with human values, alignment decisions often overlook human social diversity. This study ex"
+      },
+      {
+        "label": "Alignment Game",
+        "paper_id": "dblp:conf/aaai/FalahatiALG26",
+        "title": "The Alignment Game: A Theory of Long-Horizon Alignment Through Recursive Curation",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "In self-consuming generative models that train on their own outputs, alignment with user preferences becomes a recursive rather than one-time process. In this paper, we provide the first formal founda"
+      },
+      {
+        "label": "AntiDote",
+        "paper_id": "dblp:conf/aaai/SanyalRM26",
+        "title": "AntiDote: Bi-level Adversarial Training for Tamper-Resistant LLMs",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "The release of open-weight large language models (LLMs) creates a tension between advancing accessible research and preventing misuse, such as malicious fine-tuning to elicit harmful content. Current "
+      },
+      {
+        "label": "Q-MLLM",
+        "paper_id": "dblp:conf/ndss/ZhaoLLS26",
+        "title": "Q-MLLM: Vector Quantization for Robust Multimodal Large Language Model Security",
+        "venue": "NDSS",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Multimodal Large Language Models (MLLMs) have demonstrated impressive capabilities in cross-modal understanding, but remain vulnerable to adversarial attacks through visual inputs despite robust textu"
+      },
+      {
+        "label": "ALTER",
+        "paper_id": "dblp:conf/aaai/ChenGLWGZWT26",
+        "title": "ALTER: Asymmetric LoRA for Token-Entropy-Guided Unlearning of LLMs",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large language models (LLMs) have advanced to encompass extensive knowledge across diverse domains. Yet controlling what a LLMs should not know is important for ensuring alignment and thus safe use. H"
+      },
+      {
+        "label": "Cross-Modal Unlearning",
+        "paper_id": "dblp:conf/aaai/LiLWYBJX26",
+        "title": "Cross-Modal Unlearning via Influential Neuron Path Editing in Multimodal Large Language Models",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Multimodal Large Language Models (MLLMs) extend foundation models to real-world applications by integrating inputs such as text and vision. However, their broad knowledge capacity raises growing conce"
+      },
+      {
+        "label": "AURA",
+        "paper_id": "dblp:conf/aaai/AdakCBHAM26",
+        "title": "AURA: Affordance-Understanding and Risk-aware Alignment Technique for Large Language Models",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Present day LLMs face the challenge of managing affordance-based safety risks—situations where outputs inadvertently facilitate harmful actions due to overlooked logical implications. Traditional safe"
+      },
+      {
+        "label": "Agentic Fine-tuning",
+        "paper_id": "dblp:conf/aaai/HahmMJL26",
+        "title": "Unintended Misalignment from Agentic Fine-Tuning: Risks and Mitigation",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Beyond simple text generation, Large Language Models (LLMs) have evolved into agentic systems capable of planning and interacting with external tools to solve complex tasks. This evolution involves fi"
+      },
+      {
+        "label": "Semantic-Graph Defense",
+        "paper_id": "dblp:conf/aaai/FangF26",
+        "title": "Disentangling Adversarial Prompts: A Semantic-Graph Defense for Robust LLM Security",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large Language Models (LLMs) are increasingly vulnerable to adversarial prompts that exploit semantic ambiguities\nto bypass safety mechanisms, resulting in harmful or inappropriate outputs. Such attac"
+      },
+      {
+        "label": "Attribute Misbinding",
+        "paper_id": "dblp:conf/aaai/FuZJZCLY26",
+        "title": "Unveiling the Attribute Misbinding Threat in Identity-Preserving Models",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Identity-preserving models have led to notable progress in generating personalized content. Unfortunately, such models also exacerbate risks when misused, for instance, by generating threatening conte"
+      },
+      {
+        "label": "AlignTree",
+        "paper_id": "dblp:conf/aaai/GorenKW26",
+        "title": "AlignTree: Efficient Defense Against LLM Jailbreak Attacks",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large Language Models (LLMs) are vulnerable to adversarial attacks that bypass safety guidelines and generate harmful content. Mitigating these vulnerabilities requires defense mechanisms that are bot"
+      },
+      {
+        "label": "PurMM",
+        "paper_id": "dblp:conf/aaai/JiangLRZZWW26",
+        "title": "PurMM: Attention-Guided Test-Time Backdoor Purification in Multimodal Large Language Models",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Downstream fine-tuning of Multimodal Large Language Models (MLLMs) is advancing rapidly, allowing general models to achieve superior performance on domain-specific tasks. Yet most prior research focus"
+      },
+      {
+        "label": "Causal-Guided Detoxify",
+        "paper_id": "dblp:conf/ndss/ChenSWC26",
+        "title": "Causal-Guided Detoxify Backdoor Attack of Open-Weight LoRA Models",
+        "venue": "NDSS",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Low-Rank Adaptation (LoRA) has emerged as an efficient method for fine-tuning large language models (LLMs) and is widely adopted within the open-source community. However, the decentralized disseminat"
+      },
+      {
+        "label": "Can Editing LLMs Inject Harm",
+        "paper_id": "dblp:conf/aaai/ChenHLCLXGGYXYW26",
+        "title": "Can Editing LLMs Inject Harm?",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large Language Models (LLMs) have emerged as a new information channel. Meanwhile, one critical but under-explored question is: Is it possible to bypass the safety alignment and inject harmful informa"
+      },
+      {
+        "label": "Double-Edged Sword",
+        "paper_id": "dblp:conf/aaai/HuangTWLLPLCS26",
+        "title": "Model Editing as a Double-Edged Sword: Steering Agent Behavior Toward Beneficence or Harm",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Agents based on Large Language Models (LLMs) have demonstrated strong capabilities across a wide range of tasks. However, deploying LLM-based agents in high-stakes domains comes with significant safet"
+      },
+      {
+        "label": "EduGuardBench",
+        "paper_id": "dblp:conf/aaai/JiangZYJLYYK26",
+        "title": "EduGuardBench: A Holistic Benchmark for Evaluating the Pedagogical Fidelity and Adversarial Safety of LLMs as Simulated Teachers",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large Language Models for Simulating Professions (SP-LLMs), particularly as teachers, are pivotal for personalized education. However, ensuring their professional competence and ethical safety remains"
+      },
+      {
+        "label": "STACK",
+        "paper_id": "dblp:conf/aaai/McKenzieHTDCTKG26",
+        "title": "STACK: Adversarial Attacks on LLM Safeguard Pipelines",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Frontier AI developers are relying on layers of safeguards to protect against catastrophic misuse of AI systems. Anthropic guards their latest Claude 4 Opus model using one such defense pipeline, and "
+      },
+      {
+        "label": "When Smiley Turns Hostile",
+        "paper_id": "dblp:conf/aaai/CuiFWYZSWQH26",
+        "title": "When Smiley Turns Hostile: Interpreting How Emojis Trigger LLMs' Toxicity",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Emojis are globally used non-verbal cues in digital communication, and extensive research has examined how large language models (LLMs) understand and utilize emojis across contexts. While usually ass"
+      },
+      {
+        "label": "MacPrompt",
+        "paper_id": "dblp:conf/aaai/YeLWWYHY26",
+        "title": "MacPrompt: Maraconic-Guided Jailbreak Against Text-to-Image Models",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Text-to-image (T2I) models have raised increasing safety concerns due to their capacity to generate NSFW and other banned objects. To mitigate these risks, safety filters and concept removal technique"
+      },
+      {
+        "label": "Attention Defense (Prompt Inj)",
+        "paper_id": "dblp:conf/ndss/ZhongMCDCX26",
+        "title": "Attention is All You Need to Defend Against Indirect Prompt Injection Attacks in LLMs",
+        "venue": "NDSS",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large Language Models (LLMs) have been integrated into many applications (e.g., web agents) to perform more sophisticated tasks. However, LLM-empowered applications are vulnerable to Indirect Prompt I"
+      },
+      {
+        "label": "Task Shield",
+        "paper_id": "dblp:conf/acl/JiaWQS25",
+        "title": "The Task Shield: Enforcing Task Alignment to Defend Against Indirect Prompt Injection in LLM Agents",
+        "venue": "ACL",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "Large Language Model (LLM) agents are increasingly being deployed as conversational assistants capable of performing complex real-world tasks through tool integration. This enhanced ability to interac"
+      },
+      {
+        "label": "Attack the Messages",
+        "paper_id": "dblp:conf/aaai/YanZZLZQWZ26",
+        "title": "Attack the Messages, Not the Agents: A Multi-round Adaptive Stealthy Tampering Framework for LLM-MAS",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large language model-based multi-agent systems (LLM-MAS) effectively accomplish complex and dynamic tasks through inter-agent communication, but this reliance introduces substantial safety vulnerabili"
+      },
+      {
+        "label": "MetaCipher",
+        "paper_id": "dblp:conf/aaai/ChenSBGS26",
+        "title": "MetaCipher: A Time-Persistent and Universal Multi-Agent Framework for Cipher-Based Jailbreak Attacks for LLMs",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large language models (LLMs) face persistent vulnerability to jailbreak attacks despite their increasing capabilities. While developers deploy alignment finetuning and safety guardrails, researchers c"
+      },
+      {
+        "label": "Safety More Than Tokens",
+        "paper_id": "dblp:conf/iclr/QiPL0RBM025",
+        "title": "Safety Alignment Should be Made More Than Just a Few Tokens Deep",
+        "venue": "ICLR",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "The safety alignment of current Large Language Models (LLMs) is vulnerable. Relatively simple attacks, or even benign fine-tuning, can jailbreak aligned models. We argue that many of these vulnerabili"
+      },
+      {
+        "label": "Do Not Merge My Model",
+        "paper_id": "dblp:conf/aaai/LiPCTSSPZ26",
+        "title": "Do Not Merge My Model! Safeguarding Open-Source LLMs Against Unauthorized Model Merging",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Model merging has emerged as an efficient technique for expanding large language models (LLMs) by integrating specialized expert models. However, it also introduces a new threat: model merging stealin"
+      },
+      {
+        "label": "OR-Bench",
+        "paper_id": "dblp:conf/icml/CuiCSH25",
+        "title": "OR-Bench: An Over-Refusal Benchmark for Large Language Models",
+        "venue": "ICML",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "Large Language Models (LLMs) require careful safety alignment to prevent malicious outputs. While significant research focuses on mitigating harmful content generation, the enhanced safety often come "
+      },
+      {
+        "label": "CodeMMLU",
+        "paper_id": "dblp:conf/iclr/NguyenPHDNPB25",
+        "title": "CodeMMLU: A Multi-Task Benchmark for Assessing Code Understanding & Reasoning Capabilities of CodeLLMs",
+        "venue": "ICLR",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "Promoting openness in scientific communication and the peer-review process"
+      },
+      {
+        "label": "BadJudge",
+        "paper_id": "dblp:conf/iclr/Tong0ZC25",
+        "title": "BadJudge: Backdoor Vulnerabilities of LLM-As-A-Judge",
+        "venue": "ICLR",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "This paper proposes a novel backdoor threat attacking the LLM-as-a-Judge evaluation regime, where the adversary controls both the candidate and evaluator model. The backdoored evaluator victimizes ben"
+      },
+      {
+        "label": "Long-form RewardBench",
+        "paper_id": "dblp:conf/aaai/HuangHLYLCXZCZ26",
+        "title": "Long-form RewardBench: Evaluating Reward Models for Long-form Generation",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "The widespread adoption of reinforcement learning-based alignment highlights the growing importance of reward models. Various benchmarks have been built to evaluate reward models in various domains an"
+      },
+      {
+        "label": "Length Bias RLHF",
+        "paper_id": "dblp:conf/aaai/KimOL26",
+        "title": "Mitigating Length Bias in RLHF Through a Causal Lens",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Reinforcement learning from human feedback (RLHF) is widely used to align large language models (LLMs) with human preferences. However, RLHF-trained reward models often exhibit length bias—a systemati"
+      },
+      {
+        "label": "VideoLLM Failures",
+        "paper_id": "dblp:conf/aaai/CaoSWXD26",
+        "title": "Failures to Surface Harmful Contents in Video Large Language Models",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Video Large Language Models (VideoLLMs) are increasingly deployed on numerous critical applications, where users rely on auto-generated summaries while casually skimming the video stream. We show that"
+      },
+      {
+        "label": "Cross-Modal Safety",
+        "paper_id": "dblp:conf/aaai/CaiLZSZYZZL26",
+        "title": "When Safe Unimodal Inputs Collide: Optimizing Reasoning Chains for Cross-Modal Safety in Multimodal Large Language Models",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Multimodal Large Language Models (MLLMs) are susceptible to the implicit reasoning risk, wherein innocuous unimodal inputs synergistically assemble into risky multimodal data that produce harmful outp"
+      },
+      {
+        "label": "ACID Test",
+        "paper_id": "dblp:conf/aaai/DuttaJRVS26",
+        "title": "ACID Test: A Benchmark for Cultural Safety and Alignment in LALMs",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large Audio Language Models (LALMs) are transforming AI by processing and generating human language directly from audio. As these models proliferate in real-world applications, it becomes critical to "
+      },
+      {
+        "label": "ConfGuard",
+        "paper_id": "dblp:conf/aaai/WangZLFJZX26",
+        "title": "ConfGuard: A Simple and Effective Backdoor Detection for Large Language Models",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Backdoor attacks pose a significant threat to Large Language Models (LLMs), where adversaries can embed hidden triggers to manipulate LLM's outputs. \nMost existing defense methods, primarily designed "
+      },
+      {
+        "label": "Chaos to Cure",
+        "paper_id": "dblp:conf/aaai/ShangCRWLLZH26",
+        "title": "From Chaos to Cure: A Prefix Heuristics Guided Model-Agnostic Adaptive Detoxification Framework",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "The impressive performance of large language models (LLMs) also brings inherent toxicity risks, prompting the need for effective detoxification to support responsible deployment. Prevailing methods ge"
+      },
+      {
+        "label": "Dynamic Deep Prompt",
+        "paper_id": "dblp:conf/aaai/ObidovYGY26",
+        "title": "Dynamic Deep Prompt Optimization for Defending Against Jailbreak Attacks on LLMs",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large Language Models (LLMs) demonstrate impressive capabilities across many applications but remain vulnerable to jailbreak attacks, which elicit harmful or unintended content. While model fine-tunin"
+      },
+      {
+        "label": "MirrorShield",
+        "paper_id": "dblp:conf/aaai/PuLHZQZ26",
+        "title": "MirrorShield: Towards Dynamic Adaptive Defense Against Jailbreaks via Entropy-Guided Mirror Crafting",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Defending large language models (LLMs) against jailbreak attacks is crucial for ensuring their safe deployment. Existing defense strategies typically rely on predefined static criteria to differentiat"
+      }
+    ],
+    "R5": [
+      {
+        "label": "Value-Aligned Moderation",
+        "paper_id": "dblp:conf/aaai/ZhaoCLLZG26",
+        "title": "Value-Aligned Prompt Moderation via Zero-Shot Agentic Rewriting for Safe Image Generation",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Generative vision-language models like Stable Diffusion demonstrate remarkable capabilities in creative media synthesis, but they also pose substantial risks of producing unsafe, offensive, or cultura"
+      },
+      {
+        "label": "T2I-RiskyPrompt",
+        "paper_id": "dblp:conf/aaai/ZhangZWCLL26",
+        "title": "T2I-RiskyPrompt: A Benchmark for Safety Evaluation, Attack, and Defense on Text-to-Image Model",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Using risky text prompts, such as pornography and violent prompts, to test the safety of text-to-image (T2I) models is a critical task. However, existing risky prompt datasets are limited in three key"
+      },
+      {
+        "label": "Adaptive KL Control",
+        "paper_id": "dblp:conf/aaai/Chai26",
+        "title": "Adaptive KL Control for Direct Preference Optimization in Instruction-Following LLMs",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "The scaling parameter β in Direct Preference Optimization governs a fundamental trade-off: low β produces weak gradients that fail to learn from ambiguous preferences, while high β amplifies updates a"
+      },
+      {
+        "label": "Contrastive Divergence PO",
+        "paper_id": "dblp:conf/aaai/ChenLZWLQG26",
+        "title": "Preference Optimization via Contrastive Divergence: Your Policy Is Secretly an NLL Estimator",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Existing studies on preference optimization (PO) have been focused on constructing pairwise preference data following simple heuristics, such as maximizing the margin between chosen and rejected respo"
+      },
+      {
+        "label": "AMaPO",
+        "paper_id": "dblp:conf/aaai/DengFL26",
+        "title": "AMaPO: Adaptive Margin-attached Preference Optimization for Language Model Alignment",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Offline preference optimization offers a simpler and more stable alternative to RLHF for aligning language models. However, their effectiveness is critically dependent on ranking accuracy, a metric wh"
+      },
+      {
+        "label": "Safe RAG",
+        "paper_id": "dblp:conf/aaai/LiangWMN26",
+        "title": "Safe RAG by RAG: Untying the Bell That RAG Rang with the RAG Hand",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Retrieval-augmented generation (RAG) is widely adopted for knowledge-intensive tasks, but unverified external knowledge can pose risks such as data injection and retrieval pollution, leading to unexpe"
+      },
+      {
+        "label": "Silenced Biases",
+        "paper_id": "dblp:conf/aaai/HimelsteinLYNM26",
+        "title": "Silenced Biases: The Dark Side LLMs Learned to Refuse",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Safety-aligned large language models (LLMs) are becoming increasingly widespread, especially in sensitive applications where fairness is essential and biased outputs can cause significant harm. Howeve"
+      },
+      {
+        "label": "Incomplete Safety Learning",
+        "paper_id": "dblp:conf/aaai/BachNLT26",
+        "title": "Rethinking Deep Alignment Through the Lens of Incomplete Safety Learning",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large language models exhibit systematic vulnerabilities to adversarial attacks despite extensive safety alignment through supervised fine-tuning and reinforcement learning from human feedback. These "
+      },
+      {
+        "label": "Control Illusion",
+        "paper_id": "dblp:conf/aaai/GengLMHBAHF26",
+        "title": "Control Illusion: The Failure of Instruction Hierarchies in Large Language Models",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Large language models (LLMs) are increasingly deployed with hierarchical instruction schemes, where certain instructions (e.g., system-level directives) are expected to take precedence over others (e."
+      },
+      {
+        "label": "Quantized Model Safety",
+        "paper_id": "dblp:conf/aaai/Le26",
+        "title": "Unveiling AI Safety in Fine-tuning Quantized Model",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Post-training quantization is widely used to compress large language models (LLMs) for efficient deployment in resource-constrained environments. However, recent work shows that quantization, especial"
+      },
+      {
+        "label": "Intrinsic Barriers",
+        "paper_id": "dblp:conf/aaai/Nayebi26",
+        "title": "Intrinsic Barriers and Practical Pathways for Human-AI Alignment: An Agreement-Based Complexity Analysis",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "We formalize AI alignment as a multi-objective optimization problem called -agreement, in which a set of N agents (including humans) must reach approximate (ε) agreement across M candidate objectives,"
+      },
+      {
+        "label": "Activation Manipulation",
+        "paper_id": "dblp:conf/aaai/HaoWLMQGL26",
+        "title": "Activation Manipulation Attack: Penetrating and Harmful Jailbreak Attack Against Large Vision-Language Models",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Recently, Large Vision-Language Models (LVLMs) have been demonstrated to be vulnerable to jailbreak attacks, highlighting the urgent need for further research to comprehensively identify and mitigate "
+      },
+      {
+        "label": "SOM Directions",
+        "paper_id": "dblp:conf/aaai/PirasMBORB26",
+        "title": "SOM Directions Are Better than One: Multi-Directional Refusal Suppression in Language Models",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Refusal refers to the functional behavior enabling safety-aligned language models to reject harmful or unethical prompts. Following the growing scientific interest in mechanistic interpretability, rec"
+      },
+      {
+        "label": "Differentiated Intervention",
+        "paper_id": "dblp:conf/aaai/ZhangS26",
+        "title": "Differentiated Directional Intervention: A Framework for Evading LLM Safety Alignment",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Safety alignment instills in Large Language Models (LLMs) a critical capacity to refuse malicious requests. Prior  works have modeled this refusal mechanism as a single linear direction in the activat"
+      },
+      {
+        "label": "Persistent Backdoor",
+        "paper_id": "dblp:conf/aaai/CuiHJZ26",
+        "title": "Persistent Backdoor Attacks Under Continual Fine-Tuning of LLMs",
+        "venue": "AAAI",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Backdoor attacks embed malicious behaviors into Large Language Models (LLMs), enabling adversaries to trigger harmful outputs or bypass safety controls. However, the persistence of the implanted backd"
+      },
+      {
+        "label": "Odysseus",
+        "paper_id": "dblp:conf/ndss/LiCLJT26",
+        "title": "Odysseus: Jailbreaking Commercial Multimodal LLM-integrated Systems via Dual Steganography",
+        "venue": "NDSS",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Multimodal large language models (MLLMs), which combine text with other modalities, such as images, have demonstrated powerful capabilities and are increasingly adopted in real-world commercial system"
+      },
+      {
+        "label": "DUALBREACH",
+        "paper_id": "dblp:conf/ndss/HuangXZZNQRC26",
+        "title": "DUALBREACH: Efficient Dual-Jailbreaking via Target-Driven Initialization and Multi-Target Optimization",
+        "venue": "NDSS",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Recent research has focused on exploring the vulnerabilities of Large Language Models (LLMs), aiming to elicit harmful and/or sensitive content from LLMs. However, due to the insufficient research on "
+      },
+      {
+        "label": "Causal Perspective",
+        "paper_id": "dblp:conf/ndss/PanLLTFXCR26",
+        "title": "A Causal Perspective for Enhancing Jailbreak Attack and Defense",
+        "venue": "NDSS",
+        "year": 2026,
+        "has_pdf": true,
+        "abstract_snippet": "Uncovering the mechanisms behind \"jailbreaks\" in large language models (LLMs) is crucial for enhancing their safety and reliability, yet these mechanisms remain poorly understood.\nExisting studies pre"
+      },
+      {
+        "label": "Perception-Guided Jailbreak",
+        "paper_id": "dblp:conf/acl/0001LLJWMPL25",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "Multimodal Pragmatic Jailbreak",
+        "paper_id": "dblp:conf/acl/GengTNG25",
+        "title": "\\mathsfCon Instruction: Universal Jailbreaking of Multimodal Large Language Models via Non-Textual Modalities",
+        "venue": "ACL",
+        "year": 2025,
+        "has_pdf": false,
+        "abstract_snippet": "Existing attacks against multimodal language models often communicate instruction through text, either as an explicit malicious instruction or a crafted generic prompt, and accompanied by a toxic imag"
+      },
+      {
+        "label": "IndoSafety",
+        "paper_id": "dblp:conf/emnlp/PutraRAMD25",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "REVIVING MNEME",
+        "paper_id": "dblp:conf/emnlp/HoangTBHMN25",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "Automating Steering",
+        "paper_id": "dblp:conf/emnlp/WuWXCOHD25",
+        "title": "Automating Steering for Safe Multimodal Large Language Models",
+        "venue": "EMNLP",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "Recent progress in Multimodal Large Language Models (MLLMs) has unlocked powerful cross-modal reasoning abilities, but also raised new safety concerns, particularly when faced with adversarial multimo"
+      },
+      {
+        "label": "Cascading Adversarial Bias",
+        "paper_id": "dblp:conf/ccs/0001LJDSL25",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "MLLMGuard",
+        "paper_id": "dblp:conf/nips/LiuLLC0LZS24",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "ART Red-teaming",
+        "paper_id": "dblp:conf/nips/LiPH0X024",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "Shadowcast",
+        "paper_id": "dblp:conf/nips/ZhaoR0SB0ZS24",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "Poisoning Language Models",
+        "paper_id": "dblp:conf/icml/WanCZSJH023",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "Adaptive Deployment",
+        "paper_id": "dblp:conf/iclr/Deng0YGL25",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "Aligner",
+        "paper_id": "dblp:conf/iclr/KimLFPU25",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "f-Divergence Alignment",
+        "paper_id": "dblp:conf/aaai/LiuLLFZCC25",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "Multi-concept Immunization",
+        "paper_id": "dblp:conf/aaai/ZhengY25",
+        "title": "Multi-concept Model Immunization through Differentiable Model Merging",
+        "venue": "AAAI",
+        "year": 2025,
+        "has_pdf": true,
+        "abstract_snippet": "Model immunization is an emerging direction that aims to mitigate the potential risk of misuse associated with open-sourced models and advancing adaptation methods. The idea is to make the released mo"
+      },
+      {
+        "label": "MedOmni-45",
+        "paper_id": "dblp:conf/aaai/dummy1",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "SceneJailEval",
+        "paper_id": "dblp:conf/aaai/dummy2",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "Generalizing Alignment",
+        "paper_id": "dblp:conf/aaai/dummy3",
+        "status": "NOT_IN_DB"
+      },
+      {
+        "label": "Follow-up Likelihood",
+        "paper_id": "dblp:conf/aaai/dummy4",
+        "status": "NOT_IN_DB"
+      }
+    ]
+  }
+}

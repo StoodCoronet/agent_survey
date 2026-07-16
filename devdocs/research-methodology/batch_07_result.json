@@ -1,0 +1,148 @@
+{
+  "batch": "07",
+  "ok": 49,
+  "err": 2,
+  "bm": {
+    "MMLU": 10,
+    "HarmBench": 8,
+    "AdvBench": 5,
+    "WMDP": 5,
+    "JailbreakBench": 4,
+    "Beavertails": 4,
+    "HH-RLHF": 3,
+    "GSM8K": 2,
+    "TruthfulQA": 2,
+    "XSTest": 2,
+    "RewardBench": 2,
+    "MT-Bench": 1
+  },
+  "md": {
+    "GPT-4": 40,
+    "GPT-4o": 31,
+    "Llama-3": 25,
+    "Mistral": 20,
+    "Qwen": 17,
+    "Claude": 16,
+    "Llama-2": 14,
+    "GPT-3.5": 11,
+    "Gemini": 10,
+    "ChatGPT": 9
+  },
+  "mt": {
+    "FPR": 26,
+    "ASR": 25,
+    "attack success rate": 5,
+    "refusal rate": 5,
+    "perplexity": 5,
+    "false positive": 4
+  },
+  "eff": 6,
+  "ac": 36,
+  "rich": [
+    {
+      "pid": "dblp:conf/emnlp/SonKKHKJYP25",
+      "t": "Subtle Risks, Critical Failures: A Framework for Diagnosing Physical Safety of LLMs for Embodied Decision Making",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/emnlp/TanCLCL25",
+      "t": "Persuasion Dynamics in LLMs: Investigating Robustness and Adaptability in Knowledge and Safety with DuET-PD",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/emnlp/YanZWHZPCCG25",
+      "t": "MUSE: MCTS-Driven Red Teaming Framework for Enhanced Multi-Turn Dialogue Safety in Large Language Models",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 15
+    },
+    {
+      "pid": "dblp:conf/iclr/0001KPL0AOSSM0S25",
+      "t": "Language Model Alignment in Multilingual Trolley Problems",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/iclr/00050ZTTMKP0SLL25",
+      "t": "AIR-BENCH 2024: A Safety Benchmark based on Regulation and Policies Specified Risk Categories",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/AndriushchenkoS25",
+      "t": "AgentHarm: A Benchmark for Measuring Harmfulness of LLM Agents",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/iclr/ChaudharyH0Z0025",
+      "t": "Certifying Counterfactual Bias in LLMs",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/iclr/FeuerGDNBDCD25",
+      "t": "Style Outweighs Substance: Failure Modes of LLM Judges in Alignment Benchmarking",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/iclr/FrickLCCAJZGS25",
+      "t": "How to Evaluate Reward Models for RLHF",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/LeeKCD0HKGBMJ25",
+      "t": "Learning Diverse Attacks on Large Language Models for Robust Red-Teaming and Safety Tuning",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/iclr/LiKLMLH25",
+      "t": "AutoBencher: Towards Declarative Benchmark Construction",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 15
+    },
+    {
+      "pid": "dblp:conf/iclr/QiWCHXHJNM025",
+      "t": "On Evaluating the Durability of Safeguards for Open-Weight LLMs",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/iclr/ScholtenGS25",
+      "t": "A Probabilistic Perspective on Unlearning and Alignment for Large Language Models",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/WeijHJBW25",
+      "t": "AI Sandbagging: Language Models can Strategically Underperform on Evaluations",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/XieQ0HSHHWL000025",
+      "t": "SORRY-Bench: Systematically Evaluating Large Language Model Safety Refusal",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 15
+    }
+  ]
+}

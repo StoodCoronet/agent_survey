@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>llm-safety-alignment-sok — Taxonomy</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  .header { background: #fff; padding: 14px 24px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+  .header h1 { font-size: 18px; }
+  .nav { display: flex; gap: 8px; }
+  .nav a { padding: 6px 14px; border-radius: 6px; text-decoration: none; color: #333; font-size: 14px; background: #f0f0f0; }
+  .nav a:hover { background: #e0e0e0; }
+  .nav a.active { background: #333; color: #fff; }
+  .nav a.plan-btn { background: #5470c6; color: #fff; font-weight: 600; }
+.nav a.plan-btn:hover { background: #3d5a9e; }
+.nav a.plan-btn-cn { background: #ee6666; color: #fff; font-weight: 600; }
+.nav a.plan-btn-cn:hover { background: #c94a4a; }
+  .nav .back { background: transparent; color: #666; }
+  .tree-tabs { display: flex; gap: 8px; padding: 10px 24px; background: #fff; border-bottom: 1px solid #e8e8e8; flex-shrink: 0; }
+  .tree-tab { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; background: #e8e8e8; font-size: 14px; }
+  .tree-tab.active { background: #333; color: #fff; }
+
+  .main-layout { display: flex; flex: 1; overflow: hidden; }
+
+  /* Resize handles */
+  .resize-handle { width: 4px; background: transparent; cursor: col-resize; flex-shrink: 0; position: relative; z-index: 10; }
+  .resize-handle::after { content: ''; position: absolute; left: 1px; top: 0; bottom: 0; width: 1px; background: #e0e0e0; }
+  .resize-handle:hover::after { background: #bbb; }
+
+  /* Left sidebar: tree navigation */
+  .left-sidebar { width: 280px; background: #fff; border-right: 1px solid #e0e0e0; overflow-y: auto; padding: 12px 0; flex-shrink: 0; }
+  .tree-nav ul { list-style: none; padding-left: 0; }
+  .tree-nav li { position: relative; }
+  .tree-nav .node-line { display: flex; align-items: center; padding: 5px 16px 5px 12px; cursor: pointer; font-size: 13px; gap: 6px; border-left: 3px solid transparent; }
+  .tree-nav .node-line:hover { background: #f5f5f5; }
+  .tree-nav .node-line.active { background: #f0f0f0; border-left-color: #333; font-weight: 600; }
+  .tree-nav .node-line .count { margin-left: auto; background: #eee; padding: 1px 6px; border-radius: 10px; font-size: 11px; color: #666; }
+  .tree-nav .node-line .expand-btn { width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #999; cursor: pointer; border-radius: 3px; }
+  .tree-nav .node-line .expand-btn:hover { background: #e0e0e0; }
+  .tree-nav .children { display: none; }
+  .tree-nav .children.open { display: block; }
+  .tree-nav .children ul { padding-left: 16px; }
+
+  /* Center: mind map cards */
+  .center-panel { flex: 1; overflow-y: auto; background: #fafafa; padding: 24px; position: relative; }
+  .breadcrumb { font-size: 13px; color: #666; margin-bottom: 16px; }
+  .breadcrumb span { cursor: pointer; }
+  .breadcrumb span:hover { text-decoration: underline; }
+  .breadcrumb .sep { margin: 0 6px; color: #ccc; }
+  .current-node-card { background: #fff; border-radius: 10px; padding: 16px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 20px; border-left: 4px solid #333; }
+  .current-node-card h2 { font-size: 18px; margin-bottom: 4px; }
+  .current-node-card .meta { color: #999; font-size: 13px; }
+  .sub-nodes { display: flex; flex-wrap: wrap; gap: 12px; }
+  .sub-card { background: #fff; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); cursor: pointer; min-width: 140px; max-width: 220px; border-top: 3px solid #5470c6; transition: transform 0.15s, box-shadow 0.15s; }
+  .sub-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .sub-card .name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .sub-card .count { font-size: 12px; color: #999; }
+  .sub-card .mini-papers { margin-top: 8px; padding-top: 8px; border-top: 1px solid #f0f0f0; font-size: 11px; color: #666; line-height: 1.6; }
+
+  .paper-card { background: #fff; border-radius: 8px; padding: 10px 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); cursor: default; min-width: 180px; max-width: 260px; border-left: 3px solid #888; transition: transform 0.15s, box-shadow 0.15s; }
+  .paper-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .paper-card .p-num { font-weight: 700; color: #333; font-size: 12px; margin-bottom: 4px; }
+  .paper-card .p-title { font-size: 13px; font-weight: 500; color: #333; line-height: 1.4; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .paper-card .p-meta { font-size: 11px; color: #999; }
+
+  /* Right sidebar: paper list */
+  .right-panel { width: 340px; background: #fff; display: flex; flex-direction: column; flex-shrink: 0; }
+  .right-header { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; font-size: 14px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+  .right-list { flex: 1; overflow-y: auto; padding: 8px 16px; }
+  .right-item { background: #fff; border-radius: 6px; padding: 8px 10px; margin-bottom: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; gap: 8px; align-items: baseline; border-left: 2px solid #ccc; }
+  .right-num { font-weight: 700; color: #333; min-width: 32px; font-size: 12px; }
+  .right-title { color: #333; line-height: 1.4; }
+  .right-venue { color: #aaa; font-size: 11px; white-space: nowrap; margin-left: auto; padding-left: 8px; }
+  .right-empty { color: #999; font-size: 13px; padding: 16px 0; }
+
+  .color-domain { border-top-color: #1565c0 !important; }
+  .color-tech { border-top-color: #2e7d32 !important; }
+  .color-goal { border-top-color: #ef6c00 !important; }
+  .color-cross { border-top-color: #c2185b !important; }
+
+  .right-detail { flex: 1; overflow-y: auto; padding: 12px 16px; }
+  .detail-num { color: #666; font-size: 13px; margin-bottom: 4px; }
+  .detail-title { font-size: 15px; font-weight: 600; color: #333; line-height: 1.4; margin-bottom: 8px; }
+  .detail-meta { font-size: 12px; color: #999; margin-bottom: 16px; }
+  .detail-abstract { font-size: 13px; line-height: 1.7; color: #333; max-height: 300px; overflow-y: auto; padding-right: 4px; margin-bottom: 16px; }
+  .detail-cn { background: #f5f5f5; border-radius: 6px; padding: 10px 12px; font-size: 12px; color: #888; margin-bottom: 16px; }
+  .detail-pdf a { font-size: 13px; color: #1565c0; text-decoration: none; }
+  .detail-pdf a:hover { text-decoration: underline; }
+  .close-btn { width: 24px; height: 24px; border: none; background: #f0f0f0; border-radius: 4px; cursor: pointer; font-size: 16px; line-height: 1; color: #666; flex-shrink: 0; }
+  .close-btn:hover { background: #e0e0e0; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>llm-safety-alignment-sok</h1>
+  <div class="nav">
+    <a href="../index.html" class="back">&#8592; Topics</a>
+    <a href="index.html">Overview</a>
+    <a href="taxonomy.html" class="active">Taxonomy</a>
+    <a href="mindmap.html">Mindmap</a>
+    <a href="papers.html">Papers</a>
+    <a href="citation_graph.html">Citation Graph</a>
+    <a href="plan.html" class="plan-btn">📋 Plan</a>
+    <a href="plan_cn.html" class="plan-btn-cn">实验方案</a>
+  </div>
+</div>
+<div class="tree-tabs" id="tree-tabs"></div>
+<div class="main-layout">
+  <div class="left-sidebar tree-nav" id="tree-nav"></div>
+  <div class="resize-handle" id="handle-left"></div>
+  <div class="center-panel" id="center-panel">
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <div class="current-node-card" id="current-card"></div>
+    <div class="sub-nodes" id="sub-nodes"></div>
+  </div>
+  <div class="resize-handle" id="handle-right"></div>
+  <div class="right-panel">
+    <div class="right-header">
+      <span id="right-title">References</span>
+      <span id="right-count" style="color:#999;font-weight:400;font-size:13px;"></span>
+    </div>
+    <div class="right-list" id="right-list"></div>
+  </div>
+</div>
+
+<script>
+let data = {};
+let paperMap = {};
+let currentTree = 'application_domain';
+let selectedNodePath = [];
+let selectedPaperId = null;
+
+async function load() {
+  const res = await fetch('data.json?v=' + Date.now());
+  data = await res.json();
+  paperMap = Object.fromEntries(data.papers.map(p => [p.id, p]));
+
+  // Dynamic tabs based on actual trees in data
+  const treeNames = Object.keys(data.tree_hierarchy || {});
+  const tabsContainer = document.getElementById('tree-tabs');
+  if (tabsContainer && treeNames.length > 0) {
+    tabsContainer.innerHTML = treeNames.map((name, i) => `
+      <button class="tree-tab ${i === 0 ? 'active' : ''}" data-tree="${name}">${name.replace(/_/g, ' ')}</button>
+    `).join('');
+    tabsContainer.querySelectorAll('.tree-tab').forEach(tab => {{
+      tab.addEventListener('click', () => {{
+        tabsContainer.querySelectorAll('.tree-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentTree = tab.dataset.tree;
+        initSelection();
+        renderApp(currentTree);
+      }});
+    }});
+    currentTree = treeNames[0];
+  }
+  renderApp(currentTree);
+}
+
+function collectPapers(node) {
+  let pids = new Set();
+  if (node.papers) node.papers.forEach(pid => pids.add(pid));
+  if (node.children) node.children.forEach(c => collectPapers(c).forEach(pid => pids.add(pid)));
+  return pids;
+}
+
+function getPapersSorted(node) {
+  const pids = collectPapers(node);
+  return Array.from(pids).map(pid => paperMap[pid]).filter(Boolean).sort((a,b) => a.num - b.num);
+}
+
+function findNodeByPath(treeData, path) {
+  let nodes = treeData;
+  let target = null;
+  for (const name of path) {
+    target = nodes.find(n => n.name === name);
+    if (!target) return null;
+    nodes = target.children || [];
+  }
+  return target;
+}
+
+/* ---- Left sidebar tree ---- */
+function renderLeftTree() {
+  const container = document.getElementById('tree-nav');
+  const treeData = data.tree_hierarchy[currentTree] || [];
+  const dummyRoot = { name: currentTree.replace(/_/g, ' '), children: treeData, count: treeData.reduce((s,c)=>s+c.count,0) };
+
+  function buildUL(node, path) {
+    const hasChildren = node.children && node.children.length > 0;
+    const isActive = JSON.stringify(path) === JSON.stringify(selectedNodePath);
+    const isOpen = selectedNodePath.slice(0, path.length).join('/') === path.join('/');
+    const li = document.createElement('li');
+    const line = document.createElement('div');
+    line.className = 'node-line' + (isActive ? ' active' : '');
+    line.style.paddingLeft = (12 + (path.length - 1) * 14) + 'px';
+
+    const expand = hasChildren ? `<span class="expand-btn">${isOpen ? '▼' : '▶'}</span>` : '<span style="width:16px;display:inline-block"></span>';
+    line.innerHTML = `${expand}<span style="flex:1">${node.name}</span><span class="count">${node.count || 0}</span>`;
+
+    line.addEventListener('click', (e) => {
+      if (e.target.classList.contains('expand-btn')) {
+        e.stopPropagation();
+        const ul = li.querySelector('.children');
+        if (ul) { ul.classList.toggle('open'); e.target.textContent = ul.classList.contains('open') ? '▼' : '▶'; }
+      } else {
+        selectedNodePath = [...path];
+        renderApp(currentTree);
+      }
+    });
+    li.appendChild(line);
+
+    if (hasChildren) {
+      const childrenDiv = document.createElement('div');
+      childrenDiv.className = 'children' + (isOpen ? ' open' : '');
+      const ul = document.createElement('ul');
+      node.children.forEach(child => ul.appendChild(buildUL(child, [...path, child.name])));
+      childrenDiv.appendChild(ul);
+      li.appendChild(childrenDiv);
+    }
+    return li;
+  }
+
+  container.innerHTML = '';
+  const rootUL = document.createElement('ul');
+  rootUL.appendChild(buildUL(dummyRoot, [dummyRoot.name]));
+  container.appendChild(rootUL);
+}
+
+/* ---- Center panel ---- */
+function renderCenter() {
+  const treeData = data.tree_hierarchy[currentTree] || [];
+  const dummyRoot = { name: currentTree.replace(/_/g, ' '), children: treeData, count: treeData.reduce((s,c)=>s+c.count,0) };
+  const node = selectedNodePath.length > 0 ? findNodeByPath(treeData, selectedNodePath.slice(1)) : null;
+  const current = node || dummyRoot;
+  const path = selectedNodePath.length > 0 ? selectedNodePath : [dummyRoot.name];
+
+  // Breadcrumb
+  const bc = document.getElementById('breadcrumb');
+  bc.innerHTML = path.map((name, i) => {
+    if (i === path.length - 1) return `<span style="font-weight:600;color:#333">${name}</span>`;
+    return `<span onclick="jumpToPath(${i})">${name}</span><span class="sep">/</span>`;
+  }).join('');
+
+  // Current card
+  const card = document.getElementById('current-card');
+  const papers = getPapersSorted(current);
+  const currentPathParts = path.slice(1).map(n => n.toLowerCase().replace(/ /g, '-'));
+  const currentPath = currentPathParts.join('/');
+  const descKey = `${currentTree}:${currentPath}`;
+  const desc = data.taxonomy_desc && data.taxonomy_desc[descKey];
+  let descHtml = '';
+  if (desc) {
+    const text = desc.zh || desc.en || '';
+    descHtml = `<div style="margin-top:10px;font-size:13px;line-height:1.6;color:#555;">${text}</div>`;
+    const meta = desc.metadata || {};
+    const methods = meta.methods || [];
+    const datasets = meta.datasets || [];
+    const trends = meta.trends || '';
+    let metaParts = [];
+    if (methods.length) metaParts.push(`<b>Methods:</b> ${methods.join(', ')}`);
+    if (datasets.length) metaParts.push(`<b>Datasets:</b> ${datasets.join(', ')}`);
+    if (trends) metaParts.push(`<b>Trends:</b> ${trends}`);
+    if (metaParts.length) {
+      descHtml += `<div style="margin-top:10px;padding:8px 10px;background:#f8f9fa;border-radius:6px;font-size:12px;line-height:1.5;color:#444;">${metaParts.join('<br>')}</div>`;
+    }
+  } else {
+    descHtml = `<div style="margin-top:10px;font-size:13px;line-height:1.6;color:#999;font-style:italic;">Not available</div>`;
+  }
+  card.innerHTML = `<h2>${current.name}</h2><div class="meta">${papers.length} papers | ${current.children ? current.children.length + ' sub-categories' : 'leaf node'}</div>${descHtml}`;
+
+  // Sub-nodes cards
+  const subContainer = document.getElementById('sub-nodes');
+  if (current.children && current.children.length > 0) {
+    const colorClass = currentTree.includes('domain') ? 'color-domain' : currentTree.includes('approach') ? 'color-tech' : currentTree.includes('goal') ? 'color-goal' : 'color-cross';
+    subContainer.innerHTML = current.children.map(child => {
+      const childPapers = getPapersSorted(child);
+      const childPath = [...currentPathParts, child.name.toLowerCase().replace(/ /g, '-')].join('/');
+      const childDescKey = `${currentTree}:${childPath}`;
+      const childDesc = data.taxonomy_desc && data.taxonomy_desc[childDescKey];
+      const childDescHtml = childDesc ? `<div style="margin-top:6px;font-size:12px;line-height:1.5;color:#666;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${childDesc.zh || childDesc.en || ''}</div>` : '';
+      const preview = childPapers.slice(0, 4).map(p => `[${p.num}] ${p.short_title || p.title}`).join('<br>');
+      return `<div class="sub-card ${colorClass}" onclick="selectChild('${child.name}')">
+        <div class="name">${child.name}</div>
+        <div class="count">${childPapers.length} papers</div>
+        ${childDescHtml}
+        ${preview ? `<div class="mini-papers">${preview}${childPapers.length > 4 ? '<br>...' : ''}</div>` : ''}
+      </div>`;
+    }).join('');
+  } else {
+    subContainer.innerHTML = papers.map(p => `
+      <div class="paper-card" onclick="selectPaper('${p.id}')">
+        <div class="p-num">[${p.num}]</div>
+        <div class="p-title">${p.short_title || p.title}</div>
+        <div class="p-meta">${p.venue || '?'} ${p.year || ''}</div>
+      </div>
+    `).join('');
+  }
+}
+
+/* ---- Right panel ---- */
+function renderRight() {
+  const treeData = data.tree_hierarchy[currentTree] || [];
+  const node = selectedNodePath.length > 0 ? findNodeByPath(treeData, selectedNodePath.slice(1)) : null;
+  const dummyRoot = { name: currentTree.replace(/_/g, ' '), children: treeData, count: treeData.reduce((s,c)=>s+c.count,0) };
+  const current = node || dummyRoot;
+  const papers = getPapersSorted(current);
+
+  if (selectedPaperId) {
+    const p = paperMap[selectedPaperId];
+    if (p) {
+      document.getElementById('right-title').textContent = p.short_title || p.title;
+      document.getElementById('right-count').innerHTML = '<button class="close-btn" onclick="closeDetail()">×</button>';
+      const list = document.getElementById('right-list');
+      list.innerHTML = renderPaperDetail(p);
+      return;
+    }
+    selectedPaperId = null;
+  }
+
+  document.getElementById('right-title').textContent = current.name;
+  document.getElementById('right-count').textContent = papers.length + ' papers';
+  const list = document.getElementById('right-list');
+  if (papers.length === 0) {
+    list.innerHTML = '<div class="right-empty">No papers in this category.</div>';
+    return;
+  }
+  list.innerHTML = papers.map(p => `
+    <div class="right-item" onclick="selectPaper('${p.id}')">
+      <span class="right-num">[${p.num}]</span>
+      <span class="right-title">${p.short_title || p.title}</span>
+      <span class="right-venue">${p.venue || '?'} ${p.year || ''}</span>
+    </div>
+  `).join('');
+}
+
+function selectPaper(id) {
+  selectedPaperId = id;
+  renderRight();
+}
+
+function closeDetail() {
+  selectedPaperId = null;
+  renderRight();
+}
+
+function renderPaperDetail(p) {
+  const en = p.summary_en || p.abstract || '(abstract not available)';
+  const zh = p.summary_zh || '（中文描述待补充）';
+  const pdfLink = p.pdf_url ? `<a href="${p.pdf_url}" target="_blank">查看 PDF 原文 →</a>` : '<span style="color:#999;font-size:12px;">PDF 不可用</span>';
+  return `
+    <div class="right-detail">
+      <div class="detail-num">[${p.num}]</div>
+      <div class="detail-title">${p.short_title || p.title}</div>
+      <div class="detail-meta">${p.venue || '?'} ${p.year || ''} | ${p.venue_area || '?'}</div>
+      <div class="detail-abstract">${en.split('\n').join('<br>')}</div>
+      <div class="detail-cn">${zh.split('\n').join('<br>')}</div>
+      <div class="detail-pdf">${pdfLink}</div>
+    </div>
+  `;
+}
+
+function renderApp(treeName) {
+  currentTree = treeName;
+  renderLeftTree();
+  renderCenter();
+  renderRight();
+}
+
+function selectChild(name) {
+  selectedNodePath = [...selectedNodePath, name];
+  renderApp(currentTree);
+}
+
+function jumpToPath(index) {
+  selectedNodePath = selectedNodePath.slice(0, index + 1);
+  renderApp(currentTree);
+}
+
+// Initialize with first root selected
+function initSelection() {
+  const treeData = data.tree_hierarchy[currentTree] || [];
+  const dummyRoot = { name: currentTree.replace(/_/g, ' '), children: treeData };
+  selectedNodePath = [dummyRoot.name];
+  if (treeData.length > 0) selectedNodePath.push(treeData[0].name);
+}
+
+load().then(() => { initSelection(); renderApp(currentTree); });
+
+/* ---- Resize handles ---- */
+(function setupResize() {
+  let activeHandle = null;
+  let startX = 0;
+  let startWidth = 0;
+  let targetEl = null;
+
+  function onMove(e) {
+    if (!activeHandle || !targetEl) return;
+    const dx = e.clientX - startX;
+    if (activeHandle.id === 'handle-left') {
+      targetEl.style.width = Math.max(180, startWidth + dx) + 'px';
+    } else if (activeHandle.id === 'handle-right') {
+      targetEl.style.width = Math.max(200, startWidth - dx) + 'px';
+    }
+  }
+
+  function onUp() {
+    activeHandle = null;
+    targetEl = null;
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+
+  ['handle-left', 'handle-right'].forEach(id => {
+    const h = document.getElementById(id);
+    if (!h) return;
+    h.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      activeHandle = h;
+      startX = e.clientX;
+      if (id === 'handle-left') {
+        targetEl = document.getElementById('tree-nav');
+      } else {
+        targetEl = document.querySelector('.right-panel');
+      }
+      startWidth = targetEl.getBoundingClientRect().width;
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+})();
+</script>
+</body>
+</html>

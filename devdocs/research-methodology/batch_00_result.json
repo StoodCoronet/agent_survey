@@ -1,0 +1,156 @@
+{
+  "batch": "00",
+  "total": 51,
+  "ok": 50,
+  "errors": 1,
+  "top_benchmarks": {
+    "ARC": 49,
+    "MMLU": 8,
+    "GSM8K": 8,
+    "Beavertails": 8,
+    "HH-RLHF": 7,
+    "AlpacaEval": 7,
+    "RewardBench": 6,
+    "XSTest": 6,
+    "TruthfulQA": 6,
+    "AdvBench": 5,
+    "HarmBench": 4,
+    "HumanEval": 4,
+    "MT-Bench": 3,
+    "JailbreakBench": 2,
+    "WildGuard": 1
+  },
+  "top_models": {
+    "GPT-4": 37,
+    "Qwen": 32,
+    "Llama-3": 25,
+    "GPT-4o": 25,
+    "Claude": 14,
+    "Mistral": 13,
+    "Gemini": 12,
+    "Alpaca": 9,
+    "ChatGPT": 8,
+    "Llama-2": 6,
+    "Vicuna": 3,
+    "Pythia": 3
+  },
+  "top_metrics": {
+    "accuracy": 30,
+    "FPR": 19,
+    "ASR": 17,
+    "win rate": 10,
+    "perplexity": 4,
+    "refusal rate": 4,
+    "ROUGE": 2,
+    "false positive": 2
+  },
+  "efficiency_mentions": 17,
+  "attack_config_mentions": 44,
+  "rich_papers": [
+    {
+      "pid": "dblp:conf/aaai/BhattacharyyaAS26",
+      "title": "ALPHA: Action-Based Learning for Pluralistic Human Alignment in Large Language Models",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 13
+    },
+    {
+      "pid": "dblp:conf/aaai/GuWMZJ26",
+      "title": "ParetoHqD: Fast Offline Multiobjective Alignment of Large Language Models Using Pareto High-Quality Data",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 6
+    },
+    {
+      "pid": "dblp:conf/aaai/Jia26",
+      "title": "Bootstrapping LLMs via Preference-Based Policy Optimization",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/aaai/HuangWZ26",
+      "title": "SPA: Achieving Consensus in LLM Alignment via Self-Priority Optimization",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 13
+    },
+    {
+      "pid": "dblp:conf/aaai/LangHL26",
+      "title": "Selective Weak-to-Strong Generalization",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/aaai/LiCFJG26",
+      "title": "ENCORE: Entropy-guided Reward Composition for Multi-head Safety Reward Models",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 13
+    },
+    {
+      "pid": "dblp:conf/aaai/LiZZYPCHLCH26",
+      "title": "LifeAlign: Lifelong Alignment for Large Language Models with Memory-Augmented Focalized Preference Optimization",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 10
+    },
+    {
+      "pid": "dblp:conf/aaai/LiuCZZZY26",
+      "title": "SafeNLIDB: A Privacy-Preserving Safety Alignment Framework for LLM-based Natural Language Database Interfaces",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 11
+    },
+    {
+      "pid": "dblp:conf/aaai/LiuLFTLMZ26",
+      "title": "SparseRM: A Lightweight Preference Modeling with Sparse Autoencoder",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 6
+    },
+    {
+      "pid": "dblp:conf/aaai/LiuKJL26",
+      "title": "Targeting Misalignment: A Conflict-Aware Framework for Reward-Model-based LLM Alignment",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/aaai/LuWCT26",
+      "title": "URPO: A Unified Reward & Policy Optimization Framework for Large Language Models",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 11
+    },
+    {
+      "pid": "dblp:conf/aaai/MahmudNWZ26",
+      "title": "Inference-Aware Prompt Optimization for Aligning Black-Box Large Language Models",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/aaai/MoRWL26",
+      "title": "Textual Self-Attention Network: Test-Time Preference Optimization Through Textual Gradient-Based Attention",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 13
+    },
+    {
+      "pid": "dblp:conf/aaai/MukherjeeBG26",
+      "title": "SharedRep-RLHF: A Shared Representation Approach to RLHF with Diverse Preferences",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/aaai/NguyenDNVLN26",
+      "title": "CTPD: Cross Tokenizer Preference Distillation",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 10
+    }
+  ]
+}

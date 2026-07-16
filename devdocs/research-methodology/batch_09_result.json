@@ -1,0 +1,148 @@
+{
+  "batch": "09",
+  "ok": 50,
+  "err": 1,
+  "bm": {
+    "AdvBench": 13,
+    "MMLU": 6,
+    "HarmBench": 5,
+    "GSM8K": 4,
+    "MT-Bench": 4,
+    "JailbreakBench": 4,
+    "HH-RLHF": 3,
+    "Beavertails": 3,
+    "SHP": 3,
+    "AlpacaEval": 3,
+    "TruthfulQA": 2,
+    "WildGuard": 1
+  },
+  "md": {
+    "GPT-4": 31,
+    "Llama-3": 24,
+    "Llama-2": 20,
+    "GPT-4o": 20,
+    "Mistral": 19,
+    "Qwen": 18,
+    "GPT-3.5": 16,
+    "ChatGPT": 15,
+    "Vicuna": 14,
+    "Claude": 13
+  },
+  "mt": {
+    "ASR": 43,
+    "FPR": 24,
+    "attack success rate": 21,
+    "perplexity": 15,
+    "false positive": 4,
+    "ROUGE": 3
+  },
+  "eff": 10,
+  "ac": 41,
+  "rich": [
+    {
+      "pid": "dblp:conf/iclr/DongL025",
+      "t": "Durable Quantization Conditioned Misalignment Attack on Large Language Models",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/GrimesCSC25",
+      "t": "Concept-ROT: Poisoning Concepts in Large Language Models with Model Editing",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/iclr/MaWXLG25",
+      "t": "Perturbation-Restrained Sequential Model Editing",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/YeCLYWC25",
+      "t": "Emerging Safety Attack and Defense in Federated Instruction Tuning of Large Language Models",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/ZhangRECSCTI25",
+      "t": "Persistent Pre-training Poisoning of LLMs",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/icml/0001HZ0V25",
+      "t": "Benign Samples Matter! Fine-tuning On Outlier Benign Samples Severely Breaks Safety",
+      "v": "ICML",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/icml/WangW000D025",
+      "t": "GRU: Mitigating the Trade-off between Unlearning and Retention for LLMs",
+      "v": "ICML",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/naacl/TaoZLLK25",
+      "t": "ImgTrojan: Jailbreaking Vision-Language Models with ONE Image",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/naacl/PanaitescuLiessPKCAZAH25",
+      "t": "PoisonedParrot: Subtle Data Poisoning Attacks to Elicit Copyright-Infringing Content from Large Language Models",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/naacl/WangYLSZWSH25",
+      "t": "Model Surgery: Modulating LLM's Behavior Via Simple Parameter Editing",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/sp/0001CLL0CH025",
+      "t": "PEFTGuard: Detecting Backdoor Attacks Against Parameter-Efficient Fine-Tuning",
+      "v": "SP",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/aaai/0001LLJWMPL25",
+      "t": "Perception-Guided Jailbreak Against Text-to-Image Models",
+      "v": "AAAI",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/aaai/ChengSZW25",
+      "t": "Security Attacks on LLM-based Code Completion Tools",
+      "v": "AAAI",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/aaai/Du00GZ0S25",
+      "t": "Multi-Turn Jailbreaking Large Language Models via Attention Shifting",
+      "v": "AAAI",
+      "y": 2025,
+      "s": 13
+    },
+    {
+      "pid": "dblp:conf/aaai/DuZM0025",
+      "t": "Investigating the Security Threat Arising from \"Yes-No\" Implicit Bias in Large Language Models",
+      "v": "AAAI",
+      "y": 2025,
+      "s": 8
+    }
+  ]
+}

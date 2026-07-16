@@ -1,0 +1,148 @@
+{
+  "batch": "17",
+  "ok": 51,
+  "err": 0,
+  "bm": {
+    "AdvBench": 18,
+    "ToxiGen": 3,
+    "HH-RLHF": 2,
+    "MMLU": 2,
+    "TruthfulQA": 2,
+    "Beavertails": 2,
+    "SHP": 2,
+    "HarmBench": 2,
+    "MT-Bench": 1,
+    "AlpacaEval": 1,
+    "JailbreakBench": 1,
+    "BBQ": 1
+  },
+  "md": {
+    "GPT-4": 28,
+    "GPT-3.5": 24,
+    "Llama-2": 18,
+    "Vicuna": 17,
+    "ChatGPT": 14,
+    "Alpaca": 12,
+    "Claude": 11,
+    "Mistral": 9,
+    "GPT-4o": 6,
+    "Gemini": 6
+  },
+  "mt": {
+    "ASR": 34,
+    "FPR": 27,
+    "perplexity": 9,
+    "attack success rate": 8,
+    "ROUGE": 2,
+    "harmfulness score": 2
+  },
+  "eff": 5,
+  "ac": 38,
+  "rich": [
+    {
+      "pid": "dblp:conf/nips/MarksANA00B24",
+      "t": "Interpreting Learned Feedback Patterns in Large Language Models",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/nips/PengCHC24",
+      "t": "Navigating the Safety Landscape: Measuring Risks in Finetuning Large Language Models",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/LiLCZLW0024",
+      "t": "BadEdit: Backdooring Large Language Models by Model Editing",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/iclr/Qi0XC0M024",
+      "t": "Fine-tuning Aligned Language Models Compromises Safety, Even When Users Do Not Intend To!",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/icml/Halawi0WWHS24",
+      "t": "Covert Malicious Finetuning: Challenges in Safeguarding LLM Adaptation",
+      "v": "ICML",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/naacl/CaoCC24",
+      "t": "Stealthy and Persistent Unalignment on Large Language Models via Backdoor Injections",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/naacl/YanYLCTWSRJ24",
+      "t": "Backdooring Instruction-Tuned Large Language Models with Virtual Prompt Injection",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/aaai/QiHP0WM24",
+      "t": "Visual Adversarial Examples Jailbreak Aligned Large Language Models",
+      "v": "AAAI",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/acl/0005LZY0S24",
+      "t": "How Johnny Can Persuade LLMs to Jailbreak Them: Rethinking Persuasion to Challenge AI Safety by Humanizing LLMs",
+      "v": "ACL",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/acl/FuLX0024",
+      "t": "Safety Alignment in NLP Tasks: Weakly Aligned Summarization as an In-Context Attack",
+      "v": "ACL",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/acl/JiangXNXR0P24",
+      "t": "ArtPrompt: ASCII Art-based Jailbreak Attacks against Aligned LLMs",
+      "v": "ACL",
+      "y": 2024,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/acl/MangaokarHCCFJ024",
+      "t": "PRP: Propagating Universal Perturbations to Attack Large Language Model Guard-Rails",
+      "v": "ACL",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/acl/ZhangGZC00CW24",
+      "t": "Jailbreak Open-Sourced Large Language Models via Enforced Decoding",
+      "v": "ACL",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/emnlp/0008PHY24",
+      "t": "Evaluating the Instruction-Following Robustness of Large Language Models to Prompt Injection",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/GhanimAZSL24",
+      "t": "Jailbreaking LLMs with Arabic Transliteration and Arabizi",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 6
+    }
+  ]
+}

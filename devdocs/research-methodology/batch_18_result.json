@@ -1,0 +1,148 @@
+{
+  "batch": "18",
+  "ok": 51,
+  "err": 0,
+  "bm": {
+    "AdvBench": 21,
+    "MMLU": 12,
+    "TruthfulQA": 10,
+    "GSM8K": 7,
+    "HarmBench": 5,
+    "MT-Bench": 5,
+    "AlpacaEval": 4,
+    "JailbreakBench": 4,
+    "SHP": 3,
+    "HH-RLHF": 2,
+    "XSTest": 2,
+    "Beavertails": 2
+  },
+  "md": {
+    "GPT-4": 25,
+    "Vicuna": 22,
+    "Llama-2": 21,
+    "Mistral": 20,
+    "GPT-3.5": 18,
+    "Alpaca": 17,
+    "ChatGPT": 10,
+    "Llama-3": 7,
+    "Qwen": 6,
+    "Falcon": 4
+  },
+  "mt": {
+    "ASR": 36,
+    "FPR": 28,
+    "perplexity": 15,
+    "attack success rate": 9,
+    "ROUGE": 7,
+    "MMLU accuracy": 1
+  },
+  "eff": 10,
+  "ac": 44,
+  "rich": [
+    {
+      "pid": "dblp:conf/icml/SadasivanSSKCF24",
+      "t": "Fast Adversarial Attacks on Language Models In One GPU Minute",
+      "v": "ICML",
+      "y": 2024,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/icml/ZhengY0M0CHP24",
+      "t": "On Prompt-Driven Safeguarding for Large Language Models",
+      "v": "ICML",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/naacl/DingKMCXCH24",
+      "t": "A Wolf in Sheep's Clothing: Generalized Nested Jailbreak Prompts can Fool Large Language Models Easily",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/naacl/MoWC024",
+      "t": "How Trustworthy are Open-Source LLMs? An Assessment under Malicious Demonstrations Shows their Vulnerabilities",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/nips/0006ZCLKGS24",
+      "t": "Accelerating Greedy Coordinate Gradient and General Prompt Optimization via Probe Sampling",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/nips/ChenN0024",
+      "t": "When LLM Meets DRL: Advancing Jailbreaking Efficiency via DRL-guided Search",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/nips/HayaseBCTN24",
+      "t": "Query-Based Adversarial Prompt Generation",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/nips/JinZMW24",
+      "t": "Jailbreaking Large Language Models Against Moderation Guardrails via Cipher Characters",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/nips/LiGZ024",
+      "t": "Improved Generation of Adversarial Examples Against Safety-aligned LLMs",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/nips/MoWW024",
+      "t": "Fight Back Against Jailbreaking via Prompt Adversarial Tuning",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 13
+    },
+    {
+      "pid": "dblp:conf/nips/SamvelyanRLHMBM24",
+      "t": "Rainbow Teaming: Open-Ended Generation of Diverse Adversarial Prompts",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/nips/SuKU24",
+      "t": "Mission Impossible: A Statistical Perspective on Jailbreaking LLMs",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/nips/XuHCW24",
+      "t": "Uncovering Safety Risks of Large Language Models through Concept Activation Vector",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/nips/ZhengPDLJL24",
+      "t": "Improved Few-Shot Jailbreaking Can Circumvent Aligned Language Models and Their Defenses",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/nips/ZhouLW24",
+      "t": "Robust Prompt Optimization for Defending Language Models Against Jailbreaking Attacks",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 13
+    }
+  ]
+}

@@ -1,0 +1,221 @@
+{
+  "meta": {
+    "total_batches": 20,
+    "total_papers_processed": 1010,
+    "total_errors": 8,
+    "total_efficiency_mentions": 188,
+    "total_attack_config_mentions": 854,
+    "total_rich_papers": 300
+  },
+  "batch_summary": [
+    {
+      "batch": "00",
+      "ok": 50,
+      "err": 1,
+      "eff": 17,
+      "ac": 44,
+      "rich": 15
+    },
+    {
+      "batch": "01",
+      "ok": 49,
+      "err": 2,
+      "eff": 14,
+      "ac": 44,
+      "rich": 15
+    },
+    {
+      "batch": "02",
+      "ok": 51,
+      "err": 0,
+      "eff": 11,
+      "ac": 44,
+      "rich": 15
+    },
+    {
+      "batch": "03",
+      "ok": 51,
+      "err": 0,
+      "eff": 15,
+      "ac": 48,
+      "rich": 15
+    },
+    {
+      "batch": "04",
+      "ok": 51,
+      "err": 0,
+      "eff": 3,
+      "ac": 45,
+      "rich": 15
+    },
+    {
+      "batch": "05",
+      "ok": 51,
+      "err": 0,
+      "eff": 11,
+      "ac": 39,
+      "rich": 15
+    },
+    {
+      "batch": "06",
+      "ok": 50,
+      "err": 1,
+      "eff": 5,
+      "ac": 37,
+      "rich": 15
+    },
+    {
+      "batch": "07",
+      "ok": 49,
+      "err": 2,
+      "eff": 6,
+      "ac": 36,
+      "rich": 15
+    },
+    {
+      "batch": "08",
+      "ok": 51,
+      "err": 0,
+      "eff": 7,
+      "ac": 45,
+      "rich": 15
+    },
+    {
+      "batch": "09",
+      "ok": 50,
+      "err": 1,
+      "eff": 10,
+      "ac": 41,
+      "rich": 15
+    },
+    {
+      "batch": "10",
+      "ok": 51,
+      "err": 0,
+      "eff": 5,
+      "ac": 38,
+      "rich": 15
+    },
+    {
+      "batch": "11",
+      "ok": 51,
+      "err": 0,
+      "eff": 12,
+      "ac": 39,
+      "rich": 15
+    },
+    {
+      "batch": "12",
+      "ok": 51,
+      "err": 0,
+      "eff": 22,
+      "ac": 46,
+      "rich": 15
+    },
+    {
+      "batch": "13",
+      "ok": 51,
+      "err": 0,
+      "eff": 5,
+      "ac": 47,
+      "rich": 15
+    },
+    {
+      "batch": "14",
+      "ok": 51,
+      "err": 0,
+      "eff": 10,
+      "ac": 47,
+      "rich": 15
+    },
+    {
+      "batch": "15",
+      "ok": 51,
+      "err": 0,
+      "eff": 5,
+      "ac": 45,
+      "rich": 15
+    },
+    {
+      "batch": "16",
+      "ok": 51,
+      "err": 0,
+      "eff": 1,
+      "ac": 42,
+      "rich": 15
+    },
+    {
+      "batch": "17",
+      "ok": 51,
+      "err": 0,
+      "eff": 5,
+      "ac": 38,
+      "rich": 15
+    },
+    {
+      "batch": "18",
+      "ok": 51,
+      "err": 0,
+      "eff": 10,
+      "ac": 44,
+      "rich": 15
+    },
+    {
+      "batch": "19",
+      "ok": 48,
+      "err": 1,
+      "eff": 14,
+      "ac": 45,
+      "rich": 15
+    }
+  ],
+  "aggregate_benchmarks": {
+    "AdvBench": 172,
+    "MMLU": 157,
+    "AlpacaEval": 154,
+    "HH-RLHF": 108,
+    "MT-Bench": 107,
+    "GSM8K": 103,
+    "TruthfulQA": 89,
+    "HarmBench": 78,
+    "Beavertails": 65,
+    "XSTest": 58,
+    "SHP": 55,
+    "RewardBench": 48,
+    "JailbreakBench": 34,
+    "ToxiGen": 24,
+    "WildGuard": 20,
+    "WMDP": 11,
+    "BBQ": 8,
+    "HumanEval": 4
+  },
+  "aggregate_models": {
+    "GPT-4": 610,
+    "Mistral": 321,
+    "Llama-3": 298,
+    "Alpaca": 288,
+    "GPT-4o": 279,
+    "Qwen": 259,
+    "Llama-2": 229,
+    "GPT-3.5": 195,
+    "Vicuna": 185,
+    "Claude": 151,
+    "ChatGPT": 135,
+    "Gemini": 80,
+    "Pythia": 44,
+    "Falcon": 4
+  },
+  "aggregate_metrics": {
+    "FPR": 503,
+    "ASR": 500,
+    "perplexity": 154,
+    "win rate": 115,
+    "attack success rate": 99,
+    "ROUGE": 62,
+    "refusal rate": 38,
+    "accuracy": 30,
+    "false positive": 25,
+    "harmfulness score": 3,
+    "MMLU accuracy": 1
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "batch": "13",
+  "ok": 51,
+  "err": 0,
+  "bm": {
+    "HH-RLHF": 19,
+    "AlpacaEval": 18,
+    "MT-Bench": 12,
+    "MMLU": 6,
+    "SHP": 5,
+    "GSM8K": 5,
+    "TruthfulQA": 5,
+    "Beavertails": 3,
+    "RewardBench": 3,
+    "XSTest": 2,
+    "AdvBench": 1,
+    "ToxiGen": 1
+  },
+  "md": {
+    "GPT-4": 39,
+    "Alpaca": 27,
+    "Mistral": 19,
+    "ChatGPT": 17,
+    "Vicuna": 14,
+    "Llama-2": 12,
+    "GPT-3.5": 11,
+    "Pythia": 7,
+    "GPT-4o": 5,
+    "Qwen": 4
+  },
+  "mt": {
+    "FPR": 24,
+    "win rate": 17,
+    "ASR": 16,
+    "perplexity": 5,
+    "ROUGE": 5
+  },
+  "eff": 5,
+  "ac": 47,
+  "rich": [
+    {
+      "pid": "dblp:conf/aaai/00010LYHLW24",
+      "t": "Preference Ranking Optimization for Human Alignment",
+      "v": "AAAI",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/acl/AhmadianCGFKPUH24",
+      "t": "Back to Basics: Revisiting REINFORCE-Style Optimization for Learning from Human Feedback in LLMs",
+      "v": "ACL",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/acl/ChengLZKWDTH24",
+      "t": "Black-Box Prompt Optimization: Aligning Large Language Models without Model Training",
+      "v": "ACL",
+      "y": 2024,
+      "s": 13
+    },
+    {
+      "pid": "dblp:conf/acl/LeeKYSYY24",
+      "t": "Aligning Large Language Models by On-Policy Self-Judgment",
+      "v": "ACL",
+      "y": 2024,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/acl/LiuBLKWSC024",
+      "t": "Direct Large Language Model Alignment Through Self-Rewarding Contrastive Prompt Distillation",
+      "v": "ACL",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/acl/LiuWWLLLZZZ024",
+      "t": "Aligning Large Language Models with Human Preferences through Representation Engineering",
+      "v": "ACL",
+      "y": 2024,
+      "s": 13
+    },
+    {
+      "pid": "dblp:conf/acl/ThakkarFRCZDC24",
+      "t": "A Deep Dive into the Trade-Offs of Parameter-Efficient Preference Alignment Techniques",
+      "v": "ACL",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/acl/WangLXYDQZZ24",
+      "t": "Arithmetic Control of LLMs for Diverse User Preferences: Directional Preference Alignment with Multi-Objective Rewards",
+      "v": "ACL",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/00010ZWW24",
+      "t": "Not Everything is All You Need: Toward Low-Redundant Optimization for Large Language Model Alignment",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/emnlp/ChenSSZ0L24",
+      "t": "Towards Tool Use Alignment of Large Language Models",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/DangAMKUH24",
+      "t": "RLHF Can Speak Many Languages: Unlocking Multilingual Preference Optimization for LLMs",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/emnlp/ChenZWJHYZZXGZ024",
+      "t": "Improving Discriminative Capability of Reward Models in RLHF Using Contrastive Learning",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/emnlp/HongLT24",
+      "t": "ORPO: Monolithic Preference Optimization without Reference Model",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 14
+    },
+    {
+      "pid": "dblp:conf/emnlp/KimS24a",
+      "t": "Rethinking the Role of Proxy Rewards in Language Model Alignment",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/emnlp/LloretDMS24",
+      "t": "Towards Aligning Language Models with Textual Feedback",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 6
+    }
+  ]
+}

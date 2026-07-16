@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>llm-safety-alignment-sok — Agent Survey</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; }
+  .header { background: #fff; padding: 16px 24px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; }
+  .header h1 { font-size: 18px; }
+  .nav { display: flex; gap: 8px; align-items: center; }
+  .nav a { padding: 6px 14px; border-radius: 6px; text-decoration: none; color: #333; font-size: 14px; background: #f0f0f0; }
+  .nav a:hover { background: #e0e0e0; }
+  .nav a.active { background: #333; color: #fff; }
+  .nav a.plan-btn { background: #5470c6; color: #fff; font-weight: 600; }
+.nav a.plan-btn:hover { background: #3d5a9e; }
+.nav a.plan-btn-cn { background: #ee6666; color: #fff; font-weight: 600; }
+.nav a.plan-btn-cn:hover { background: #c94a4a; }
+  .nav .back { background: transparent; color: #666; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .stat-card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .stat-card .num { font-size: 32px; font-weight: 700; color: #1a1a1a; }
+  .stat-card .label { font-size: 13px; color: #666; margin-top: 4px; }
+  .section { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+  .section h2 { font-size: 16px; margin-bottom: 12px; }
+  .pipeline-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+  .pipe-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; background: #fafafa; border: 1px solid #eee; }
+  .pipe-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .pipe-done { background: #34d399; }
+  .pipe-partial { background: #fbbf24; }
+  .pipe-pending { background: #d1d5db; }
+  .pipe-name { font-size: 13px; font-weight: 500; }
+  .pipe-data { font-size: 12px; color: #888; margin-left: auto; }
+  .bar { display: flex; align-items: center; margin-bottom: 8px; }
+  .bar-name { width: 300px; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bar-track { flex: 1; height: 20px; background: #f0f0f0; border-radius: 4px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .bar-val { margin-left: 8px; font-size: 12px; color: #666; min-width: 30px; }
+  .color-se { background: #5470c6; }
+  .color-security { background: #ee6666; }
+  .color-ai { background: #91cc75; }
+  .color-nlp { background: #fac858; }
+  .color-hci { background: #73c0de; }
+  .color-default { background: #999; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>llm-safety-alignment-sok</h1>
+  <div class="nav">
+    <a href="../index.html" class="back">&#8592; Topics</a>
+    <a href="index.html" class="active">Overview</a>
+    <a href="analysis.html">Analysis</a>
+    <a href="taxonomy.html">Taxonomy</a>
+    <a href="mindmap.html">Mindmap</a>
+    <a href="papers.html">Papers</a>
+    <a href="citation_graph.html">Citation Graph</a>
+    <a href="plan.html" class="plan-btn">📋 Plan</a>
+    <a href="plan_cn.html" class="plan-btn-cn">实验方案</a>
+  </div>
+</div>
+<div class="container">
+  <div class="stats-grid" id="stats"></div>
+  <div class="section">
+    <h2>Pipeline Progress</h2>
+    <div class="pipeline-grid" id="pipeline"></div>
+  </div>
+  <div id="tree-container"></div>
+  <div class="section">
+    <h2>Cross-cutting Tags</h2>
+    <div id="cross-tags"></div>
+  </div>
+</div>
+<script>
+async function load() {
+  const [dataRes, statsRes] = await Promise.all([
+    fetch('data.json?v=' + Date.now()),
+    fetch('stats.json?v=' + Date.now())
+  ]);
+  const data = await dataRes.json();
+  const stats = await statsRes.json();
+
+  const s = data.stats;
+  document.getElementById('stats').innerHTML = `
+    <div class="stat-card"><div class="num">${s.total}</div><div class="label">Core Papers</div></div>
+    <div class="stat-card"><div class="num">${s.with_taxonomy}</div><div class="label">With Taxonomy</div></div>
+    <div class="stat-card"><div class="num">${s.with_citation}</div><div class="label">With Citation</div></div>
+    <div class="stat-card"><div class="num">${s.with_pdf}</div><div class="label">With PDF</div></div>
+    <div class="stat-card"><div class="num">${data.graph.edges.length}</div><div class="label">Citation Edges</div></div>
+  `;
+
+  const pipe = stats.pipeline;
+  const order = [
+    ['harvest','Harvest'],
+    ['enrich','Enrich'],
+    ['enrich_web','Enrich-Web'],
+    ['prefilter','Prefilter'],
+    ['classify','Classify'],
+    ['classify_topics','Classify-Topics'],
+    ['dedup','Dedup'],
+    ['taxonomy','Taxonomy'],
+    ['fulltext','Fulltext'],
+    ['citation','Citation'],
+    ['deepdive','Deepdive'],
+    ['report','Report'],
+    ['short_titles','Short-Titles'],
+    ['category_desc','Category-Desc'],
+    ['summary','Summary'],
+    ['generate_docs','Generate-Docs']
+  ];
+  document.getElementById('pipeline').innerHTML = order.map(([k,label]) => {
+    const st = pipe[k];
+    const cls = st.state === 'done' ? 'pipe-done' : st.state === 'partial' ? 'pipe-partial' : 'pipe-pending';
+    let info = '';
+    if (st.total !== undefined) info = st.total;
+    else if (st.done !== undefined && st.need !== undefined) info = `${st.done}/${st.need}`;
+    else if (st.hit !== undefined) info = st.hit;
+    else if (st.core !== undefined) info = `c:${st.core}`;
+    return `<div class="pipe-item"><div class="pipe-dot ${cls}"></div><div class="pipe-name">${label}</div><div class="pipe-data">${info}</div></div>`;
+  }).join('');
+
+  function renderBars(containerId, items, max) {
+    const el = document.getElementById(containerId);
+    el.innerHTML = items.map(([name, count]) => `
+      <div class="bar">
+        <div class="bar-name" title="${name}">${name}</div>
+        <div class="bar-track"><div class="bar-fill color-default" style="width:${(count/max*100).toFixed(1)}%"></div></div>
+        <div class="bar-val">${count}</div>
+      </div>
+    `).join('');
+  }
+
+  const tp = data.tree_papers;
+  const maxApp = Math.max(...Object.values(tp['application_domain'] || {}).map(x => x.length), 1);
+  const maxTech = Math.max(...Object.values(tp['technical_approach'] || {}).map(x => x.length), 1);
+  const maxGoal = Math.max(...Object.values(tp['research_goal'] || {}).map(x => x.length), 1);
+  const maxCross = Math.max(...Object.values(data.cross_counts || {}), 1);
+
+  const treeContainer = document.getElementById('tree-container');
+  const treeNames = Object.keys(tp).filter(t => t !== 'cross_cutting');
+  treeContainer.innerHTML = treeNames.map(treeName => `
+    <div class="section">
+      <h2>${treeName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</h2>
+      <div id="tree-${treeName}"></div>
+    </div>
+  `).join('');
+  treeNames.forEach(treeName => {
+    const items = Object.entries(tp[treeName] || {}).map(([k,v]) => [k, v.length]).sort((a,b) => b[1]-a[1]).slice(0,20);
+    const maxVal = Math.max(...items.map(x => x[1]), 1);
+    renderBars(`tree-${treeName}`, items, maxVal);
+  });
+  renderBars('cross-tags', Object.entries(data.cross_counts || {}).sort((a,b)=>b[1]-a[1]), Math.max(...Object.values(data.cross_counts || {_:1}), 1));
+}
+load();
+</script>
+</body>
+</html>

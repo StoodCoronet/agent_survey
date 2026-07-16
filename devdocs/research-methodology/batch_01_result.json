@@ -1,0 +1,148 @@
+{
+  "batch": "01",
+  "ok": 49,
+  "err": 2,
+  "top_benchmarks": {
+    "Beavertails": 9,
+    "AdvBench": 9,
+    "AlpacaEval": 7,
+    "GSM8K": 6,
+    "HH-RLHF": 6,
+    "HarmBench": 6,
+    "MMLU": 5,
+    "MT-Bench": 4,
+    "JailbreakBench": 3,
+    "TruthfulQA": 2,
+    "ToxiGen": 2,
+    "RewardBench": 2
+  },
+  "top_models": {
+    "GPT-4": 30,
+    "Qwen": 25,
+    "Llama-3": 21,
+    "Mistral": 17,
+    "GPT-4o": 16,
+    "Gemini": 13,
+    "Claude": 12,
+    "ChatGPT": 12,
+    "Alpaca": 11,
+    "Llama-2": 10
+  },
+  "top_metrics": {
+    "ASR": 31,
+    "FPR": 14,
+    "attack success rate": 11,
+    "win rate": 10,
+    "perplexity": 9,
+    "ROUGE": 6
+  },
+  "efficiency": 14,
+  "attack_config": 44,
+  "rich": [
+    {
+      "pid": "dblp:conf/aaai/ShiWCGZSL26",
+      "title": "Fine-Tuned LLMs Know They Don't Know: A Parameter-Efficient Approach to Recovering Honesty",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/aaai/ZhaoSGHDZZHHCLQ26",
+      "title": "Trade-offs in Large Reasoning Models: An Empirical Analysis of Deliberative and Adaptive Reasoning over Foundational Cap",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 10
+    },
+    {
+      "pid": "dblp:conf/aaai/KusakaSKTWA26",
+      "title": "Cost-Minimized Label-Flipping Poisoning Attack to LLM Alignment",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 6
+    },
+    {
+      "pid": "dblp:conf/aaai/ZhangLGZZX26",
+      "title": "ShadeEdit: A Utility-Preserving and Defense-Evasive Knowledge Manipulation Attack in Federated LLMs",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/aaai/JiLNGH26",
+      "title": "Efficient LLM-Jailbreaking via Multimodal-LLM Jailbreak",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/aaai/LiZWLCXYW26",
+      "title": "StyleBreak: Revealing Alignment Vulnerabilities in Large Audio-Language Models via Style-Aware Audio Jailbreak",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 10
+    },
+    {
+      "pid": "dblp:conf/aaai/LiangHC26",
+      "title": "EquaCode: A Multi-Strategy Jailbreak Approach for Large Language Models via Equation Solving and Code Completion",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 12
+    },
+    {
+      "pid": "dblp:conf/aaai/MiaoLXLZS26",
+      "title": "Response Attack: Exploiting Contextual Priming to Jailbreak Large Language Models",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 13
+    },
+    {
+      "pid": "dblp:conf/aaai/QiSGZZQR26",
+      "title": "MAJIC: Markovian Adaptive Jailbreaking via Iterative Composition of Diverse Innovative Strategies",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 12
+    },
+    {
+      "pid": "dblp:conf/aaai/RashidDWTM26",
+      "title": "Chain-of-Thought Driven Adversarial Scenario Extrapolation for Robust Language Models",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 13
+    },
+    {
+      "pid": "dblp:conf/aaai/WangZWLHWW26",
+      "title": "Joint-GCG: Unified Gradient-Based Poisoning Attacks on Retrieval-Augmented Generation Systems",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/aaai/XunJLQZ26",
+      "title": "The Emotional Baby Is Truly Deadly: Does Your Multimodal Large Reasoning Model Have Emotional Flattery Towards Humans?",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/aaai/YangWZLHX26",
+      "title": "Multi-Faceted Attack: Exposing Cross-Model Vulnerabilities in Defense-Equipped Vision-Language Models",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/aaai/YangZTHH26",
+      "title": "Exploiting Synergistic Cognitive Biases to Bypass Safety in LLMs",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 14
+    },
+    {
+      "pid": "dblp:conf/aaai/YuLDWWML26",
+      "title": "TVChain: Leveraging Textual-Visual Prompt Chains for Jailbreaking Large Vision-Language Models",
+      "venue": "AAAI",
+      "year": 2026,
+      "score": 11
+    }
+  ]
+}

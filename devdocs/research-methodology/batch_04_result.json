@@ -1,0 +1,148 @@
+{
+  "batch": "04",
+  "ok": 51,
+  "err": 0,
+  "top_benchmarks": {
+    "AlpacaEval": 15,
+    "MT-Bench": 11,
+    "GSM8K": 9,
+    "MMLU": 7,
+    "HH-RLHF": 7,
+    "RewardBench": 6,
+    "TruthfulQA": 5,
+    "SHP": 2,
+    "XSTest": 1,
+    "JailbreakBench": 1,
+    "AdvBench": 1,
+    "ToxiGen": 1
+  },
+  "top_models": {
+    "GPT-4": 34,
+    "GPT-4o": 21,
+    "Alpaca": 20,
+    "Mistral": 17,
+    "Llama-3": 14,
+    "Pythia": 7,
+    "Llama-2": 6,
+    "Qwen": 6,
+    "ChatGPT": 4,
+    "GPT-3.5": 3
+  },
+  "top_metrics": {
+    "FPR": 32,
+    "ASR": 14,
+    "win rate": 10,
+    "perplexity": 5,
+    "ROUGE": 2,
+    "harmfulness score": 1
+  },
+  "efficiency": 3,
+  "attack_config": 45,
+  "rich": [
+    {
+      "pid": "dblp:conf/iclr/KimLS025",
+      "title": "Spread Preference Annotation: Direct Preference Judgment for Efficient LLM Alignment",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/iclr/LengHZ025",
+      "title": "Taming Overconfidence in LLMs: Reward Calibration in RLHF",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 11
+    },
+    {
+      "pid": "dblp:conf/iclr/Liu0M00L25",
+      "title": "RM-Bench: Benchmarking Reward Models of Language Models with Subtlety and Style",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/iclr/LiuBLSKWSJL0YC25",
+      "title": "TIS-DPO: Token-level Importance Sampling for Direct Preference Optimization With Estimated Weights",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/iclr/LyuY0YRRR25",
+      "title": "MACPO: Weak-to-Strong Alignment via Multi-Agent Contrastive Preference Optimization",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 6
+    },
+    {
+      "pid": "dblp:conf/iclr/LuSV25",
+      "title": "Semantic Loss Guided Data Efficient Supervised Fine Tuning for Safe Responses in LLMs",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/iclr/MaoXLJC0L25",
+      "title": "As Simple as Fine-tuning: LLM Alignment via Bidirectional Negative Feedback Loss",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 12
+    },
+    {
+      "pid": "dblp:conf/iclr/ShaoLLCZWCL25",
+      "title": "Earlier Tokens Contribute More: Learning Direct Preference Optimization From Temporal Decay Perspective",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/iclr/SunGLC000W25",
+      "title": "Uncertainty and Influence aware Reward Model Refinement for Reinforcement Learning from Human Feedback",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/iclr/Tao025",
+      "title": "Your Weak LLM is Secretly a Strong Teacher for Alignment",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/SomerstepPBRYS25",
+      "title": "A transfer learning framework for weak to strong generalization",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 11
+    },
+    {
+      "pid": "dblp:conf/iclr/UppaalDHZ025",
+      "title": "Model Editing as a Robust and Denoised variant of DPO: A Case Study on Toxicity",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/WangBDESZKD25",
+      "title": "HelpSteer2-Preference: Complementing Ratings with Preferences",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 11
+    },
+    {
+      "pid": "dblp:conf/iclr/WangHLZBWZY25",
+      "title": "CREAM: Consistency Regularized Self-Rewarding Language Models",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/WangMCMHXZHS025",
+      "title": "Magnetic Preference Optimization: Achieving Last-iterate Convergence for Language Model Alignment",
+      "venue": "ICLR",
+      "year": 2025,
+      "score": 7
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "batch": "08",
+  "ok": 51,
+  "err": 0,
+  "bm": {
+    "MMLU": 12,
+    "AdvBench": 8,
+    "GSM8K": 6,
+    "TruthfulQA": 5,
+    "WMDP": 5,
+    "Beavertails": 4,
+    "JailbreakBench": 3,
+    "XSTest": 3,
+    "HH-RLHF": 3,
+    "ToxiGen": 3,
+    "BBQ": 2,
+    "SHP": 2
+  },
+  "md": {
+    "Qwen": 20,
+    "Llama-3": 17,
+    "GPT-4": 15,
+    "Mistral": 14,
+    "Llama-2": 12,
+    "GPT-4o": 10,
+    "Alpaca": 9,
+    "GPT-3.5": 7,
+    "Gemini": 6,
+    "Vicuna": 5
+  },
+  "mt": {
+    "ASR": 30,
+    "FPR": 21,
+    "perplexity": 8,
+    "refusal rate": 6,
+    "attack success rate": 5,
+    "ROUGE": 5
+  },
+  "eff": 7,
+  "ac": 45,
+  "rich": [
+    {
+      "pid": "dblp:conf/acl/JiWQ0Z0LDL025",
+      "t": "Language Models Resist Alignment: Evidence From Data Compression",
+      "v": "ACL",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/acl/LeongY0025",
+      "t": "Why Safeguarded Ships Run Aground? Aligned Large Language Models' Safety Mechanisms Tend to Be Anchored in The Template ",
+      "v": "ACL",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/acl/QianL0LS25",
+      "t": "The Tug of War Within: Mitigating the Fairness-Privacy Conflicts in Large Language Models",
+      "v": "ACL",
+      "y": 2025,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/emnlp/ChoiLYJ25",
+      "t": "Agent-to-Agent Theory of Mind: Testing Interlocutor Awareness among Large Language Models",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/emnlp/KassemSRF25",
+      "t": "REVIVING YOUR MNEME: Predicting The Side Effects of LLM Unlearning and Fine-Tuning via Sparse Model Diffing",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/PanTZZZC25",
+      "t": "Understanding and Mitigating Overrefusal in LLMs from an Unveiling Perspective of Safety Decision Boundary",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/emnlp/SunMZG25",
+      "t": "Unlearning vs. Obfuscation: Are We Truly Removing Knowledge?",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/0001FWS25",
+      "t": "Unlearning or Obfuscating? Jogging the Memory of Unlearned LLMs via Benign Relearning",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/iclr/LeeKKLCPS25",
+      "t": "How Does Vision-Language Adaptation Impact the Safety of Vision Language Models?",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/iclr/ZhouY0X0WLFL25",
+      "t": "On the Role of Attention Heads in Large Language Model Safety",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/icml/0002CVW25",
+      "t": "When Bad Data Leads to Good Models",
+      "v": "ICML",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/icml/BachuSLCDS0A025",
+      "t": "Layer-wise Alignment: Examining Safety Alignment Across Image Encoder Layers in Vision Language Models",
+      "v": "ICML",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/icml/NutiFH25",
+      "t": "TuCo: Measuring the Contribution of Fine-Tuning to Individual Responses of LLMs",
+      "v": "ICML",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/icml/PanLCZYJ25",
+      "t": "The Hidden Dimensions of LLM Alignment: A Multi-Dimensional Analysis of Orthogonal Safety Directions",
+      "v": "ICML",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/icml/WollschlagerEGC25",
+      "t": "The Geometry of Refusal in Large Language Models: Concept Cones and Representational Independence",
+      "v": "ICML",
+      "y": 2025,
+      "s": 7
+    }
+  ]
+}

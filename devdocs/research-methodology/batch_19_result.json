@@ -1,0 +1,148 @@
+{
+  "batch": "19",
+  "ok": 48,
+  "err": 1,
+  "bm": {
+    "AdvBench": 7,
+    "MMLU": 6,
+    "MT-Bench": 6,
+    "TruthfulQA": 6,
+    "HarmBench": 5,
+    "HH-RLHF": 3,
+    "XSTest": 2,
+    "ToxiGen": 2,
+    "Beavertails": 2,
+    "SHP": 2,
+    "GSM8K": 1,
+    "AlpacaEval": 1
+  },
+  "md": {
+    "Vicuna": 19,
+    "GPT-4": 17,
+    "GPT-3.5": 12,
+    "Alpaca": 10,
+    "Claude": 8,
+    "ChatGPT": 8,
+    "Llama-3": 6,
+    "Pythia": 5,
+    "Llama-2": 5,
+    "Mistral": 4
+  },
+  "mt": {
+    "ASR": 24,
+    "FPR": 21,
+    "perplexity": 15,
+    "ROUGE": 9,
+    "attack success rate": 4,
+    "false positive": 2
+  },
+  "eff": 14,
+  "ac": 45,
+  "rich": [
+    {
+      "pid": "dblp:conf/nips/XhonneuxSGGS24",
+      "t": "Efficient Adversarial Training in LLMs with Continuous Attacks",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/nips/ZouPWDLAKFH24",
+      "t": "Improving Alignment and Robustness with Circuit Breakers",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/acl/XuJN0LP24",
+      "t": "SafeDecoding: Defending against Jailbreak Attacks via Safety-Aware Decoding",
+      "v": "ACL",
+      "y": 2024,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/ccs/WuDPCXL024",
+      "t": "Legilimens: Practical and Unified Content Moderation for Large Language Model Services",
+      "v": "CCS",
+      "y": 2024,
+      "s": 13
+    },
+    {
+      "pid": "dblp:conf/emnlp/0002HZGLB024",
+      "t": "Defending Jailbreak Prompts via In-Context Adversarial Game",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/ElesedyEOO24",
+      "t": "LoRA-Guard: Parameter-Efficient Guardrail Adaptation for Content Moderation of Large Language Models",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/emnlp/LiXJNSRP24",
+      "t": "CleanGen: Mitigating Backdoor Attacks for Generation Tasks in Large Language Models",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/emnlp/PiHZXPLDZZ24",
+      "t": "MLLM-Protector: Ensuring MLLM's Safety without Hurting Performance",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/icml/YuanX0Y0S024",
+      "t": "RigorLLM: Resilient Guardrails for Large Language Models against Undesired Content",
+      "v": "ICML",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/icml/ZhangZF24",
+      "t": "PARDEN, Can You Repeat That? Defending against Jailbreaks via Repetition",
+      "v": "ICML",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/kbse/0069YSSD0024",
+      "t": "Efficient Detection of Toxic Prompts in Large Language Models",
+      "v": "ASE",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/nips/HuPZJ024",
+      "t": "Toxicity Detection for Free",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/nips/HuCH24",
+      "t": "Gradient Cuff: Detecting Jailbreak Attacks on Large Language Models by Exploring Refusal Loss Landscapes",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/nips/VarunMASS024",
+      "t": "Time-Reversal Provides Unsupervised Feedback to LLMs",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/emnlp/HuangZL023",
+      "t": "Learning Preference Model for LLMs via Automatic Preference Data Generation",
+      "v": "EMNLP",
+      "y": 2023,
+      "s": 9
+    }
+  ]
+}

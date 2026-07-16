@@ -1,0 +1,148 @@
+{
+  "batch": "16",
+  "ok": 51,
+  "err": 0,
+  "bm": {
+    "AdvBench": 11,
+    "MMLU": 7,
+    "SHP": 6,
+    "XSTest": 4,
+    "ToxiGen": 3,
+    "GSM8K": 3,
+    "MT-Bench": 3,
+    "Beavertails": 2,
+    "HarmBench": 2,
+    "BBQ": 2,
+    "TruthfulQA": 2,
+    "AlpacaEval": 2
+  },
+  "md": {
+    "GPT-4": 33,
+    "GPT-3.5": 23,
+    "Llama-2": 19,
+    "Vicuna": 16,
+    "Mistral": 15,
+    "Alpaca": 13,
+    "ChatGPT": 12,
+    "Claude": 12,
+    "Llama-3": 11,
+    "Qwen": 9
+  },
+  "mt": {
+    "FPR": 33,
+    "ASR": 19,
+    "refusal rate": 5,
+    "perplexity": 5,
+    "false positive": 3,
+    "ROUGE": 2
+  },
+  "eff": 1,
+  "ac": 42,
+  "rich": [
+    {
+      "pid": "dblp:conf/acl/YeLLHGWZG024",
+      "t": "ToolSword: Unveiling Safety Issues of Large Language Models in Tool Learning Across Three Stages",
+      "v": "ACL",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/acl/ZhangLWSHL0L0H24",
+      "t": "SafetyBench: Evaluating the Safety of Large Language Models",
+      "v": "ACL",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/acl/ZhangZLSG0WLZ24",
+      "t": "PsySafe: A Comprehensive Framework for Psychological-based Attack, Defense, and Evaluation of Multi-agent System Safety",
+      "v": "ACL",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/emnlp/BassaniS24",
+      "t": "GuardBench: A Large-Scale Benchmark for Guardrail Models",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/LiLQJB24",
+      "t": "Evaluating Psychological Safety of Large Language Models",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/emnlp/MorabitoMME24",
+      "t": "STOP! Benchmarking Large Language Models with Sensitivity Testing on Offensive Progressions",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/emnlp/WangLFW24",
+      "t": "From LLMs to MLLMs: Exploring the Landscape of Multimodal Jailbreaking",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/emnlp/ZhangZLLH24",
+      "t": "Holistic Automated Red Teaming for Large Language Models through Top-Down Test Case Generation and Multi-turn Interactio",
+      "v": "EMNLP",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/iclr/0001WLLRYJTL24",
+      "t": "On the Humanity of Conversational AI: Evaluating the Psychological Portrayal of LLMs",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/LiSYF0024",
+      "t": "Generative Judge for Evaluating Alignment",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/iclr/YeKKHKJTKS24",
+      "t": "FLASK: Fine-grained Language Model Evaluation based on Alignment Skill Sets",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/icml/HongDZLXLDBJXKH24",
+      "t": "Decoding Compressed Trust: Scrutinizing the Trustworthiness of Efficient LLMs Under Compression",
+      "v": "ICML",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/issta/Yang00S24",
+      "t": "DistillSeq: A Framework for Safety Alignment Testing in Large Language Models using Knowledge Distillation",
+      "v": "ISSTA",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/kbse/ChenZ0NLX00Z24",
+      "t": "RMCBench: Benchmarking Large Language Models' Resistance to Malicious Code",
+      "v": "ASE",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/naacl/HuangLGSSWZWTQW24",
+      "t": "Flames: Benchmarking Value Alignment of LLMs in Chinese",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 6
+    }
+  ]
+}

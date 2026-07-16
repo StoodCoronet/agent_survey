@@ -1,0 +1,148 @@
+{
+  "batch": "02",
+  "ok": 51,
+  "err": 0,
+  "top_benchmarks": {
+    "AlpacaEval": 18,
+    "MT-Bench": 13,
+    "MMLU": 12,
+    "GSM8K": 10,
+    "RewardBench": 10,
+    "HH-RLHF": 8,
+    "XSTest": 6,
+    "Beavertails": 5,
+    "AdvBench": 5,
+    "SHP": 4,
+    "TruthfulQA": 4,
+    "ToxiGen": 3
+  },
+  "top_models": {
+    "GPT-4": 36,
+    "Qwen": 26,
+    "Alpaca": 25,
+    "Llama-3": 22,
+    "GPT-4o": 20,
+    "Mistral": 18,
+    "GPT-3.5": 11,
+    "Claude": 9,
+    "Vicuna": 6,
+    "Gemini": 5
+  },
+  "top_metrics": {
+    "FPR": 31,
+    "ASR": 22,
+    "win rate": 17,
+    "attack success rate": 5,
+    "perplexity": 4,
+    "ROUGE": 2
+  },
+  "efficiency": 11,
+  "attack_config": 44,
+  "rich": [
+    {
+      "pid": "dblp:conf/aaai/TrivediCRABA25",
+      "title": "Align-Pro: A Principled Approach to Prompt Optimization for LLM Alignment",
+      "venue": "AAAI",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/aaai/WangGHMYHXZLZ25",
+      "title": "RoVRM: A Robust Visual Reward Model Optimized via Auxiliary Textual Preference Data",
+      "venue": "AAAI",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/aaai/WangZZBY25",
+      "title": "Self-Evolutionary Large Language Models Through Uncertainty-Enhanced Preference Optimization",
+      "venue": "AAAI",
+      "year": 2025,
+      "score": 14
+    },
+    {
+      "pid": "dblp:conf/aaai/ZhaoDNC25",
+      "title": "Aligning Large Language Models for Faithful Integrity Against Opposing Argument",
+      "venue": "AAAI",
+      "year": 2025,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/aaai/ZhouJDY25",
+      "title": "Sequence to Sequence Reward Modeling: Improving RLHF by Language Feedback",
+      "venue": "AAAI",
+      "year": 2025,
+      "score": 6
+    },
+    {
+      "pid": "dblp:conf/acl/0001ZZH0X25",
+      "title": "AlignDistil: Token-Level Language Model Alignment as Adaptive Policy Distillation",
+      "venue": "ACL",
+      "year": 2025,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/acl/00100X025",
+      "title": "SudoLM: Learning Access Control of Parametric Knowledge with Authorization Alignment",
+      "venue": "ACL",
+      "year": 2025,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/acl/0015QW000L25",
+      "title": "Agentic Reward Modeling: Integrating Human Preferences with Verifiable Correctness Signals for Reliable Reward Systems",
+      "venue": "ACL",
+      "year": 2025,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/acl/Deng0C0N025",
+      "title": "Efficient Safety Alignment of Large Language Models via Preference Re-ranking and Representation-based Reward Modeling",
+      "venue": "ACL",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/acl/FeiR025",
+      "title": "Nudging: Inference-time Alignment of LLMs via Guided Decoding",
+      "venue": "ACL",
+      "year": 2025,
+      "score": 6
+    },
+    {
+      "pid": "dblp:conf/acl/GargSSC25",
+      "title": "IPO: Your Language Model is Secretly a Preference Classifier",
+      "venue": "ACL",
+      "year": 2025,
+      "score": 11
+    },
+    {
+      "pid": "dblp:conf/acl/GuoLWLHYZ25",
+      "title": "MTSA: Multi-turn Safety Alignment for LLMs through Multi-round Red-teaming",
+      "venue": "ACL",
+      "year": 2025,
+      "score": 15
+    },
+    {
+      "pid": "dblp:conf/acl/HuangSBLG0MKR25",
+      "title": "DeAL: Decoding-time Alignment for Large Language Models",
+      "venue": "ACL",
+      "year": 2025,
+      "score": 6
+    },
+    {
+      "pid": "dblp:conf/acl/JungHNO25",
+      "title": "Binary Classifier Optimization for Large Language Model Alignment",
+      "venue": "ACL",
+      "year": 2025,
+      "score": 11
+    },
+    {
+      "pid": "dblp:conf/acl/HuaQZTL0025",
+      "title": "Intuitive Fine-Tuning: Towards Simplifying Alignment into a Single Process",
+      "venue": "ACL",
+      "year": 2025,
+      "score": 9
+    }
+  ]
+}

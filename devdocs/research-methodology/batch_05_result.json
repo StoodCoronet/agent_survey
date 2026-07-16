@@ -1,0 +1,148 @@
+{
+  "batch": "05",
+  "ok": 51,
+  "err": 0,
+  "top_benchmarks": {
+    "AlpacaEval": 21,
+    "GSM8K": 7,
+    "TruthfulQA": 7,
+    "MMLU": 6,
+    "MT-Bench": 6,
+    "HH-RLHF": 6,
+    "XSTest": 5,
+    "RewardBench": 3,
+    "SHP": 2,
+    "Beavertails": 2,
+    "WildGuard": 2,
+    "HarmBench": 2
+  },
+  "top_models": {
+    "GPT-4": 27,
+    "Alpaca": 26,
+    "Mistral": 19,
+    "Llama-3": 18,
+    "GPT-4o": 8,
+    "Qwen": 8,
+    "GPT-3.5": 5,
+    "Vicuna": 5,
+    "Claude": 4,
+    "Llama-2": 4
+  },
+  "top_metrics": {
+    "FPR": 30,
+    "ASR": 18,
+    "win rate": 12,
+    "perplexity": 5,
+    "refusal rate": 1,
+    "ROUGE": 1
+  },
+  "efficiency": 11,
+  "attack_config": 39,
+  "rich": [
+    {
+      "pid": "dblp:conf/icml/0003HBYQLJZY25",
+      "title": "Discriminative Finetuning of Generative Large Language Models without Reward Models and Human Preference Data",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/icml/0004Y0FLZX0ZW0H25",
+      "title": "MM-RLHF: The Next Step Forward in Multimodal LLM Alignment",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/icml/GaoL0XZ025",
+      "title": "Principled Data Selection for Alignment: The Hidden Risks of Difficult Examples",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 10
+    },
+    {
+      "pid": "dblp:conf/icml/GuptaTSZHSGLKZA25",
+      "title": "AlphaPO: Reward Shape Matters for LLM Alignment",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/icml/GuptaMZBR25",
+      "title": "AMPO: Active Multi Preference Optimization for Self-play Preference Selection",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/icml/Gong00Z025",
+      "title": "Latent Preference Coding: Aligning Large Language Models via Discrete Latent Codes",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/icml/HiguchiS25",
+      "title": "Direct Density Ratio Optimization: A Statistically Consistent Approach to Aligning Large Language Models",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 11
+    },
+    {
+      "pid": "dblp:conf/icml/HongZ0J025",
+      "title": "Energy-Based Preference Model Offers Better Offline Alignment than the Bradley-Terry Preference Model",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/icml/HongLKSCGTT25",
+      "title": "On the Robustness of Reward Models for Language Model Alignment",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/icml/HuangWC0GDW0025",
+      "title": "Larger or Smaller Reward Margins to Select Preferences for LLM Alignment?",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 6
+    },
+    {
+      "pid": "dblp:conf/icml/JinY00000A25",
+      "title": "LLM Alignment as Retriever Optimization: An Information Retrieval Perspective",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/icml/KaramanZBCSS25",
+      "title": "POROver: Improving Safety and Reducing Overrefusal in Large Language Models with Overgeneration and Preference Optimizat",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 17
+    },
+    {
+      "pid": "dblp:conf/icml/LambDP0P25",
+      "title": "Focus On This, Not That! Steering LLMs with Adaptive Feature Specification",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 7
+    },
+    {
+      "pid": "dblp:conf/icml/LiHQL025",
+      "title": "Test-Time Preference Optimization: On-the-Fly Alignment via Iterative Textual Feedback",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 10
+    },
+    {
+      "pid": "dblp:conf/icml/LinJXCC25",
+      "title": "PARM: Multi-Objective Test-Time Alignment via Preference-Aware Autoregressive Reward Model",
+      "venue": "ICML",
+      "year": 2025,
+      "score": 7
+    }
+  ]
+}

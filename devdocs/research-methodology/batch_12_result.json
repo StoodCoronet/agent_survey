@@ -1,0 +1,148 @@
+{
+  "batch": "12",
+  "ok": 51,
+  "err": 0,
+  "bm": {
+    "AdvBench": 18,
+    "MMLU": 14,
+    "XSTest": 13,
+    "GSM8K": 11,
+    "Beavertails": 10,
+    "HarmBench": 10,
+    "AlpacaEval": 9,
+    "MT-Bench": 9,
+    "WildGuard": 7,
+    "TruthfulQA": 4,
+    "JailbreakBench": 4,
+    "SHP": 3
+  },
+  "md": {
+    "GPT-4": 25,
+    "Mistral": 19,
+    "Alpaca": 18,
+    "Llama-3": 17,
+    "GPT-4o": 16,
+    "Llama-2": 14,
+    "Qwen": 12,
+    "Vicuna": 8,
+    "GPT-3.5": 5,
+    "Claude": 3
+  },
+  "mt": {
+    "ASR": 27,
+    "FPR": 22,
+    "perplexity": 10,
+    "attack success rate": 6,
+    "false positive": 5,
+    "ROUGE": 4
+  },
+  "eff": 22,
+  "ac": 46,
+  "rich": [
+    {
+      "pid": "dblp:conf/emnlp/LiuLTYMX25",
+      "t": "Data to Defense: The Role of Curation in Aligning Large Language Models Against Safety Compromise",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 13
+    },
+    {
+      "pid": "dblp:conf/emnlp/SimkoSSJ25",
+      "t": "Improving Large Language Model Safety with Contrastive Representation Learning",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/emnlp/WangLQSPXAJZ25",
+      "t": "Rescorla-Wagner Steering of LLMs for Undesired Behaviors over Disproportionate Inappropriate Context",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/emnlp/YangQSH25",
+      "t": "Reshaping Representation Space to Balance the Safety and Over-rejection in Large Audio Language Models",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/emnlp/ZhuYWYS25",
+      "t": "Reasoning-to-Defend: Safety-Aware Reasoning Can Defend Large Language Models from Jailbreaking",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/emnlp/ZhaoGHDZSHZQCL25",
+      "t": "AdaSteer: Your Aligned LLM is Inherently an Adaptive Jailbreak Defender",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/iclr/EirasP0KB25",
+      "t": "Do as I do (Safely): Mitigating Task-Specific Fine-tuning Risks in Large Language Models",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/iclr/HuangHIT025",
+      "t": "Booster: Tackling Harmful Fine-tuning for Large Language Models via Attenuating Harmful Perturbation",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/ShenCDC25",
+      "t": "SEAL: Safety-enhanced Aligned LLM Fine-tuning via Bilevel Data Selection",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/iclr/WuZSXZAI0MZ25",
+      "t": "Instructional Segment Embedding: Improving LLM Safety with Instruction Hierarchy",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/iclr/YuDHC25",
+      "t": "Robust LLM safeguarding via refusal feature adversarial training",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/iclr/ZhangCNUBWS25",
+      "t": "Backtracking Improves Generation Safety",
+      "v": "ICLR",
+      "y": 2025,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/icml/0001H0BW25",
+      "t": "Vulnerability-Aware Alignment: Mitigating Uneven Forgetting in Harmful Fine-Tuning",
+      "v": "ICML",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/icml/0006L0CZO0025",
+      "t": "Safe Delta: Consistently Preserving Safety when Fine-Tuning LLMs on Diverse Datasets",
+      "v": "ICML",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/icml/00070H00FS25",
+      "t": "Assessing Safety Risks and Quantization-aware Safety Patching for Quantized Large Language Models",
+      "v": "ICML",
+      "y": 2025,
+      "s": 10
+    }
+  ]
+}

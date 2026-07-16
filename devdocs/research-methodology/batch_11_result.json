@@ -1,0 +1,148 @@
+{
+  "batch": "11",
+  "ok": 51,
+  "err": 0,
+  "bm": {
+    "AdvBench": 18,
+    "MMLU": 13,
+    "HarmBench": 12,
+    "TruthfulQA": 11,
+    "GSM8K": 6,
+    "WildGuard": 4,
+    "JailbreakBench": 4,
+    "SHP": 3,
+    "XSTest": 3,
+    "Beavertails": 3,
+    "ToxiGen": 2,
+    "AlpacaEval": 2
+  },
+  "md": {
+    "GPT-4": 30,
+    "Llama-3": 24,
+    "Mistral": 21,
+    "Qwen": 19,
+    "GPT-4o": 18,
+    "Alpaca": 16,
+    "Llama-2": 16,
+    "Vicuna": 14,
+    "GPT-3.5": 9,
+    "Gemini": 6
+  },
+  "mt": {
+    "ASR": 28,
+    "FPR": 21,
+    "perplexity": 12,
+    "attack success rate": 7,
+    "ROUGE": 7,
+    "refusal rate": 6
+  },
+  "eff": 12,
+  "ac": 39,
+  "rich": [
+    {
+      "pid": "dblp:conf/icml/MaPF25",
+      "t": "PANDAS: Improving Many-shot Jailbreaking via Positive Affirmation, Negative Demonstration, and Adaptive Sampling",
+      "v": "ICML",
+      "y": 2025,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/icml/PaulusZ0AT25",
+      "t": "AdvPrompter: Fast Adaptive Adversarial Prompting for LLMs",
+      "v": "ICML",
+      "y": 2025,
+      "s": 16
+    },
+    {
+      "pid": "dblp:conf/icml/WeiLE25",
+      "t": "Emoji Attack: Enhancing Jailbreak Attacks Against Judge LLM Detection",
+      "v": "ICML",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/icml/XuK0LMY0025",
+      "t": "AdvAgent: Controllable Blackbox Red-teaming on Web Agents",
+      "v": "ICML",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/icml/Yang0JS0H25",
+      "t": "Cannot See the Forest for the Trees: Invoking Heuristics and Biases to Elicit Irrational Choices of LLMs",
+      "v": "ICML",
+      "y": 2025,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/icml/ZhaoYPD00W25",
+      "t": "Weak-to-Strong Jailbreaking on Large Language Models",
+      "v": "ICML",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/naacl/HuangSAWS25",
+      "t": "Stronger Universal and Transferable Attacks by Suppressing Refusals",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/naacl/KassemMMKTCSR25",
+      "t": "ALPACA AGAINST VICUNA: Using LLMs to Uncover Memorization of LLMs",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/naacl/MuHZFXQSLHSZC25",
+      "t": "Stealthy Jailbreak Attacks on Large Language Models via Benign Data Mirroring",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/naacl/ZhangWWLHWW25",
+      "t": "From Allies to Adversaries: Manipulating LLM Tool-Calling through Adversarial Injection",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/naacl/SunLYWCSGG25",
+      "t": "Iterative Self-Tuning LLMs for Enhanced Jailbreaking Capabilities",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/naacl/YangXLWWHCC25",
+      "t": "SeqAR: Jailbreak LLMs with Sequential Auto-Generated Characters",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 14
+    },
+    {
+      "pid": "dblp:conf/naacl/ZhaoBHYM25",
+      "t": "Diversity Helps Jailbreak Large Language Models",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 14
+    },
+    {
+      "pid": "dblp:journals/tse/CorboBGLSC25",
+      "t": "How Toxic Can You Get? Search-Based Toxicity Testing for Large Language Models",
+      "v": "TSE",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/aaai/CaoY025",
+      "t": "SCANS: Mitigating the Exaggerated Safety for LLMs via Safety-Conscious Activation Steering",
+      "v": "AAAI",
+      "y": 2025,
+      "s": 13
+    }
+  ]
+}

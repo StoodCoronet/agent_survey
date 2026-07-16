@@ -1,0 +1,148 @@
+{
+  "batch": "06",
+  "ok": 50,
+  "err": 1,
+  "bm": {
+    "AlpacaEval": 10,
+    "MMLU": 9,
+    "HH-RLHF": 8,
+    "GSM8K": 7,
+    "MT-Bench": 6,
+    "RewardBench": 5,
+    "SHP": 5,
+    "AdvBench": 4,
+    "WildGuard": 4,
+    "XSTest": 3,
+    "TruthfulQA": 2,
+    "ToxiGen": 2
+  },
+  "md": {
+    "GPT-4": 38,
+    "GPT-4o": 25,
+    "Llama-3": 24,
+    "Qwen": 23,
+    "Mistral": 16,
+    "Alpaca": 14,
+    "Claude": 14,
+    "Llama-2": 9,
+    "Gemini": 9,
+    "ChatGPT": 8
+  },
+  "mt": {
+    "FPR": 26,
+    "ASR": 19,
+    "win rate": 7,
+    "perplexity": 3,
+    "refusal rate": 2,
+    "false positive": 2
+  },
+  "eff": 5,
+  "ac": 37,
+  "rich": [
+    {
+      "pid": "dblp:conf/icml/ZhangZHXFYDYD025",
+      "t": "STAIR: Improving Safety Alignment with Introspective Reasoning",
+      "v": "ICML",
+      "y": 2025,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/icml/ZhangZWXG25",
+      "t": "Beyond Bradley-Terry Models: A General Preference Model for Language Model Alignment",
+      "v": "ICML",
+      "y": 2025,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/icml/ZouLLZ25",
+      "t": "HPS: Hard Preference Sampling for Human Preference Alignment",
+      "v": "ICML",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/icml/ZhuCW0ZJ25",
+      "t": "TGDPO: Harnessing Token-Level Reward Guidance for Enhancing Direct Preference Optimization",
+      "v": "ICML",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/naacl/FuHMY25",
+      "t": "Unlocking Decoding-time Controllability: Gradient-Free Multi-Objective Alignment with Contrastive Prompts",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/naacl/HungMMP25",
+      "t": "Reward-Guided Tree Search for Inference Time Alignment of Large Language Models",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/naacl/JinnaiMAA25",
+      "t": "Regularized Best-of-N Sampling with Minimum Bayes Risk Objective for Language Model Alignment",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/naacl/LiuGDBHLHLWJQZWWGLZ25",
+      "t": "DREAM: Disentangling Risks to Enhance Safety Alignment in Multimodal Large Language Models",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/naacl/NathVSNGBK25",
+      "t": "DPL: Diverse Preference Learning Without A Reference Model",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/naacl/SongFZWW25",
+      "t": "Instantly Learning Preference Alignment via In-context DPO",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/naacl/WangTZLZC25",
+      "t": "BPO: Towards Balanced Preference Optimization between Knowledge Breadth and Depth in Alignment",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/naacl/VijjiniCC25",
+      "t": "Exploring Safety-Utility Trade-Offs in Personalized Language Models",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/naacl/XiaoGSWKVCC25",
+      "t": "InfoPO: On Mutual Information Maximization for Large Language Model Alignment",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/naacl/YuCZTZPQWGZKMH25",
+      "t": "Self-Generated Critiques Boost Reward Modeling for Language Models",
+      "v": "NAACL",
+      "y": 2025,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/aaai/LiCH25",
+      "t": "Retention Score: Quantifying Jailbreak Risks for Vision Language Models",
+      "v": "AAAI",
+      "y": 2025,
+      "s": 9
+    }
+  ]
+}

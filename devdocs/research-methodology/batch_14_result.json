@@ -1,0 +1,145 @@
+{
+  "batch": "14",
+  "ok": 51,
+  "err": 0,
+  "bm": {
+    "HH-RLHF": 14,
+    "AlpacaEval": 9,
+    "SHP": 7,
+    "MMLU": 7,
+    "MT-Bench": 7,
+    "TruthfulQA": 5,
+    "GSM8K": 4,
+    "AdvBench": 2,
+    "Beavertails": 1,
+    "XSTest": 1
+  },
+  "md": {
+    "GPT-4": 26,
+    "Alpaca": 16,
+    "Vicuna": 13,
+    "Llama-2": 11,
+    "ChatGPT": 11,
+    "Mistral": 9,
+    "GPT-3.5": 6,
+    "Pythia": 5,
+    "Llama-3": 4,
+    "Claude": 4
+  },
+  "mt": {
+    "FPR": 32,
+    "ASR": 18,
+    "win rate": 11,
+    "perplexity": 4,
+    "ROUGE": 2
+  },
+  "eff": 10,
+  "ac": 47,
+  "rich": [
+    {
+      "pid": "dblp:conf/iclr/DuanY0L0G24",
+      "t": "Denevil: towards Deciphering and Navigating the Ethical Values of Large Language Models via Instruction Learning",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/iclr/GuoZT0W24",
+      "t": "Beyond Imitation: Leveraging Fine-grained Quality Signals for Alignment",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/iclr/LiYZSLZWL24",
+      "t": "Self-Alignment with Instruction Backtranslation",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/iclr/LiuYJZYV24",
+      "t": "Training Socially Aligned Language Models on Simulated Social Interactions",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/iclr/MitchellRSFM24",
+      "t": "An Emulator for Fine-tuning Large Language Models using Small Language Models",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/iclr/SunSZZCCYG24",
+      "t": "SALMON: Self-Alignment with Instructable Reward Models",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/iclr/YangKCPT24",
+      "t": "RLCD: Reinforcement Learning from Contrastive Distillation for LM Alignment",
+      "v": "ICLR",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/icml/0015DYW0J0024",
+      "t": "Iterative Preference Learning from Human Feedback: Bridging Theory and Practice for RLHF under KL-constraint",
+      "v": "ICML",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/icml/ChakrabortyQYKM24",
+      "t": "MaxMin-RLHF: Alignment with Diverse Human Preferences",
+      "v": "ICML",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/icml/Chen0CS0GHSC24",
+      "t": "ODIN: Disentangled Reward Mitigates Hacking in RLHF",
+      "v": "ICML",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/icml/CuiY0YH0NXXL0024",
+      "t": "ULTRAFEEDBACK: Boosting Language Models with Scaled AI Feedback",
+      "v": "ICML",
+      "y": 2024,
+      "s": 13
+    },
+    {
+      "pid": "dblp:conf/icml/EthayarajhXMJK24",
+      "t": "Model Alignment as Prospect Theoretic Optimization",
+      "v": "ICML",
+      "y": 2024,
+      "s": 13
+    },
+    {
+      "pid": "dblp:conf/icml/GaoGSDY0ZZC00L24",
+      "t": "Linear Alignment: A Closed-form Solution for Aligning Human Preferences without Tuning and Feedback",
+      "v": "ICML",
+      "y": 2024,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/icml/Ji0NKW00H24",
+      "t": "Towards Efficient Exact Optimization of Language Model Alignment",
+      "v": "ICML",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/icml/LiXZL00L24",
+      "t": "ReMax: A Simple, Effective, and Efficient Reinforcement Learning Method for Aligning Large Language Models",
+      "v": "ICML",
+      "y": 2024,
+      "s": 9
+    }
+  ]
+}

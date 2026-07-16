@@ -1,0 +1,147 @@
+{
+  "batch": "15",
+  "ok": 51,
+  "err": 0,
+  "bm": {
+    "AlpacaEval": 11,
+    "MMLU": 7,
+    "TruthfulQA": 6,
+    "MT-Bench": 6,
+    "HH-RLHF": 5,
+    "Beavertails": 4,
+    "ToxiGen": 2,
+    "RewardBench": 2,
+    "GSM8K": 2,
+    "HarmBench": 1,
+    "XSTest": 1,
+    "SHP": 1
+  },
+  "md": {
+    "GPT-4": 28,
+    "Alpaca": 25,
+    "Mistral": 13,
+    "Llama-2": 10,
+    "Vicuna": 10,
+    "GPT-3.5": 10,
+    "Pythia": 10,
+    "Claude": 9,
+    "GPT-4o": 9,
+    "ChatGPT": 7
+  },
+  "mt": {
+    "FPR": 33,
+    "ASR": 17,
+    "win rate": 9,
+    "perplexity": 4,
+    "ROUGE": 2
+  },
+  "eff": 5,
+  "ac": 45,
+  "rich": [
+    {
+      "pid": "dblp:conf/naacl/ChenWN0YLL024",
+      "t": "IterAlign: Iterative Constitutional Alignment of Large Language Models",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/naacl/GeZHKWW0M24",
+      "t": "MART: Improving LLM Safety with Multi-round Automatic Red-Teaming",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/naacl/LangHL24",
+      "t": "Fine-Tuning Language Models with Reward Learning on Policy",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/naacl/LuoLZS0XSSGG24",
+      "t": "Ensuring Safe and High-Quality Outputs: A Guideline Library Approach for Language Models",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/naacl/ShiCZ24",
+      "t": "Safer-Instruct: Aligning Language Models with Automated Preference Data",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/naacl/YaoY0W024",
+      "t": "Value FULCRA: Mapping Large Language Models to the Multidimensional Spectrum of Basic Human Value",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/naacl/Xu0MKXC24",
+      "t": "Instructional Fingerprinting of Large Language Models",
+      "v": "NAACL",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/nips/0001HFCFSL24",
+      "t": "Discovering Preference Optimization Algorithms with and for Large Language Models",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/nips/0001X024",
+      "t": "SimPO: Simple Preference Optimization with a Reference-Free Reward",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/nips/Brahman0BDPRWDC24",
+      "t": "The Art of Saying No: Contextual Noncompliance in Language Models",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 15
+    },
+    {
+      "pid": "dblp:conf/nips/ChenHYCSZ24",
+      "t": "Noise Contrastive Alignment of Language Models with Explicit Rewards",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/nips/FrankenZRGGG24",
+      "t": "Self-Supervised Alignment with Mutual Information: Learning to Follow Principles without Preference Labels",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/nips/Hadji-KyriacouA24",
+      "t": "Would I Lie To You? Inference Time Alignment of Language Models using Direct Preference Heads",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/nips/Ji0LHZPQD024",
+      "t": "Aligner: Efficient Alignment by Learning to Correct",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/nips/LeePKS24",
+      "t": "Aligning to Thousands of Preferences via System Message Generalization",
+      "v": "NeurIPS",
+      "y": 2024,
+      "s": 12
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "batch": "03",
+  "ok": 51,
+  "err": 0,
+  "top_benchmarks": {
+    "AlpacaEval": 15,
+    "HH-RLHF": 11,
+    "MT-Bench": 10,
+    "RewardBench": 8,
+    "MMLU": 6,
+    "SHP": 5,
+    "GSM8K": 4,
+    "AdvBench": 3,
+    "BBQ": 3,
+    "TruthfulQA": 3,
+    "XSTest": 2,
+    "Beavertails": 1
+  },
+  "top_models": {
+    "GPT-4": 29,
+    "Alpaca": 20,
+    "Mistral": 18,
+    "GPT-4o": 17,
+    "Llama-3": 16,
+    "Qwen": 15,
+    "Llama-2": 10,
+    "Pythia": 7,
+    "Claude": 4,
+    "Gemini": 3
+  },
+  "top_metrics": {
+    "FPR": 22,
+    "ASR": 19,
+    "win rate": 12,
+    "perplexity": 4,
+    "refusal rate": 3,
+    "ROUGE": 1
+  },
+  "efficiency": 15,
+  "attack_config": 48,
+  "rich": [
+    {
+      "pid": "dblp:conf/emnlp/GouDLGHH25",
+      "title": "SURE: Safety Understanding and Reasoning Enhancement for Multimodal Large Language Models",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/emnlp/HuLJHZHXCHS25",
+      "title": "Context Reasoner: Incentivizing Reasoning Capability for Contextualized Privacy and Safety Compliance via Reinforcement ",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 6
+    },
+    {
+      "pid": "dblp:conf/emnlp/HaradaYOOMT25",
+      "title": "Massive Supervised Fine-tuning Experiments Reveal How Data, Layer, and Training Factors Shape LLM Alignment Quality",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/HuangSRZZCZDMSGZH25",
+      "title": "Governance in Motion: Co-evolution of Constitutions and AI models for Scalable Safety",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 11
+    },
+    {
+      "pid": "dblp:conf/emnlp/KashyapDN25",
+      "title": "Too Helpful, Too Harmless, Too Honest or Just Right?",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/LiFGHGW25",
+      "title": "APLOT: Robust Reward Modeling via Adaptive Preference Learning with Optimal Transport",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/emnlp/LiLCKCZY25",
+      "title": "RED: Unleashing Token-Level Rewards from Holistic Feedback via Reward Redistribution",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 6
+    },
+    {
+      "pid": "dblp:conf/emnlp/LiYZZCZX25",
+      "title": "Ambiguity Awareness Optimization: Towards Semantic Disambiguation for Direct Preference Optimization",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 11
+    },
+    {
+      "pid": "dblp:conf/emnlp/LiWLZ25",
+      "title": "Reward-Shifted Speculative Sampling Is An Efficient Test-Time Weak-to-Strong Aligner",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/emnlp/XingLWBWHQYT25",
+      "title": "Re-Align: Aligning Vision Language Models via Retrieval-Augmented Direct Preference Optimization",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 8
+    },
+    {
+      "pid": "dblp:conf/emnlp/WuYGXTJWS25",
+      "title": "Meta-Rewarding Language Models: Self-Improving Alignment with LLM-as-a-Meta-Judge",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 11
+    },
+    {
+      "pid": "dblp:conf/emnlp/YangJZGLCYWW25",
+      "title": "Weights-Rotated Preference Optimization for Large Language Models",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/XieYWMGH25",
+      "title": "ToolSafety: A Comprehensive Dataset for Enhancing Safety in LLM-Based Agent Tool Invocations",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 9
+    },
+    {
+      "pid": "dblp:conf/emnlp/YuSHYYL25",
+      "title": "Improve LLM-as-a-Judge Ability as a General Ability",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 13
+    },
+    {
+      "pid": "dblp:conf/emnlp/YangLXHMA25",
+      "title": "Selective Preference Optimization via Token-Level Reward Function Estimation",
+      "venue": "EMNLP",
+      "year": 2025,
+      "score": 9
+    }
+  ]
+}

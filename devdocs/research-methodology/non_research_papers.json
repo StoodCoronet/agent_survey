@@ -1,0 +1,99 @@
+{
+  "total_scanned": 1097,
+  "non_research_count": 10,
+  "short_paper_details": [
+    {
+      "paper_id": "dblp:conf/aaai/Chai26",
+      "title": "Adaptive KL Control for Direct Preference Optimization in Instruction-Following LLMs",
+      "venue": "AAAI",
+      "year": 2026,
+      "pages": 3,
+      "reason": "Only 3 pages"
+    },
+    {
+      "paper_id": "dblp:conf/aaai/GoyalHMGGDBMM24",
+      "title": "LLMGuard: Guarding against Unsafe LLM Behavior",
+      "venue": "AAAI",
+      "year": 2024,
+      "pages": 3,
+      "reason": "Only 3 pages"
+    },
+    {
+      "paper_id": "dblp:conf/aaai/Le26",
+      "title": "Unveiling AI Safety in Fine-tuning Quantized Model",
+      "venue": "AAAI",
+      "year": 2026,
+      "pages": 3,
+      "reason": "Only 3 pages"
+    },
+    {
+      "paper_id": "dblp:conf/aaai/Li25c",
+      "title": "Certified Trustworthiness in the Era of Large Language Models",
+      "venue": "AAAI",
+      "year": 2025,
+      "pages": 1,
+      "reason": "Only 1 pages"
+    },
+    {
+      "paper_id": "dblp:conf/aaai/Micha25",
+      "title": "Axioms for AI Alignment from Human Feedback",
+      "venue": "AAAI",
+      "year": 2025,
+      "pages": 1,
+      "reason": "Only 1 pages"
+    },
+    {
+      "paper_id": "dblp:conf/aaai/Shi25a",
+      "title": "Persuasion for Social Good: How to Build and Break AI",
+      "venue": "AAAI",
+      "year": 2025,
+      "pages": 2,
+      "reason": "Only 2 pages"
+    },
+    {
+      "paper_id": "dblp:conf/aaai/Singh26",
+      "title": "Scaling Up AI Alignment",
+      "venue": "AAAI",
+      "year": 2026,
+      "pages": 4,
+      "reason": "Only 4 pages"
+    },
+    {
+      "paper_id": "dblp:conf/aaai/WicaksonoWPKKT26",
+      "title": "AgentSeer: Visualizing and Evaluating Temporal Actions in Agentic AI Systems",
+      "venue": "AAAI",
+      "year": 2026,
+      "pages": 3,
+      "reason": "Only 3 pages"
+    },
+    {
+      "paper_id": "dblp:conf/aaai/Zhang26a",
+      "title": "Towards Inclusive AI: Advancing Multilingual Large Language Models",
+      "venue": "AAAI",
+      "year": 2026,
+      "pages": 1,
+      "reason": "Only 1 pages"
+    },
+    {
+      "paper_id": "dblp:conf/kbse/SunSSHM25",
+      "title": "TrustVis: A Multi-Dimensional Trustworthiness Evaluation Framework for Large Language Models",
+      "venue": "ASE",
+      "year": 2025,
+      "pages": 4,
+      "reason": "Only 4 pages"
+    }
+  ],
+  "errors": 0,
+  "non_research_ids": [
+    "dblp:conf/aaai/Chai26",
+    "dblp:conf/aaai/GoyalHMGGDBMM24",
+    "dblp:conf/aaai/Le26",
+    "dblp:conf/aaai/Li25c",
+    "dblp:conf/aaai/Micha25",
+    "dblp:conf/aaai/Shi25a",
+    "dblp:conf/aaai/Singh26",
+    "dblp:conf/aaai/WicaksonoWPKKT26",
+    "dblp:conf/aaai/Zhang26a",
+    "dblp:conf/kbse/SunSSHM25"
+  ]
+}

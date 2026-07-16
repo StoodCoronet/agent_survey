@@ -1,0 +1,147 @@
+{
+  "batch": "10",
+  "ok": 51,
+  "err": 0,
+  "bm": {
+    "AdvBench": 23,
+    "HarmBench": 16,
+    "JailbreakBench": 4,
+    "XSTest": 2,
+    "MMLU": 2,
+    "WMDP": 1,
+    "WildGuard": 1,
+    "RewardBench": 1,
+    "HH-RLHF": 1,
+    "GSM8K": 1,
+    "AlpacaEval": 1
+  },
+  "md": {
+    "GPT-4": 42,
+    "GPT-4o": 32,
+    "GPT-3.5": 24,
+    "Llama-3": 23,
+    "Mistral": 21,
+    "Vicuna": 19,
+    "Qwen": 19,
+    "Claude": 18,
+    "Llama-2": 12,
+    "Gemini": 10
+  },
+  "mt": {
+    "ASR": 43,
+    "attack success rate": 18,
+    "FPR": 17,
+    "perplexity": 13,
+    "refusal rate": 6,
+    "false positive": 3
+  },
+  "eff": 5,
+  "ac": 38,
+  "rich": [
+    {
+      "pid": "dblp:conf/emnlp/ChengDCDJYQWJ25",
+      "t": "PBI-Attack: Prior-Guided Bimodal Interactive Black-Box Jailbreak Attack for Toxicity Maximization",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/DingZLDDL25",
+      "t": "TombRaider: Entering the Vault of History to Jailbreak Large Language Models",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/HanLZL25",
+      "t": "Nullspace Disentanglement for Red Teaming Language Models",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/emnlp/JooKJ25",
+      "t": "Harmful Prompt Laundering: Jailbreaking LLMs with Abductive Styles and Symbolic Encoding",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 11
+    },
+    {
+      "pid": "dblp:conf/emnlp/LanCZLC25",
+      "t": "Phi: Preference Hijacking in Multi-modal Large Language Models at Inference Time",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/emnlp/LiZZWHXW25",
+      "t": "Transferable Direct Prompt Injection via Activation-Guided MCMC Sampling",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 7
+    },
+    {
+      "pid": "dblp:conf/emnlp/MiaoDLS25",
+      "t": "Visual Contextual Attack: Jailbreaking MLLMs with Image-Driven Context Injection",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/NikeghbalKD25",
+      "t": "CoBia: Constructed Conversations Can Trigger Otherwise Concealed Societal Biases in LLMs",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 6
+    },
+    {
+      "pid": "dblp:conf/emnlp/SachdevaHG25",
+      "t": "Turning Logic Against Itself: Probing Model Defenses Through Contrastive Questions",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 12
+    },
+    {
+      "pid": "dblp:conf/emnlp/SimaCWH25",
+      "t": "VisCRA: A Visual Chain Reasoning Attack for Jailbreaking Multimodal Large Language Models",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 8
+    },
+    {
+      "pid": "dblp:conf/emnlp/WangJLLJJLWZYBW25",
+      "t": "Stand on The Shoulders of Giants: Building JailExpert from Previous Attack Experience",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 10
+    },
+    {
+      "pid": "dblp:conf/emnlp/WangLZWPHS25",
+      "t": "DiffusionAttacker: Diffusion-Driven Prompt Manipulation for LLM Jailbreak",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 13
+    },
+    {
+      "pid": "dblp:conf/emnlp/WengJJZ25",
+      "t": "Foot-In-The-Door: A Multi-turn Jailbreak for LLMs",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/emnlp/XiaCYLTG25",
+      "t": "Reimagining Safety Alignment with An Image",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 9
+    },
+    {
+      "pid": "dblp:conf/emnlp/ZareeMADAA25",
+      "t": "Attention Eclipse: Manipulating Attention to Bypass LLM Safety-Alignment",
+      "v": "EMNLP",
+      "y": 2025,
+      "s": 8
+    }
+  ]
+}
